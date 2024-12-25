@@ -1,0 +1,108 @@
+.container {
+    display: flex;
+    justify-content: space-between; 
+    align-items: center;
+    background-color: #421b1b; 
+    padding: 0.5rem 2rem; 
+}
+
+.links {
+    display: flex;
+    gap: 1.5rem;
+}
+
+.signInContainer {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem; 
+    background-color: #231F20;
+    padding: 0.5rem 1rem; 
+    border-radius: 0.5rem;
+}
+
+.signInImage {
+    width: 1.2rem; 
+    height: auto;
+}
+
+.signInLink {
+    color: white;
+    text-decoration: none;
+    font-size: 1rem;
+}
+
+.signInLink:hover {
+    color: #cd9f58; 
+}
+
+.goldLogo {
+    color: #cd9f58; 
+}
+
+.whiteLogo {
+    color: #ffffff; 
+}
+
+.menuIcon {
+    display: none; 
+    font-size: 2rem;
+    color: #ffffff;
+    cursor: pointer;
+}
+
+.bcrsHeader {
+    font-family: "Arial", sans-serif;
+    font-size: 1.8rem;
+    margin: 0;
+}
+
+nav a {
+    text-decoration: none;
+}
+
+nav p {
+    margin: 0 1.5rem; 
+    font-weight: bold;
+    position: relative;
+}
+
+nav p a {
+    text-decoration: none;
+    color: #ffffff;
+}
+
+
+nav h2 a span {
+    text-decoration: none;
+}
+  
+nav p a:hover {
+    color: #cd9f58; 
+}
+
+@media screen and (max-width: 768px) {
+    .container {
+        justify-content: space-between;
+    }
+
+    .menuIcon {
+        display: block; 
+        width: 2rem;
+        height: auto;
+    }
+
+    .links {
+        display: none; 
+    }
+
+    .linksMenuActive {
+        display: flex;
+        flex-direction: column; 
+        position: absolute;
+        background-color: #421b1b; 
+        padding-bottom: 1rem;
+        padding-top: 1rem;
+        top: 7%;
+        left: 0;
+    }  
+}
