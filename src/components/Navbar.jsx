@@ -1,38 +1,37 @@
 import React, { useState } from "react";
+import { useLocation } from "react-router-dom";
 import css from "../styles/Navbar.module.css" 
 
 const Navbar = () => {
-    const [menuActive, setMenuActive] = useState(false);
 
-    const toggleMenu = () => {
-        setMenuActive(!menuActive);
-    };
-
+    const location = useLocation(); //How does this work?
+    const isActive = (path) => location.pathname === path; /*A function */
+    
+    //TODO: Why isn't isActive used within the Houding Calendar or Resources links?
     return (
         <header>
-            <div id="nav">
+            <div id="nav" className={css.navContainer}>
                 <nav className= {css.container}>
-                    <img
-                        src="https://cdn.glitch.global/35a90707-afbf-469e-b877-030bdb0009b4/mobile-navigation-bar-menu-responsive-ui-512%20copy.png?v=1732911149726"
-                        alt="Menu Icon"
-                        className= {css.menuIcon}
-                        onClick={toggleMenu}
-                    />
                     <h2 className= {css.bcrsHeader}>
-                        <a href="index.html#gassonhall">
+                        <a href="/">
                             <span className= {css.goldLogo}>BC</span>
                             <span className= {css.whiteLogo}>RS</span>
                         </a>
                     </h2>
-                    <div className={menuActive ? css.linksMenuActive : css.links}>
-                        <p><a href="index.html#gassonhall">Home</a></p>
-                        <p><a href="?page=listings">Listings</a></p>
-                        <p><a href="?page=about">About</a></p>
+                    <div className={css.links}>
+                        <p className={isActive("/") ? css.activeLink : ""}>
+                            <a href ="/" className={css.homeLink}>Home</a>
+                        </p>
+                        <p className={isActive("/page=listings") ? css.activeLink : ""}>
+                            <a href = "/page=listings" className={css.listingsLink}>Listings</a>
+                        </p>
+
                         <p>
                             <a
                                 href="https://www.bc.edu/bc-web/offices/studentaffairs/sites/residential-life/living-in-bc-housing/hall-openings-closings.html"
                                 target="_blank"
                                 rel="noopener noreferrer"
+                                className={css.housingCalendarLink}
                             >
                                 Housing Calendar
                             </a>
@@ -42,11 +41,11 @@ const Navbar = () => {
                                 href="https://www.bc.edu/bc-web/offices/studentaffairs/sites/residential-life/living-in-bc-housing.html"
                                 target="_blank"
                                 rel="noopener noreferrer"
+                                className={css.resourcesLink}
                             >
-                                Resources
+                                Resources 
                             </a>
                         </p>
-                        <p><a href="index.html#post">Contact</a></p>
                     </div>
                     <div className= {css.signInContainer}>
                         <a href="?page=signin" className={css.signInLink}>Sign In</a>

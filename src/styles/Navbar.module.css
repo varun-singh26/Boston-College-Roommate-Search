@@ -1,3 +1,6 @@
+/* ^STYLING FOR ORIGINAL NAVBAR*/
+
+/*
 .container {
     display: flex;
     justify-content: space-between; 
@@ -106,3 +109,280 @@ nav p a:hover {
         left: 0;
     }  
 }
+*/
+
+
+/* ---------------------------------------------------------------------------------------------------*/
+
+
+/* STYLING FROM CHATGPT:*/
+
+/* NavBar Container*/
+.navContainer {
+    background: #501315;
+    box-shadow: 0px 10px 10px rgba(0, 0, 0, 0.25);
+}
+
+.container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem 2rem;
+}
+
+/* Logo */
+.bcrsHeader {
+    font-family: "Marion", serif;
+    font-size: 2.5rem;
+    font-weight: 400;
+    display: flex;
+    align-items: center;
+}
+
+.bcrsHeader a{
+    text-decoration: none;
+}
+
+.goldLogo {
+    color: #DCCAA0;
+}
+
+.whiteLogo {
+    color: #FFFFFF;
+}
+
+/* Navigation Links */
+.links {
+    display: flex;
+    gap: 2rem;
+}
+
+.links p {
+    margin: 0;
+    position: relative;
+}
+
+.links a {
+    font-family: "Lexend", sans-serif;
+    font-size: 1rem;
+    font-weight: 700;
+    text-decoration: none;
+    color: #FFFFFF;
+}
+
+.links a:hover,
+.links .activeLink a {
+    color: #DCCAA0;
+}
+
+.activeLink::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: -5px;
+    height: 2px;
+    background-color: #DCCAA0;
+}
+
+
+/* Sign In Button */
+.signInContainer {
+    display: flex;
+    align-items: center;
+    background: #231F20;
+    border-radius: 0.5rem;
+    padding: 0.5rem 1rem;
+
+}
+
+.signInLink {
+    font-family: "Lexend", sans-serif;
+    font-size: 1rem;
+    color: #FFFFFF;
+    text-decoration: none;
+    margin-right: 0.5rem;
+}
+
+.signInImage {
+    width: 1.5rem;
+}
+
+
+/* Mobile Adjustments */
+@media screen and (max-width: 768px) {
+    .links {
+        display: none;
+    }
+}
+
+/* ---------------------------------------------------------------------------------------------------*/
+
+/*STYLING FROM FIGMA:*/
+/*
+
+.goldLogo{
+    position: absolute;
+    left: 2.78%;
+    right: 65.16%;
+    top: 23.64%; 
+    bottom: 12.73%;
+
+    font-family: 'Marion';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 70px;
+    line-height: 74px;
+    display: flex;
+    align-items: center;
+
+    color: #DCCAA0;
+}
+
+.whiteLogo {
+    position: absolute;
+    left: 2.78%;
+    right: 65.16%;
+    top: 23.64%;
+    bottom: 12.73%;
+
+    font-family: 'Marion';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 70px;
+    line-height: 74px;
+    display: flex;
+    align-items: center;
+
+    color: #DCCAA0;
+}
+*/
+
+
+
+/* NavBar Pages */
+
+/*
+.links {
+    position: absolute;
+    left: 43.98%;
+    right: 19.16%;
+    top: 35.45%;
+    bottom: 34.55%;
+}
+*/
+/* Resources */
+/*
+.resourcesLink {
+    position: absolute;
+    left: 71.7%;
+    right: 19.16%;
+    top: 35.45%;
+    bottom: 34.55%;
+
+    font-family: 'Lexend';
+    font-style: normal;
+    font-weight: 700;
+    font-size: 16px;
+    line-height: 20px;
+    display: flex;
+    align-items: center;
+    text-align: center;
+
+    color: #FFFFFF;
+}
+*/
+
+/* Housing Calendar */
+/*
+.housingCalendarLink {
+    position: absolute;
+    left: 61.05%;
+    right: 28.3%;
+    top: 35.45%;
+    bottom: 34.55%;
+
+    font-family: 'Lexend';
+    font-style: normal;
+    font-weight: 700;
+    font-size: 16px;
+    line-height: 20px;
+    display: flex;
+    align-items: center;
+    text-align: center;
+
+    color: #FFFFFF;
+}*/
+
+/* Home */
+/*
+.homeLink {
+    position: absolute;
+    left: 43.98%;
+    right: 46.88%;
+    top: 35.45%;
+    bottom: 34.55%;
+
+    font-family: 'Lexend';
+    font-style: normal;
+    font-weight: 700;
+    font-size: 16px;
+    line-height: 20px;
+    display: flex;
+    align-items: center;
+    text-align: center;
+
+    color: #FFFFFF;
+}*/
+
+/* Listings */
+/*
+.listingsLink {
+    position: absolute;
+    left: 51.91%;
+    right: 38.95%;
+    top: 35.45%;
+    bottom: 34.55%;
+
+    font-family: 'Lexend';
+    font-style: normal;
+    font-weight: 700;
+    font-size: 16px;
+    line-height: 20px;
+    display: flex;
+    align-items: center;
+    text-align: center;
+
+    color: #FFFFFF;
+}*/
+
+
+
+/* Listings Dropdown Icon styling (NEED TO IMPLEMENT structurally)
+
+position: absolute;
+left: 59.61%;
+right: 39.64%;
+top: 56.36%;
+bottom: 35.45%;
+
+background: #FFFFFF;
+transform: rotate(180deg);
+/*
+
+
+
+/* Current Page Underline Icon styling (NEED TO IMPLEMENT structurally)*/
+/*
+position: absolute;
+left: 45.2%;
+right: 48.09%;
+top: 65.45%;
+bottom: 34.55%;
+
+border: 1px solid #FFFFFF;
+*/
+
+
+
+

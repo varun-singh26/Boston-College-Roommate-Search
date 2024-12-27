@@ -1,13 +1,17 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.css';
+import SearchProvider from './context/searchContext.jsx';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 
+//Want there to be a single context for listingLocation and formData throughout the app session
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
-    <App />
+    <SearchProvider>
+      <App />
+    </SearchProvider>
   </React.StrictMode>
 );
 

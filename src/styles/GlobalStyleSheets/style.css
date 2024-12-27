@@ -1,0 +1,4 @@
+/* Let's do mobile first and then do desktop (potentially a medium viewport if we have time) */
+* {
+    font-family: "Lexend", sans-serif;
+  }

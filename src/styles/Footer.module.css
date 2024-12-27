@@ -1,0 +1,69 @@
+/* All css module rules need to be scoped to a class*/
+
+
+.footer {
+    background-color: #121212; /* Dark background */
+    color: white;
+    padding: 40px 20px;
+    text-align: center;
+    font-family: 'Arial', sans-serif; /* Adjust as needed */
+  }
+
+.footerQuote {
+    font-size: 1.5rem;
+    font-weight: 400;
+    margin-bottom: 40px;  
+}
+
+.footerDetails {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    margin-bottom: 40px;
+}
+
+.footerColumn {
+    flex: 1;
+    min-width: 200px;
+    margin: 0 20px;
+}
+
+
+.footerColumnH4 {
+    font-size: 1rem;
+    font-weight: 700;
+    margin-bottom: 10px;
+    border-bottom: 1px solid white;
+    display: inline-block;
+}
+
+.footerColumnParagraph {
+    font-size: 0.9rem;
+    line-height: 1.8;
+    margin: 5px 0;
+}
+
+.socialIconLinks {
+    display: inline-block;
+    margin-right: 10px;
+}
+
+.socialIconImages {
+    width: 20px;
+    height: 20px;
+}
+
+.footerBottom {
+    font-size: 0.8rem;
+    border-top: 1px solid white;
+    padding-top: 10px;
+    margin-top: 20px;
+}
+
+.footer {
+    background-color: #501315;
+    padding: 2rem 0;
+    color: #ffffff;
+    font-size: 1rem;
+    text-align: center; 
+}

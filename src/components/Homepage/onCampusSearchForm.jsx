@@ -1,16 +1,20 @@
-import React from 'react';
+import React, { useContext, useState } from 'react';
+import { SearchContext } from '../../context/searchContext';
 import css from "../../styles/SearchForm.module.css";
 
 const handleSubmit = (event) => {
   event.preventDefault();
 
-  const formData = JSON.parse(localStorage.getItem("form"));
-  const listingLocation = localStorage.getItem("listingLocation");
+  //use SearchContext instead of local storage to confirm the most recent user data
+  const {formData, setFormData, listingLocation, setListingLocation} = useContext(SearchContext)
 
-  console.log("Listing Location:", listingLocation);
-  console.log('Form submitted with data:', formData);
+  /*const formData = JSON.parse(localStorage.getItem("form"));
+  const listingLocation = localStorage.getItem("listingLocation");*/
 
-  // Navigate and redirect to the listings page with form data and listingLocation in local storage
+  console.log("Current Listing Location (state variable):", listingLocation);
+  console.log('Current Form data (state variable):', formData);
+
+  // Navigate and redirect to the listings page
   const currentURL = new URL(window.location.href);
   currentURL.searchParams.set("page", "listings");
   window.location.href = currentURL.toString();
