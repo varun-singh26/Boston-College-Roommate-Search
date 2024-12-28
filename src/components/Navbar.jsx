@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { useLocation } from "react-router-dom";
 //We want to use Link for internal links of our web app to avoid full page reloads when they are clicked (to preserve any contexts)
+//Not having full page reloads means that css and javascript don't have to be rerendered when a Link is clicked
 import { Link } from "react-router-dom";
 import css from "../styles/Navbar.module.css" 
 
