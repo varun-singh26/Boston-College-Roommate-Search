@@ -2,7 +2,6 @@ import React, { createContext, useState } from 'react';
 
 export const SearchContext = createContext();
 
-//why is formData constant?
 const SearchProvider = ({ children }) => {
     const [formData, setFormData] = useState({
         "class-year": 0,

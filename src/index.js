@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom/client';
 import './index.css';
 import SearchProvider from './context/searchContext.jsx';
 import DataProvider from './context/dataContext.jsx';
+import FilteredPostingsProvider from './context/FilteredPostingsContext.jsx';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 
@@ -13,7 +14,9 @@ root.render(
   <React.StrictMode>
     <SearchProvider>
       <DataProvider>
-        <App />
+        <FilteredPostingsProvider>
+          <App />
+        </FilteredPostingsProvider>
       </DataProvider>
     </SearchProvider>
   </React.StrictMode>

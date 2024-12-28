@@ -1,5 +1,6 @@
 import React, {createContext, useState, useEffect} from "react";
 
+//NOTE: if the context changes frequently, it can trigger unecessary re-renders across the components subscribing to it.
 //Create Context
 export const DataContext = createContext();
 

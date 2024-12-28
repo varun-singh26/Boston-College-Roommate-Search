@@ -1,14 +1,17 @@
 import React, { useEffect, useState, useContext } from 'react';
 import { SearchContext } from '../../context/searchContext.jsx';
 import { DataContext } from "../../context/dataContext.jsx"
+import { FilteredPostingsContext } from '../../context/FilteredPostingsContext.jsx';
 import FilteredPosts from './FilteredPosts.jsx';
 
+//NOTE: if the context changes frequently, it can trigger unecessary re-renders across the components subscribing to it.
 const Posts = () => {
   const {formData, setFormData, listingLocation, setListingLocation} = useContext(SearchContext);
   const {data, setData, loading, setLoading} = useContext(DataContext);
-  console.log("data: ", data);
-  const [filteredPostings, setFilteredPostings] = useState([]); //Change? (don't want filtered listings tied to Posts.jsx)
-  
+  const context = useContext(FilteredPostingsContext);
+  console.log(context);
+  const {filteredPostings, setFilteredPostings} = useContext(FilteredPostingsContext);
+  console.log("data: ", data);  
   console.log("filteredPostings: ", filteredPostings);
 
 

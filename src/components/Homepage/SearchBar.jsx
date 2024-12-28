@@ -4,6 +4,7 @@ import OnCampusSearchForm from './onCampusSearchForm';
 import OffCampusSearchForm from './offCampusSearchForm';
 import css from "../../styles/SearchBar.module.css";
 
+//NOTE: if the context changes frequently, it can trigger unecessary re-renders across the components subscribing to it.
 const SearchBar = () => {
 
   //use SearchContext instead of local storage to confirm the most recent user data
