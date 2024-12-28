@@ -5,34 +5,38 @@ import OffCampusSearchForm from './offCampusSearchForm';
 import css from "../../styles/SearchBar.module.css";
 
 const SearchBar = () => {
-  /*const [listingLocation, setListingLocation] = useState('');
-  const [formData, setFormData] = useState({
-    "class-year": 0,
-    "housing-aim": 0,
-    "number-of-people-in-search-group": 0,
-    "preferred-dorm": ""
-  });*/
 
+  //use SearchContext instead of local storage to confirm the most recent user data
+  //When SearchBar renders, the values of the SearchContext are loaded into the following variables (which are initially empty/0)
   const {formData, setFormData, listingLocation, setListingLocation} = useContext(SearchContext)
+  console.log("If listingLocation changes, listingLocation must match the value from the event that triggered SearchBar to rerender");
+  console.log("If a field in formData changes, the value of this field must match the value from the event that triggered SearchBar to rerender");
+  console.log("formData: ", formData);
+  console.log("setFormData: ", setFormData);
+  console.log("listingLocation: ", listingLocation);
+  console.log("setListingLocation: ", setListingLocation);
+  const context = useContext(SearchContext);
+  console.log("context: ", context);
 
+  //If a change to listingLocation occurrs, SearchBar rerenders and the above code runs again (w the updated Context)
   const handleLocationChange = (e) => {
     const value = e.target.value;
-    setListingLocation(value); //update value
-    localStorage.setItem("listingLocation", value); // Save selection to localStorage
-    console.log("Listing Location:", value);
-    console.log("New value of listing location {state} object:", listingLocation);
+    console.log("value", value);
+    console.log(`Setting listingLocation with new value: ${value}`);
+    setListingLocation(value); //update listingLocation
   };
 
+  //If a change to formData occurrs, SearchBar rerenders and the print statements run again (w the updated Context)
   const handleFormChange = (e) => {
     const { id, value } = e.target;
-    const updatedValue = isNaN(value) ? value : Number(value); // Convert numbers
+    console.log(e.target);
+    const updatedValue = isNaN(value) ? value : Number(value); // Convert numerical responses to numbers
+    console.log("updatedValue:",updatedValue);
     setFormData((prevFormData) => ({
       ...prevFormData,
       [id]: updatedValue,
     }));
-    localStorage.setItem("form", JSON.stringify({ ...formData, [id]: updatedValue }));
     console.log("Form Data Updated:", { ...formData, [id]: updatedValue });
-    console.log("New value of form data {state} object:", formData);
   };
 
   return (

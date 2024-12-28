@@ -13,7 +13,8 @@ const SearchProvider = ({ children }) => {
 
     const [listingLocation, setListingLocation] = useState("");
 
-    //TODO: How does the below code work?
+    //Children are all components that have access to the [Search] context which includes the formData var, listingLocation var, and their respective setters.
+    //In our case, the children are all the components of our App, from top to bottom.
     return (
         <SearchContext.Provider value={{ formData, setFormData, listingLocation, setListingLocation}} >
             {children}

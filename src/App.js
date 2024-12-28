@@ -1,6 +1,5 @@
-import React, {createContext, useState} from "react";
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom"
-import logo from './logo.svg';
+import React from "react";
+import { BrowserRouter as Router, Routes, Route, useLocation } from "react-router-dom"
 import Navbar from './components/Navbar.jsx';
 import LandingSplash from "./components/Homepage/LandingSplash.jsx";
 import Posts from "./components/Posts/Posts.jsx"
@@ -8,12 +7,14 @@ import Footer from "./components/Footer.jsx";
 import css from './App.css';
 
 
-function App({data}) {
-  //TODO: Will This Layout Work?
+//TODO: Will This Layout Work?
+function RoutesWrapper({ data }) {
+  const location = useLocation();
+  const queryParams = new URLSearchParams(location.search);
+  const page = queryParams.get("page");
+
   return (
-    <Router>
-      <Navbar />
-      <Routes>
+    <Routes>
         <Route 
           path ="/" 
           element={
@@ -23,17 +24,26 @@ function App({data}) {
           } 
         />
         <Route
-          path ="/page=listings"
+          path ="/postings"
           element = {
             <>
-              <Posts data = {data} />
+              <Posts />
             </>
           }
         />
       </Routes>
+  );
+}
+
+function App({data}) {
+  return (
+    <Router>
+      <Navbar />
+      <RoutesWrapper data={data} />
       <Footer />
     </Router>
   );
 }
+
 
 export default App;

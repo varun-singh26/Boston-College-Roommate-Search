@@ -6,7 +6,7 @@ const Navbar = () => {
 
     const location = useLocation(); //How does this work?
     const isActive = (path) => location.pathname === path; /*A function */
-    
+
     //TODO: Why isn't isActive used within the Houding Calendar or Resources links?
     return (
         <header>
@@ -22,8 +22,8 @@ const Navbar = () => {
                         <p className={isActive("/") ? css.activeLink : ""}>
                             <a href ="/" className={css.homeLink}>Home</a>
                         </p>
-                        <p className={isActive("/page=listings") ? css.activeLink : ""}>
-                            <a href = "/page=listings" className={css.listingsLink}>Listings</a>
+                        <p className={isActive("/postings") ? css.activeLink : ""}>
+                            <a href = "/postings" className={css.postingsLink}>Postings</a>
                         </p>
 
                         <p>
@@ -48,7 +48,7 @@ const Navbar = () => {
                         </p>
                     </div>
                     <div className= {css.signInContainer}>
-                        <a href="?page=signin" className={css.signInLink}>Sign In</a>
+                        <a href="/signin" className={css.signInLink}>Sign In</a>
                         <img
                             src="https://cdn.glitch.global/c7d70598-61bb-4c55-ac66-58662df41931/Profile%20Icon.png?v=1732691728436"
                             alt="Profile Icon"

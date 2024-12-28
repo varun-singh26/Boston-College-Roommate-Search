@@ -1,28 +1,33 @@
 import React, { useContext, useState } from 'react';
+import { useNavigate } from "react-router-dom";
 import { SearchContext } from '../../context/searchContext';
 import css from "../../styles/SearchForm.module.css";
 
-const handleSubmit = (event) => {
-  event.preventDefault();
 
+//OnChange (handleFormChange) is passed as props by parent (SearchBar.jsx)
+const OnCampusSearchForm = ({ onChange }) => {
+
+  //Call all hooks at the top level of the component
   //use SearchContext instead of local storage to confirm the most recent user data
   const {formData, setFormData, listingLocation, setListingLocation} = useContext(SearchContext)
+  const navigate = useNavigate();
 
-  /*const formData = JSON.parse(localStorage.getItem("form"));
-  const listingLocation = localStorage.getItem("listingLocation");*/
+  const handleSubmit = (event) => {
+    event.preventDefault();
+  
+    console.log("Current Listing Location (state variable):", listingLocation);
+    console.log('Current Form data (state variable):', formData);
+  
+    //Append to the current path
+    navigate("/postings");
 
-  console.log("Current Listing Location (state variable):", listingLocation);
-  console.log('Current Form data (state variable):', formData);
+    // Navigate and redirect to the postings page
+    /*const currentURL = new URL(window.location.href);
+    currentURL.searchParams.set("page", "postings");
+    window.location.href = currentURL.toString();*/
+  
+  };
 
-  // Navigate and redirect to the listings page
-  const currentURL = new URL(window.location.href);
-  currentURL.searchParams.set("page", "listings");
-  window.location.href = currentURL.toString();
-
-};
-
-//handleFormChange is passed as props by parent (SearchBar.jsx)
-const OnCampusSearchForm = ({ handleFormChange }) => {
   return (
     <form 
       method="post" 
@@ -37,7 +42,7 @@ const OnCampusSearchForm = ({ handleFormChange }) => {
             name="Class Year" 
             id="class-year" 
             className={css.select}
-            onChange={handleFormChange} // Pass changes to parent
+            onChange={onChange} // Pass change event to handleFormChange (in SearchBar.jsx)
           >
             <optgroup className="options-group">
               <option value="">Select One</option>
@@ -55,7 +60,7 @@ const OnCampusSearchForm = ({ handleFormChange }) => {
             name="Housing Aim" 
             id="housing-aim" 
             className={css.select}
-            onChange={handleFormChange} // Pass changes to parent
+            onChange={onChange} 
           >
             <optgroup className="options-group">
               <option value="">Select One</option>
@@ -79,7 +84,7 @@ const OnCampusSearchForm = ({ handleFormChange }) => {
             name="Number of people in your group"
             id="number-of-people-in-search-group"
             className={css.select}
-            onChange={handleFormChange} // Pass changes to parent
+            onChange={onChange} 
           >
             <optgroup className="options-group">
               <option value="">Select One</option>
@@ -101,7 +106,7 @@ const OnCampusSearchForm = ({ handleFormChange }) => {
             name="Preferred Dorm"
             id="preferred-dorm" 
             className={css.select}
-            onChange={handleFormChange} // Pass changes to parent
+            onChange={onChange} 
           >
             <optgroup className="options-group">
               <option value="">Select One</option>
