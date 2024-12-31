@@ -12,6 +12,20 @@ const OnCampusSearchForm = ({ onChange }) => {
   const {formData, setFormData, listingLocation, setListingLocation} = useContext(SearchContext)
   const navigate = useNavigate();
 
+  // State to track size of "search party"
+  // Used to dynamically render available options for Housing-Aim field
+  const [numPeople, setNumPeople] = useState("");
+
+  //Handle number of people change
+  const handleNumPeopleChange = (e) => {
+    const value = e.target.value;
+    setNumPeople(value);
+    onChange(e); // Pass change event to handleFormChange (in SearchBar.jsx)
+  };
+
+  //Options for Housing Aim based on the number of people 
+  const housingOptions = [2, 3, 4, 5, 6, 7, 8, 9].filter((num) => num > Number(numPeople));
+
   const handleSubmit = (event) => {
     event.preventDefault();
   
@@ -36,45 +50,6 @@ const OnCampusSearchForm = ({ onChange }) => {
       onSubmit={handleSubmit}
     >
       <fieldset className={css.container}>
-        <div className={css.fieldContainer}>
-          <label className="label" htmlFor="class-year">Class Year:</label>
-          <select
-            name="Class Year" 
-            id="class-year" 
-            className={css.select}
-            onChange={onChange} // Pass change event to handleFormChange (in SearchBar.jsx)
-          >
-            <optgroup className="options-group">
-              <option value="">Select One</option>
-              <option value="2025">2025</option>
-              <option value="2026">2026</option>
-              <option value="2027">2027</option>
-              <option value="2028">2028</option>
-            </optgroup>
-          </select>
-        </div>
-
-        <div className={css.fieldContainer}>
-          <label className="label" htmlFor="housing-aim">Housing Aim:</label>
-          <select
-            name="Housing Aim" 
-            id="housing-aim" 
-            className={css.select}
-            onChange={onChange} 
-          >
-            <optgroup className="options-group">
-              <option value="">Select One</option>
-              <option value="2">2-man housing</option>
-              <option value="3">3-man housing</option>
-              <option value="4">4-man housing</option>
-              <option value="5">5-man housing</option>
-              <option value="6">6-man housing</option>
-              <option value="7">7-man housing</option>
-              <option value="8">8-man housing</option>
-              <option value="9">9-man housing</option>
-            </optgroup>
-          </select>
-        </div>
 
         <div className={css.fieldContainer}>
           <label className="label" htmlFor="number-of-people-in-search-group">
@@ -84,32 +59,55 @@ const OnCampusSearchForm = ({ onChange }) => {
             name="Number of people in your group"
             id="number-of-people-in-search-group"
             className={css.select}
-            onChange={onChange} 
+            value = {numPeople}
+            onChange={handleNumPeopleChange}
           >
+            <option value ="" disabled hidden>
+              Select One
+            </option>
             <optgroup className="options-group">
-              <option value="">Select One</option>
-              <option value="1">1</option>
-              <option value="2">2</option>
-              <option value="3">3</option>
-              <option value="4">4</option>
-              <option value="5">5</option>
-              <option value="6">6</option>
-              <option value="7">7</option>
-              <option value="8">8</option>
+              {[1, 2, 3, 4, 5, 6, 7, 8].map((num) => (
+                <option key={num} value={num}>
+                  {num}
+                </option>
+              ))}
             </optgroup>
           </select>
         </div>
-
+        <div className={css.fieldContainer}>
+          <label className="label" htmlFor="housing-aim">Housing Aim:</label>
+          <select
+            name="Housing Aim" 
+            id="housing-aim" 
+            className={css.select}
+            onChange={onChange}
+            disabled={!numPeople} // Disable if no "Number of people" is selected
+          >
+            <option value ="" disabled hidden>
+              Select One
+            </option>
+            <optgroup className="options-group">
+              {housingOptions.map((num) => (
+                <option key={num} value={num}>
+                  {num}-man housing
+                </option>
+              ))}
+            </optgroup>
+          </select>
+        </div>
         <div className={css.fieldContainer}>
           <label className="label" htmlFor="preferred-dorm">Preferred Dorm:</label>
           <select 
             name="Preferred Dorm"
             id="preferred-dorm" 
             className={css.select}
-            onChange={onChange} 
+            onChange={onChange}
+            disabled={!numPeople} // Disable if no "Number of people" is selected 
           >
+            <option value ="" disabled hidden>
+              Select One
+            </option>
             <optgroup className="options-group">
-              <option value="">Select One</option>
               <option value="Ninety St. Thomas More">Ninety St. Thomas More</option>
               <option value="Vanderslice Hall">Vanderslice Hall</option>
               <option value="Walsh Hall">Walsh Hall</option>

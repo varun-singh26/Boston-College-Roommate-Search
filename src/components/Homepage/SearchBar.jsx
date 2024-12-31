@@ -51,7 +51,7 @@ const SearchBar = () => {
           >
             <fieldset className={css.outerFieldContainer}>
               <div className={css.innerFieldContainer}>
-                <label className="label">Listing Location</label>
+                <label className="label">Where do you want to live?</label>
                 <select
                   name="Listing Location:"
                   placeholder="Enter Desired Location"
@@ -60,8 +60,10 @@ const SearchBar = () => {
                   value={listingLocation}
                   onChange={handleLocationChange}
                 >
+                  <option value ="" disabled hidden>
+                    Select One
+                  </option>
                   <optgroup className="options-group">
-                    <option value="">Select One</option>
                     <option value="oncampus">On Campus</option>
                     <option value="offcampus">Off Campus</option>
                   </optgroup>
