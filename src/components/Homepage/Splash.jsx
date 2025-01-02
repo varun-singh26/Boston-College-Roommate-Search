@@ -26,7 +26,7 @@ const Splash = () => {
   };
   
   return (
-    <div id="gassonHall" className= {css.container} aria-label="Image of Gasson Hall">
+    <div className= {css.container} aria-label="Image of Gasson Hall">
       <div className={css.contentWrapper}>
         <h1 className={css.mainTitle}>Find Your Housing Group</h1>
         <p className={css.subtitle}>Search listings tailored to your preferences</p>

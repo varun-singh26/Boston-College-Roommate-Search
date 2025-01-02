@@ -1,6 +1,6 @@
 import React from 'react';
 import Splash from './Splash.jsx';
-import SearchBar from './SearchBar.jsx'; 
+import PostingForm from './PostingForm.jsx';
 import css from "../../styles/LandingSplash.module.css"
 
 const LandingSplash = () => {
@@ -9,6 +9,7 @@ const LandingSplash = () => {
       <div className="search-bar">
         <main className={css.container}>
           <Splash />
+          <PostingForm />
         </main>
       </div>
     </div>
