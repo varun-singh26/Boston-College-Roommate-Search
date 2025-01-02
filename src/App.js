@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Routes, Route, useLocation } from "react-route
 import Navbar from './components/Navbar.jsx';
 import LandingSplash from "./components/Homepage/LandingSplash.jsx";
 import Posts from "./components/Posts/Posts.jsx"
+import WelcomeToPostingsPage from "./components/Posts/WelcomeToPostingsPage/WelcomeToPostingsPage.jsx";
 import Footer from "./components/Footer.jsx";
 import css from './App.css';
 
@@ -43,6 +44,14 @@ function RoutesWrapper({ data }) {
           element = {
             <>
               <Posts />
+            </>
+          }
+        />
+        <Route
+          path ="/welcomeToPostings"
+          element = {
+            <>
+              <WelcomeToPostingsPage />
             </>
           }
         />

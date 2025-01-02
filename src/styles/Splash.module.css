@@ -1,4 +1,4 @@
-.container {
+/*.container {
     display: flex;
     flex-direction: column;
     flex-basis: 50%;
@@ -65,4 +65,82 @@ button.offCampus {
 
 .img {
     padding-top: 4%;
+}
+*/
+
+/* ChatGPT Styling: */
+
+.container {
+  flex-direction: column;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background: url('https://cdn.glitch.global/da9cfe19-f6cb-435e-ae30-d04e66913eee/gassonHall.jpg?v=1731984555342') no-repeat center center;
+  background-size: cover;
+  position: relative;
+}
+
+.contentWrapper {
+  text-align: center;
+  color: white;
+  background: rgba(0, 0, 0, 0.6);
+  padding: 2rem;
+  border-radius: 10px;
+}
+
+.mainTitle {
+  font-size: 2.5rem;
+  font-weight: bold;
+  margin-bottom: 1rem;
+}
+
+.subtitle {
+  font-size: 1.2rem;
+  margin-bottom: 2rem;
+}
+
+.buttonsContainer {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  margin-bottom: 2rem;
+}
+
+.onCampusButton,
+.offCampusButton {
+  padding: 0.8rem 1.5rem;
+  font-size: 1rem;
+  font-weight: bold;
+  color: white;
+  background: #501315;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.onCampusButton:hover,
+.offCampusButton:hover {
+  background: #cd9f58;
+}
+  
+
+.overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background: rgba(0, 0, 0, 0.4); /* Dark overlay for contrast */
+}
+  
+.searchBarWrapper {
+  width: 100%;
+  max-width: 600px;
+  margin: 0 auto;
 }

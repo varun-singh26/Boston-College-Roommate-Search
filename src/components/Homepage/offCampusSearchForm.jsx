@@ -4,30 +4,53 @@ import { SearchContext } from '../../context/searchContext';
 import css from "../../styles/SearchForm.module.css"
 
 //handleFormChange is passed as props by parent (SearchBar.jsx)
-const OffCampusSearchForm = ({ onChange }) => {
+const OffCampusSearchForm = () => {
 
   //Call all hooks at the top level of the component
   //use SearchContext instead of local storage to confirm the most recent user data
+  //When SearchBar renders, the values of the SearchContext are loaded into the following variables (which are initially empty/0)
   const {formData, setFormData, listingLocation, setListingLocation} = useContext(SearchContext)
+  //PRINT STATEMENTS FOR DEBUGGING
+  console.log("If a field in formData changes, the value of this field must match the value from the event that triggered SearchBar to rerender");
+  console.log("formData: ", formData);
+  console.log("setFormData: ", setFormData);
+  const context = useContext(SearchContext);
+  console.log("context: ", context);
+
+
+   //used to navigate to a new path
   const navigate = useNavigate();
 
   // State to track size of "search party"
   // Used to dynamically render available options for Housing-Aim field
   const [numPeople, setNumPeople] = useState("");
   
+   //If a change to formData occurrs, onCampusSearchForm rerenders and the print statements run again (w the updated Context)
+   const handleFormChange = (e) => {
+    const { id, value } = e.target;
+    console.log(e.target);
+    const updatedValue = isNaN(value) ? value : Number(value); // Convert numerical responses to numbers
+    console.log("updatedValue:",updatedValue);
+    setFormData((prevFormData) => ({
+      ...prevFormData,
+      [id]: updatedValue,
+    }));
+    console.log("Form Data Updated:", { ...formData, [id]: updatedValue });
+  };
+
   //Handle number of people change
   const handleNumPeopleChange = (e) => {
     const value = e.target.value;
     setNumPeople(value);
-    onChange(e); // Pass change event to handleFormChange (in SearchBar.jsx)
+    handleFormChange(e); // Pass change event to handleFormChange
   };
 
   //Options for Housing Aim based on the number of people 
   const housingOptions = [2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12].filter((num) => num > Number(numPeople));
 
-  const handleSubmit = (event) => {
+  const handleSearch = (event) => {
     event.preventDefault();
-  
+    
     console.log("Current Listing Location (state variable):", listingLocation);
     console.log('Current Form data (state variable):', formData);
   
@@ -44,14 +67,14 @@ const OffCampusSearchForm = ({ onChange }) => {
   return (
     <form
       method="post"
-      action="http://www.randyconnolly.com/tests/process.php"
-      className="search"
-      onSubmit={handleSubmit}
+      action=""
+      className={css.form}
+      onSubmit={handleSearch}
     >
-      <fieldset className={css.container}>
+      <fieldset>
 
-        <div className={css.fieldContainer}>
-          <label className="label" htmlFor="number-of-people-in-search-group">
+        <div className={css.fieldGroup}>
+          <label className={css.label} htmlFor="number-of-people-in-search-group">
             Number of people in your group you are seeking housing with:
           </label>
           <select
@@ -64,43 +87,34 @@ const OffCampusSearchForm = ({ onChange }) => {
             <option value ="" disabled hidden>
               Select One
             </option>
-            <optgroup className="options-group">
-              {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11].map((num) => (
-                <option key={num} value={num}>
-                  {num}
-                </option>
-              ))}
-            </optgroup>
+            {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11].map((size) => (
+              <option key={size} value={size}>
+                {size}
+              </option>
+            ))}
           </select>
         </div>
-        <div className={css.fieldContainer}>
-          <label className="label" htmlFor="housing-aim">Housing Aim:</label>
+        <div className={css.fieldGroup}>
+          <label className={css.label} htmlFor="housing-aim">Housing Aim:</label>
           <select 
             name="Housing Aim" 
             id="housing-aim" 
             className= {css.select}
-            onChange={onChange}
+            onChange={handleFormChange}
             disabled={!numPeople} // Disable if no "Number of people" is selected
           >
             <option value ="" disabled hidden>
               Select One
             </option>
-            <optgroup className="options-group">
-              {housingOptions.map((num) => (
-                <option key={num} value={num}>
-                  {num}-man housing
-                </option>
-              ))}
-            </optgroup>
+            {housingOptions.map((num) => (
+              <option key={num} value={num}>
+                {num}-man housing
+              </option>
+            ))}
           </select>
         </div>
         <button type="submit" className={css.searchButton}>
-          <img
-            src="https://cdn.glitch.global/da9cfe19-f6cb-435e-ae30-d04e66913eee/MagnifyingGlass.png?v=1732079795736"
-            alt="magnifying glass"
-            className={css.searchButtonImage}
-          />
-          <p className={css.searchButtonText}>Search</p>
+          Search
         </button>
       </fieldset>
     </form>

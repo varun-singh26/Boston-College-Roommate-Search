@@ -9,7 +9,6 @@ const LandingSplash = () => {
       <div className="search-bar">
         <main className={css.container}>
           <Splash />
-          <SearchBar />
         </main>
       </div>
     </div>
