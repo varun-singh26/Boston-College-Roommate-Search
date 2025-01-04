@@ -168,7 +168,7 @@ const PostingForm = () => {
                 <input
                   type="text"
                   value={resident.name}
-                  placeholder="Resident Name"
+                  placeholder="First and Last Name"
                   aria-label= {`Name of Resident ${index + 1}`}
                   onChange={(e) => handleResidentChange(index, 'name', e.target.value)}
                 />
