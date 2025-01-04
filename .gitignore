@@ -13,6 +13,8 @@
 
 # misc
 .DS_Store
+##Will prevent .env file (with sensitive data) from being committed to Github repo
+.env
 .env.local
 .env.development.local
 .env.test.local

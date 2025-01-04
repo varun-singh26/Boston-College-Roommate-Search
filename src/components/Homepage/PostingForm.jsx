@@ -1,10 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import css from "../../styles/Homepage/Form.module.css"
+import {db} from "../../config/firestore";
+import {collection, addDoc} from "firebase/firestore";
 
 const PostingForm = () => {
-  const [location, setLocation] = useState('off-campus');
+  const debugMode = true;
+  const [location, setLocation] = useState('offcampus');
   const [residents, setResidents] = useState([
-    { name: '', academicYear: 'freshman' },
+    { name: '', academicYear: 'freshman', instagramHandle: '', email: '' },
   ]);
   const [formData, setFormData] = useState({
     numSeek: '',
@@ -14,11 +17,22 @@ const PostingForm = () => {
     utilities: 'included',
     startDate: '',
     endDate: '',
+    adminPhoneNumber: '',
+    adminInstagramHandle: '',
+    adminEmail: ''
   });
 
+  //print statements for debugging (when in debug mode)
+  if (debugMode) {
+    console.log("formdata: ", formData);
+    console.log("residents: ", residents);
+    console.log("location (offcampus is default): ", location);
+  }
+
   // Handle location toggle effect
+  //clears unecessary fields of formData when location changes
   useEffect(() => {
-    if (location === 'off-campus') {
+    if (location === 'offcampus') {
       setFormData((prev) => ({ ...prev, dorm: '' }));
     } else {
       setFormData((prev) => ({ ...prev, address: '', rent: '', utilities: '', startDate: '', endDate: '' }));
@@ -44,11 +58,91 @@ const PostingForm = () => {
     setResidents(updatedResidents);
   };
 
-  // Handle form submission
-  const handleSubmit = (e) => {
+  //Perform form validation
+  const validateForm = () => {
+    const errors = [];
+
+    //Check to ensure posting as at least one current member (which would be the group admin). If not, form is invalid
+    if (residents.length == 0 || residents[0].name == "") { //will short circuit
+        errors.push("Please add at least one current member to your posting");
+    }
+
+    if (!(formData.numSeek > 0)) {
+        errors.push("Please specify the number of roomates you're looking to attract to your posting (must be at least one)");
+    }
+
+    if (location == "offcampus" && (!formData.address || !formData.rent || !formData.startDate || !formData.endDate)) {
+        errors.push("Please fill all off-campus fields!");
+    }
+
+    if (location == "oncampus" && !formData.dorm) {
+        errors.push("Please select a dorm!");
+    }
+
+    if (!formData.adminEmail || !formData.adminPhoneNumber) {
+        errors.push("Please provide either admin phone number or email (or both)");
+    }
+
+    if (errors.length > 0) {
+        alert(errors.join("\n"));
+        return false
+    }
+
+    return true;
+  };
+
+  // Handle form submission to cloud firestore:
+  const handleSubmit = async(e) => {
     e.preventDefault();
     console.log({ location, residents, formData });
-    // Integrate with backend or state management here
+
+    //If form isn't valid, don't submit to cloud firestore
+    if (!validateForm()) {
+        return;
+    }
+
+    // If form is valid, continue execution and add posting to postings collection in cloud firestore
+    const period = {
+        start: {
+            month: new Date(formData.startDate).getMonth() + 1, //Months are zero-indexed
+            day: new Date(formData.startDate).getDate(),
+            year: new Date(formData.startDate).getFullYear()
+        },
+        end: {
+            month: new Date(formData.endDate).getMonth() + 1,
+            day: new Date(formData.endDate).getDate(),
+            year: new Date(formData.endDate).getFullYear()
+        }
+    };
+    const members = residents.map((resident) => ({
+        name: resident.name,
+        academicYear: resident.academicYear,
+        instagramHandle: resident.instagramHandle,
+        email: resident.email
+    }));
+    const adminContactInfo = {
+        email: formData.adminEmail,
+        instagramHandle: formData.adminInstagramHandle,
+        phoneNumber: formData.adminPhoneNumber
+    }
+    try {
+        const docRef = await addDoc(collection(db, "postings"), {
+            address: formData.address || "",
+            adminContact: adminContactInfo,
+            aimInteger: residents.length + parseInt(formData.numSeek,10),
+            curGroupSize: residents.length,
+            curNumSeek: parseInt(formData.numSeek, 10),
+            dorm: location == "oncampus" ? formData.dorm : null,
+            listingLocation: location,
+            members: members,
+            monthlyRent: formData.rent || 0,
+            rentPeriod: location == "offcampus" ? period : null,
+        });
+        console.log("Document written with ID: ", docRef.id);
+    } catch (error) {
+        console.error("Error adding document: ", error);
+        alert("Failed to submit the posting. Please try again.");
+    }
   };
 
   return (
@@ -61,8 +155,8 @@ const PostingForm = () => {
         <div className={css.formGroup}>
           <label htmlFor="location">Location:</label>
           <select id="location" value={location} onChange={(e) => setLocation(e.target.value)}>
-            <option value="off-campus">Off-Campus</option>
-            <option value="on-campus">On-Campus</option>
+            <option value="offcampus">Off-Campus</option>
+            <option value="oncampus">On-Campus</option>
           </select>
         </div>
 
@@ -75,10 +169,12 @@ const PostingForm = () => {
                   type="text"
                   value={resident.name}
                   placeholder="Resident Name"
+                  aria-label= {`Name of Resident ${index + 1}`}
                   onChange={(e) => handleResidentChange(index, 'name', e.target.value)}
                 />
                 <select
                   value={resident.academicYear}
+                  aria-label= {`Academic year of Resident ${index + 1}`}
                   onChange={(e) => handleResidentChange(index, 'academicYear', e.target.value)}
                 >
                   <option value="freshman">Freshman</option>
@@ -86,11 +182,49 @@ const PostingForm = () => {
                   <option value="junior">Junior</option>
                   <option value="senior">Senior</option>
                 </select>
-                <button type="button" onClick={() => removeResident(index)} className={css.addButton}>Remove</button>
+                <input
+                  type="text"
+                  value={resident.instagramHandle}
+                  placeholder="Instagram Handle"
+                  aria-label= {`Instagram Handle of Resident ${index + 1}`}
+                  onChange={(e) => handleResidentChange(index, "instagramHandle", e.target.value)}
+                />
+                <input
+                  type="text"
+                  value={resident.email}
+                  placeholder="Email"
+                  aria-label= {`Email of Resident ${index + 1}`}
+                  onChange={(e) => handleResidentChange(index, "email", e.target.value)}
+                />
+                <button type="button" aria-label= {`Remove resident ${index + 1}`} onClick={() => removeResident(index)} className={css.addButton}>Remove</button>
               </div>
             ))}
           </div>
           <button type="button" onClick={addResident} className={css.addButton}>Add More</button>
+          <label htmlFor="admin-phone-number">Group Administrator Phone Number:</label>
+          <input
+            type="text"
+            id="admin-phone-number"
+            value={formData.adminPhoneNumber}
+            onChange={(e) => setFormData({...formData, adminPhoneNumber: e.target.value})}
+            placeholder="e.g, 123-456-7890"
+          />
+          <label htmlFor="admin-instagram-handle">Group Administrator Instagram Handle:</label>
+          <input
+            type="text"
+            id="admin-instagram-handle"
+            value={formData.adminInstagramHandle}
+            onChange={(e) => setFormData({...formData, adminInstagramHandle: e.target.value})}
+            placeholder="enter group administrator's Instagram profile username"
+          />
+          <label htmlFor="admin-email">Group Administrator Email:</label>
+          <input
+            type="text"
+            id="admin-email"
+            value={formData.adminEmail}
+            onChange={(e) => setFormData({...formData, adminEmail: e.target.value})}
+            placeholder="e.g, example@bc.edu"
+          />
         </div>
 
         <div className={css.formGroup}>
@@ -104,7 +238,7 @@ const PostingForm = () => {
           />
         </div>
 
-        {location === 'off-campus' ? (
+        {location === 'offcampus' ? (
           <>
             <div className={css.formGroup}>
               <label htmlFor="address">Address:</label>
@@ -182,6 +316,7 @@ const PostingForm = () => {
           </div>
         )}
 
+        {/*Need to integrate image uploades using Firebase Storage */}
         <div className={css.formGroup}>
           <label htmlFor="upload-images">Upload Images:</label>
           <input type="file" id="upload-images" multiple />
