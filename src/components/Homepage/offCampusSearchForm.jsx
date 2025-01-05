@@ -10,6 +10,13 @@ const OffCampusSearchForm = () => {
   //use SearchContext instead of local storage to confirm the most recent user data
   //When SearchBar renders, the values of the SearchContext are loaded into the following variables (which are initially empty/0)
   const {formData, setFormData, listingLocation, setListingLocation} = useContext(SearchContext)
+  
+  // State to track size of "search party"
+  // Used to dynamically render available options for Housing-Aim field
+  const [numPeople, setNumPeople] = useState("");
+  //State variables for the values of the other form fields
+  const [housingAim, setHousingAim] = useState("");
+  
   //PRINT STATEMENTS FOR DEBUGGING
   console.log("If a field in formData changes, the value of this field must match the value from the event that triggered SearchBar to rerender");
   console.log("formData: ", formData);
@@ -20,10 +27,6 @@ const OffCampusSearchForm = () => {
 
    //used to navigate to a new path
   const navigate = useNavigate();
-
-  // State to track size of "search party"
-  // Used to dynamically render available options for Housing-Aim field
-  const [numPeople, setNumPeople] = useState("");
   
    //If a change to formData occurrs, onCampusSearchForm rerenders and the print statements run again (w the updated Context)
    const handleFormChange = (e) => {
@@ -36,6 +39,13 @@ const OffCampusSearchForm = () => {
       [id]: updatedValue,
     }));
     console.log("Form Data Updated:", { ...formData, [id]: updatedValue });
+  };
+
+  //Handle number of people change
+  const handleHousingAimChange = (e) => {
+    const value = e.target.value;
+    setHousingAim(value);
+    handleFormChange(e); // Pass change event to handleFormChange
   };
 
   //Handle number of people change
@@ -100,7 +110,8 @@ const OffCampusSearchForm = () => {
             name="Housing Aim" 
             id="housing-aim" 
             className= {css.select}
-            onChange={handleFormChange}
+            value={housingAim}
+            onChange={handleHousingAimChange}
             disabled={!numPeople} // Disable if no "Number of people" is selected
           >
             <option value ="" disabled hidden>
