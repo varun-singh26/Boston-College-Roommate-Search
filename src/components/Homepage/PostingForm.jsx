@@ -9,7 +9,7 @@ const PostingForm = () => {
   const [residents, setResidents] = useState([
     { name: '', academicYear: 'freshman', instagramHandle: '', email: '' },
   ]);
-  const [formData, setFormData] = useState({
+  const [postingFormData, setPostingFormData] = useState({
     numSeek: '',
     dorm: '',
     address: '',
@@ -24,7 +24,7 @@ const PostingForm = () => {
 
   //print statements for debugging (when in debug mode)
   if (debugMode) {
-    console.log("formdata: ", formData);
+    console.log("posting formdata: ", postingFormData);
     console.log("residents: ", residents);
     console.log("location (offcampus is default): ", location);
   }
@@ -33,9 +33,9 @@ const PostingForm = () => {
   //clears unecessary fields of formData when location changes
   useEffect(() => {
     if (location === 'offcampus') {
-      setFormData((prev) => ({ ...prev, dorm: '' }));
+      setPostingFormData((prev) => ({ ...prev, dorm: '' }));
     } else {
-      setFormData((prev) => ({ ...prev, address: '', rent: '', utilities: '', startDate: '', endDate: '' }));
+      setPostingFormData((prev) => ({ ...prev, address: '', rent: '', utilities: '', startDate: '', endDate: '' }));
     }
   }, [location]);
 
@@ -67,19 +67,19 @@ const PostingForm = () => {
         errors.push("Please add at least one current member to your posting");
     }
 
-    if (!(formData.numSeek > 0)) {
+    if (!(postingFormData.numSeek > 0)) {
         errors.push("Please specify the number of roomates you're looking to attract to your posting (must be at least one)");
     }
 
-    if (location == "offcampus" && (!formData.address || !formData.rent || !formData.startDate || !formData.endDate)) {
+    if (location == "offcampus" && (!postingFormData.address || !postingFormData.rent || !postingFormData.startDate || !postingFormData.endDate)) {
         errors.push("Please fill all off-campus fields!");
     }
 
-    if (location == "oncampus" && !formData.dorm) {
+    if (location == "oncampus" && !postingFormData.dorm) {
         errors.push("Please select a dorm!");
     }
 
-    if (!formData.adminEmail || !formData.adminPhoneNumber) {
+    if (!postingFormData.adminEmail || !postingFormData.adminPhoneNumber) {
         errors.push("Please provide either admin phone number or email (or both)");
     }
 
@@ -94,7 +94,7 @@ const PostingForm = () => {
   // Handle form submission to cloud firestore:
   const handleSubmit = async(e) => {
     e.preventDefault();
-    console.log({ location, residents, formData });
+    console.log({ location, residents, postingFormData });
 
     //If form isn't valid, don't submit to cloud firestore
     if (!validateForm()) {
@@ -104,14 +104,14 @@ const PostingForm = () => {
     // If form is valid, continue execution and add posting to postings collection in cloud firestore
     const period = {
         start: {
-            month: new Date(formData.startDate).getMonth() + 1, //Months are zero-indexed
-            day: new Date(formData.startDate).getDate(),
-            year: new Date(formData.startDate).getFullYear()
+            month: new Date(postingFormData.startDate).getMonth() + 1, //Months are zero-indexed
+            day: new Date(postingFormData.startDate).getDate(),
+            year: new Date(postingFormData.startDate).getFullYear()
         },
         end: {
-            month: new Date(formData.endDate).getMonth() + 1,
-            day: new Date(formData.endDate).getDate(),
-            year: new Date(formData.endDate).getFullYear()
+            month: new Date(postingFormData.endDate).getMonth() + 1,
+            day: new Date(postingFormData.endDate).getDate(),
+            year: new Date(postingFormData.endDate).getFullYear()
         }
     };
     const members = residents.map((resident) => ({
@@ -121,21 +121,21 @@ const PostingForm = () => {
         email: resident.email
     }));
     const adminContactInfo = {
-        email: formData.adminEmail,
-        instagramHandle: formData.adminInstagramHandle,
-        phoneNumber: formData.adminPhoneNumber
+        email: postingFormData.adminEmail,
+        instagramHandle: postingFormData.adminInstagramHandle,
+        phoneNumber: postingFormData.adminPhoneNumber
     }
     try {
         const docRef = await addDoc(collection(db, "postings"), {
-            address: formData.address || "",
+            address: postingFormData.address || "",
             adminContact: adminContactInfo,
-            aimInteger: residents.length + parseInt(formData.numSeek,10),
+            aimInteger: residents.length + parseInt(postingFormData.numSeek,10),
             curGroupSize: residents.length,
-            curNumSeek: parseInt(formData.numSeek, 10),
-            dorm: location == "oncampus" ? formData.dorm : null,
+            curNumSeek: parseInt(postingFormData.numSeek, 10),
+            dorm: location == "oncampus" ? postingFormData.dorm : null,
             listingLocation: location,
             members: members,
-            monthlyRent: formData.rent || 0,
+            monthlyRent: postingFormData.rent || 0,
             rentPeriod: location == "offcampus" ? period : null,
         });
         console.log("Document written with ID: ", docRef.id);
@@ -205,24 +205,24 @@ const PostingForm = () => {
           <input
             type="text"
             id="admin-phone-number"
-            value={formData.adminPhoneNumber}
-            onChange={(e) => setFormData({...formData, adminPhoneNumber: e.target.value})}
+            value={postingFormData.adminPhoneNumber}
+            onChange={(e) => setPostingFormData({...postingFormData, adminPhoneNumber: e.target.value})}
             placeholder="e.g, 123-456-7890"
           />
           <label htmlFor="admin-instagram-handle">Group Administrator Instagram Handle:</label>
           <input
             type="text"
             id="admin-instagram-handle"
-            value={formData.adminInstagramHandle}
-            onChange={(e) => setFormData({...formData, adminInstagramHandle: e.target.value})}
+            value={postingFormData.adminInstagramHandle}
+            onChange={(e) => setPostingFormData({...postingFormData, adminInstagramHandle: e.target.value})}
             placeholder="enter group administrator's Instagram profile username"
           />
           <label htmlFor="admin-email">Group Administrator Email:</label>
           <input
             type="text"
             id="admin-email"
-            value={formData.adminEmail}
-            onChange={(e) => setFormData({...formData, adminEmail: e.target.value})}
+            value={postingFormData.adminEmail}
+            onChange={(e) => setPostingFormData({...postingFormData, adminEmail: e.target.value})}
             placeholder="e.g, example@bc.edu"
           />
         </div>
@@ -232,8 +232,8 @@ const PostingForm = () => {
           <input
             type="number"
             id="looking-for"
-            value={formData.numSeek}
-            onChange={(e) => setFormData({ ...formData, numSeek: e.target.value })}
+            value={postingFormData.numSeek}
+            onChange={(e) => setPostingFormData({ ...postingFormData, numSeek: e.target.value })}
             placeholder="e.g., 8"
           />
         </div>
@@ -245,8 +245,8 @@ const PostingForm = () => {
               <input
                 type="text"
                 id="address"
-                value={formData.address}
-                onChange={(e) => setFormData({ ...formData, address: e.target.value })}
+                value={postingFormData.address}
+                onChange={(e) => setPostingFormData({ ...postingFormData, address: e.target.value })}
                 placeholder="e.g., 140 Commonwealth Ave, Chestnut Hill, MA 02467"
               />
             </div>
@@ -256,8 +256,8 @@ const PostingForm = () => {
               <input
                 type="number"
                 id="rent"
-                value={formData.rent}
-                onChange={(e) => setFormData({ ...formData, rent: e.target.value })}
+                value={postingFormData.rent}
+                onChange={(e) => setPostingFormData({ ...postingFormData, rent: e.target.value })}
                 placeholder="e.g., 1500"
               />
             </div>
@@ -266,8 +266,8 @@ const PostingForm = () => {
               <label htmlFor="utilities">Utilities:</label>
               <select
                 id="utilities"
-                value={formData.utilities}
-                onChange={(e) => setFormData({ ...formData, utilities: e.target.value })}
+                value={postingFormData.utilities}
+                onChange={(e) => setPostingFormData({ ...postingFormData, utilities: e.target.value })}
               >
                 <option value="included">Included</option>
                 <option value="not-included">Not Included</option>
@@ -279,16 +279,16 @@ const PostingForm = () => {
               <input
                 type="date"
                 id="start-date"
-                value={formData.startDate}
-                onChange={(e) => setFormData({ ...formData, startDate: e.target.value })}
+                value={postingFormData.startDate}
+                onChange={(e) => setPostingFormData({ ...postingFormData, startDate: e.target.value })}
               />
 
               <label htmlFor="end-date">End Date:</label>
               <input
                 type="date"
                 id="end-date"
-                value={formData.endDate}
-                onChange={(e) => setFormData({ ...formData, endDate: e.target.value })}
+                value={postingFormData.endDate}
+                onChange={(e) => setPostingFormData({ ...postingFormData, endDate: e.target.value })}
               />
             </div>
           </>
@@ -297,8 +297,8 @@ const PostingForm = () => {
             <label htmlFor="dorm">Preferred Dorm:</label>
             <select
               id="dorm"
-              value={formData.dorm}
-              onChange={(e) => setFormData({ ...formData, dorm: e.target.value })}
+              value={postingFormData.dorm}
+              onChange={(e) => setPostingFormData({ ...postingFormData, dorm: e.target.value })}
             >
               <option value="">Select One</option>
               <option value="Gabelli">Gabelli</option>

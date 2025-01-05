@@ -21,7 +21,7 @@ const Posts = () => {
   const location = useLocation();
 
   useEffect(() => {
-    //Fetch postings collection frome firestore whenever path changes
+    //Fetch postings collection from firestore whenever path changes
     const getPostings = async () => {
       try {
         const querySnapshot = await getDocs(collection(db, "postings")) //reference to the service and the path of the collection we want to access
