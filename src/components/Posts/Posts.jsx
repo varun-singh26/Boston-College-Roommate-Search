@@ -5,7 +5,7 @@ import { FilteredPostingsContext } from '../../context/FilteredPostingsContext.j
 import FilteredPosts from './FilteredPosts.jsx';
 import { db } from '../../config/firestore.jsx';
 import {collection, getDocs, doc} from "firebase/firestore";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 
 //NOTE: if the context changes frequently, it can trigger unecessary re-renders across the components subscribing to it.
 const Posts = () => {
@@ -78,17 +78,12 @@ const Posts = () => {
   }, [listingLocation, formData, postings]); //Dependency Array. useEffect runs anytime any object in this array changes (ie. if postings is updated, 
                                              //the filtering is done with the latest data)
 
-  /*return (
-    <div>
-      <FilteredPosts filteredListings={filteredListings} listingLocation={listingLocation} />
-    </div>
-  );*/
-
   return (
     <div>
-      PLACEHOLDER
+      <FilteredPosts filteredPostings={filteredPostings} listingLocation={listingLocation} />
     </div>
   );
+
 };
 
 export default Posts;

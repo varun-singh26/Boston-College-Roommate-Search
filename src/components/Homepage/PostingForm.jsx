@@ -301,17 +301,20 @@ const PostingForm = () => {
               onChange={(e) => setPostingFormData({ ...postingFormData, dorm: e.target.value })}
             >
               <option value="">Select One</option>
-              <option value="Gabelli">Gabelli</option>
-              <option value="Ignacio">Ignacio</option>
-              <option value="Modulars">Modulars</option>
-              <option value="Ninety St. Thomas More">Ninety St. Thomas More</option>
-              <option value="Reservoir">Reservoir</option>
-              <option value="Rubenstein">Rubenstein</option>
-              <option value="Stayer">Stayer</option>
-              <option value="Thomas More">Thomas More</option>
-              <option value="Vanderslice">Vanderslice</option>
-              <option value="Voute">Voute</option>
-              <option value="Walsh">Walsh</option>
+              <option value="Gabelli">Gabelli Hall</option>
+              <option value="Ignacio">Ignacio Hall</option>
+              <option value="Modulars">The Mods</option>
+              <option value="Ninety-St-Thomas-More">Ninety St. Thomas More Hall</option>
+              <option value="Reservoir">2000 Commonwealth Avenue</option>
+              <option value="Rubenstein">Rubenstein Hall</option>
+              <option value="Stayer">Stayer Hall</option>
+              <option value="Thomas-More">Thomas More Apartments</option>
+              <option value="Vanderslice">Vanderslice Hall</option>
+              <option value="Voute">Voute Hall</option>
+              <option value="Walsh">Walsh Hall</option>
+              <option value="66">66 Commonwealth Avenue</option> {/*Need images of 66*/}
+              <option value="Roncalli">Roncalli Hall</option> {/*Need images of Roncalli*/}
+              <option value="Welch">Welch Hall</option> {/*Need images of Welch*/}
             </select>
           </div>
         )}
