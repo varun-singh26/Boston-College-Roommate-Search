@@ -1,10 +1,12 @@
 import React from "react";
 import Top from "./TopPost";
 import BottomOnCampus from "./BottomOnCampus";
+import css from "./styles/Post.module.css"
 
 const OnCampusPost = ({post, onShowMoreClick}) => {
     return (
-        <div className="post">
+        <div className={css.post}>
+            <Top building={post.dorm} />
             <BottomOnCampus
                 members={post.members}
                 curNumSeek={post.curNumSeek}
@@ -13,7 +15,7 @@ const OnCampusPost = ({post, onShowMoreClick}) => {
                 id={post.id}
                 listingLocation={post.listingLocation}
                 onShowMoreClick={onShowMoreClick}
-            />  {/*Pass a ref to BottomOnCampus */}
+            /> 
         </div>
     );
 };

@@ -1,11 +1,12 @@
 import React from "react";
 import TopPost from "./TopPost";
 import BottomOffCampus from "./BottomOffCampus";
+import css from "./styles/Post.module.css"
 
 const OffCampusPost = ({ post, onShowMoreClick }) => {
     return (
-      <div className="post">
-        {/* <Top image={post.image} /> TODO: Add image field to documents*/}
+      <div className={css.post}>
+        {/* <Top img={post.img} />TODO: Add image field to documents. Using local data for oncampus buildings*/}
         <BottomOffCampus
           members={post.members}
           curNumSeek={post.curNumSeek}

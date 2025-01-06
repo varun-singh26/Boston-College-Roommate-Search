@@ -1,11 +1,14 @@
 import React from 'react';
+import css from "./styles/TopPost.module.css";
 
-const Top = ({ image }) => {
+const Top = ({ building }) => {
+    console.log(building);
+
   return (
     <div
-      className="top"
+      className={css.top}
       style={{
-        backgroundImage: `url('${image.src}')`,
+        backgroundImage: `url('/assets/oncampus/${building}.jpg')`,
         backgroundSize: 'cover',
         backgroundPosition: 'center',
       }}

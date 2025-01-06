@@ -1,22 +1,23 @@
 import React from 'react';
+import css from "./styles/BottomPost.module.css"
 
 const BottomOffCampus = ({ members, curNumSeek, address, totalGroupSize, id, listingLocation, onShowMoreClick }) => {
   return (
-    <div className="bottom">
-      <div className="looking">
-        <span>Looking for {curNumSeek}</span>
+    <div className={css.bottom}>
+      <div className={css.looking}>
+        <span>Looking for {curNumSeek} more</span>
       </div>
-      <div className="bottomIMGcontainer">
-        <div className="bottomIMG">
-          {/*<img className="location" src="src/assets/postings/location.png" alt="location" />*/}
+      <div className={css.bottomIMGcontainer}>
+        <div className={css.bottomIMG}>
+          <img className="location" src="/assets/postings/location.png" alt="location" />
           <span>{address}</span>
         </div>
-        <div className="bottomIMG">
-          <img className="bed" src="public/assets/postings/bed.png" alt="bed" />
+        <div className={css.bottomIMG}>
+          <img className="bed" src="/assets/postings/bed.png" alt="bed" />
           <span>{totalGroupSize} People Total</span>
         </div>
       </div>
-      <div className="showMore offCampus" id={id}>
+      <div className={`${css.showMore} offCampus`} id={id}>
         <a href="javascript:void(0)" className={`showMoreLink ${listingLocation}`} onClick={() => onShowMoreClick(id)}>
           <span>SHOW MORE...</span>
         </a>

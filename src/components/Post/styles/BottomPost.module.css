@@ -1,0 +1,60 @@
+.bottom {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    margin: 10px;
+}
+
+.looking {
+    display: flex;
+    justify-content: flex-end;
+    width: 100%; 
+}
+
+/* What does this style */
+.looking * {
+    margin-right: 30px;
+    margin-top: 10px;
+}
+
+.bottomIMGcontainer {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 20px;
+    margin-bottom: 15px;
+}
+
+.bottomIMG {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+.bottomIMG span {
+    font-size: 12px;
+    color: #D0D0D0;
+}
+
+.bottomIMG img {
+    width: 25px;
+    height: 20px;
+    margin-right: 5px;
+}
+
+.showMore {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: solid 2px;
+    border-radius: 7%;
+    padding: 5px;
+}
+
+.showMore:hover {
+    box-shadow: -3px -3px 9px #888888;;
+}
+
+.showMore a {
+    text-decoration: none;
+    color: black;
+}
