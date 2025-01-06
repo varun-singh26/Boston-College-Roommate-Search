@@ -18,7 +18,7 @@ const BottomOffCampus = ({ members, curNumSeek, address, totalGroupSize, id, lis
         </div>
       </div>
       <div className={`${css.showMore} offCampus`} id={id}>
-        <a href="javascript:void(0)" className={`showMoreLink ${listingLocation}`} onClick={() => onShowMoreClick(id)}>
+        <a className={`showMoreLink ${listingLocation}`} onClick={() => onShowMoreClick(id)}>
           <span>SHOW MORE...</span>
         </a>
       </div>

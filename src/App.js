@@ -4,6 +4,7 @@ import Navbar from './components/Navbar.jsx';
 import LandingSplash from "./components/Homepage/LandingSplash.jsx";
 import Posts from "./components/Posts/Posts.jsx"
 import WelcomeToPostingsPage from "./components/Posts/WelcomeToPostingsPage/WelcomeToPostingsPage.jsx";
+import PostDetailView from "./components/Post/PostDetailView.jsx";
 import Footer from "./components/Footer.jsx";
 import css from './App.css';
 
@@ -59,6 +60,7 @@ function RoutesWrapper({ data }) {
           path ="/detailView"
           element = {
             <>
+              <PostDetailView />
             </>
           }
         />
