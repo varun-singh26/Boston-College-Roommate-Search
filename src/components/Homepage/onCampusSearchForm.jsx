@@ -18,6 +18,8 @@ const OnCampusSearchForm = () => {
   //State variables for the values of the other form fields
   const [housingAim, setHousingAim] = useState("");
   const [preferredDorm, setPreferredDorm] = useState("");
+  const [gender, setGender] = useState("");
+  const [year, setYear] = useState("");
 
   //PRINT STATEMENTS FOR DEBUGGING
   console.log("If a field in formData changes, the value of this field must match the value from the event that triggered SearchBar to rerender");
@@ -84,17 +86,17 @@ const OnCampusSearchForm = () => {
   };
 
   return (
+    <div className={css.formContainer}>
     <form 
       method="post" 
       action="" 
       className={css.form}
       onSubmit={handleSearch}
     >
-      <fieldset>
 
         <div className={css.fieldGroup}>
           <label className={css.label} htmlFor="number-of-people-in-search-group">
-            Number of people in your group you are seeking housing with:
+            Current Group Size:
           </label>
           <select
             name="Number of people in your group"
@@ -121,7 +123,7 @@ const OnCampusSearchForm = () => {
             className={css.select}
             value = {housingAim}
             onChange={handleHousingAimChange}
-            disabled={!numPeople} // Disable if no "Number of people" is selected
+            //disabled={!numPeople} // Disable if no "Number of people" is selected
           >
             <option value ="" disabled hidden>
               Select One
@@ -141,7 +143,7 @@ const OnCampusSearchForm = () => {
             className={css.select}
             value = {preferredDorm}
             onChange={handlePreferredDormChange}
-            disabled={!numPeople} // Disable if no "Number of people" is selected 
+            //disabled={!numPeople} // Disable if no "Number of people" is selected 
           >
             <option value ="" disabled hidden>
               Select One
@@ -161,11 +163,40 @@ const OnCampusSearchForm = () => {
           </select>
         </div>
 
+        <div className={css.fieldGroup}>
+        <label className={css.label} htmlFor="gender">Gender:</label>
+            <select name="gender" 
+            id="gender" 
+            className={css.select} 
+            value={gender}>
+              <option value="" disabled hidden> Select One </option>
+              <option value="Male">Male</option>
+              <option value="Female">Female</option>
+              <option value="Other">Other</option>
+              </select>
+        </div>
+
+        <div className={css.fieldGroup}>
+        <label className={css.label} htmlFor="year">Class Year:</label>
+            <select name="year" 
+            id="year" 
+            className={css.select} 
+            value={year}>
+              <option value="" disabled hidden> Select One </option>
+              <option value="Male">Senior</option>
+              <option value="Female">Junior</option>
+              <option value="Other">Sophomore</option>
+              <option value="Other">Freshman</option>
+              </select>
+        </div>
+
         <button type="submit" className={css.searchButton}>
           Search
         </button>
-      </fieldset>
     </form>
+    <p className={css.formDetails}>Select your search filters above. Filters may be left blank.</p>
+    </div>
+
   );
 };
 

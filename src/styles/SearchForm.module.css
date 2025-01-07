@@ -1,13 +1,20 @@
-.form {
+.formContainer {
     display: flex;
-    flex-wrap: wrap;
-    justify-content: space-between;
-    gap: 1rem;
-    background-color: #f9f9f9;
+    flex-direction: column;
+    align-items: flex-start;
+    background: #f9f9f9;
     padding: 1rem;
-    border-radius: 10px;
+    border-radius: 0 10px 10px 10px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
+
+.form {
+    display: flex;
+    flex-direction: row; /* Ensures elements are arranged in a row */
+    gap: 4rem;
+    background-color: #f9f9f9;
+}
+
 
 
 
@@ -30,6 +37,7 @@
 
 .fieldGroup {
     display: flex;
+    white-space: nowrap;
     flex-direction: column;
     flex: 1 1 calc(20% - 1rem);
 }
@@ -47,5 +55,10 @@
     border: 1px solid #ccc;
     border-radius: 5px;
     outline: none;
+}
+
+.formDetails {
+    margin-top: 2rem;
+    color: #333;
 }
 

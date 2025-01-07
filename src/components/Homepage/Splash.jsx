@@ -1,50 +1,54 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext, useEffect } from 'react';
 import { SearchContext } from '../../context/searchContext.jsx';
 import SearchBar from "./SearchBar.jsx";
 import css from "../../styles/Splash.module.css";
-import {collection, getDocs} from "firebase/firestore";
+
 const Splash = () => {
+  // Search context variables
+  const { setListingLocation } = useContext(SearchContext);
 
-  //When SearchBar renders, the values of the SearchContext are loaded into the following variables (which are initially empty/0)
-  const {formData, setFormData, listingLocation, setListingLocation} = useContext(SearchContext)
+  // State to track which button is active
+  const [activeButton, setActiveButton] = React.useState("oncampus"); // Default to "oncampus"
 
-  console.log("If listingLocation changes, listingLocation must match the value from the event that triggered Splash.jsx to rerender");
-  console.log("listingLocation: ", listingLocation);
-  console.log("setListingLocation: ", setListingLocation);
-  const context = useContext(SearchContext);
-  console.log("context: ", context);
-
-
-  //Testing read functionality from cloud firestore
-
-
-
-  const handleOnCampusClick = (e) => {
+  // Handle button clicks
+  const handleOnCampusClick = () => {
     setListingLocation("oncampus");
-    console.log(`Setting listingLocation with new value: oncampus`);
+    setActiveButton("oncampus"); // Mark "oncampus" as active
   };
 
-  const handleOffCampusClick = (e) => {
+  const handleOffCampusClick = () => {
     setListingLocation("offcampus");
-    console.log(`Setting listingLocation with new value: offcampus`);
+    setActiveButton("offcampus"); // Mark "offcampus" as active
   };
-  
+
+  useEffect(() => {
+    // Set initial active button
+    setListingLocation("oncampus");
+  }, [setListingLocation]);
+
   return (
-    <div className= {css.container} aria-label="Image of Gasson Hall">
+    <div className={css.container} aria-label="Image of Gasson Hall">
       <div className={css.contentWrapper}>
-        <h1 className={css.mainTitle}>Find Your Housing Group</h1>
-        <p className={css.subtitle}>Search listings tailored to your preferences</p>
         <div className={css.buttonsContainer}>
-          <button onClick={handleOnCampusClick} className={css.onCampusButton}>
+          {/* On-Campus Button */}
+          <button
+            onClick={handleOnCampusClick}
+            className={`${css.onCampusButton} ${activeButton === "oncampus" ? css.pressed : ""}`}
+          >
             <p>On-Campus</p>
           </button>
-          <button onClick={handleOffCampusClick} className={css.offCampusButton}>
+
+          {/* Off-Campus Button */}
+          <button
+            onClick={handleOffCampusClick}
+            className={`${css.offCampusButton} ${activeButton === "offcampus" ? css.pressed : ""}`}
+          >
             <p>Off-Campus</p>
           </button>
         </div>
-      </div>
-      <div className={css.searchBarWrapper}>
-        <SearchBar />
+        <div className={css.searchBarWrapper}>
+          <SearchBar />
+        </div>
       </div>
     </div>
   );

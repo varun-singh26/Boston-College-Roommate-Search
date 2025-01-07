@@ -1,22 +1,38 @@
 /* ChatGPT Styling: */
 
 .container {
-  flex-direction: column;
   display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
-  height: 100vh;
+  width: 100%; /* Stretches the image to the full width of the page */
+  height: 70vh; /* Restricts the height to 70% of the viewable area */
   background: url('https://cdn.glitch.global/da9cfe19-f6cb-435e-ae30-d04e66913eee/gassonHall.jpg?v=1731984555342') no-repeat center center;
   background-size: cover;
   position: relative;
 }
 
 .contentWrapper {
+  display: grid;
+  justify-items: left;
+  width: 80%;
+  grid-template-columns: 1fr;
+  grid-template-rows:  auto auto;
+  grid-gap: 0;
   text-align: center;
+  margin-top: 15%;
   color: white;
-  background: rgba(0, 0, 0, 0.6);
+
+  /* background: rgba(0, 0, 0, 0.6); */
   padding: 2rem;
   border-radius: 10px;
+}
+
+.searchBarWrapper {
+  display: flex;
+  text-align: center;
+  grid-row: 2;
+  margin-left: 0;
 }
 
 .mainTitle {
@@ -32,27 +48,56 @@
 
 .buttonsContainer {
   display: flex;
+  flex-direction: row;
   justify-content: center;
-  gap: 1rem;
-  margin-bottom: 2rem;
+  align-items: flex-end;
+  margin-bottom: 0;
+  grid-row: 1;
+}
+
+.pressed {
+  background-color: #f9f9f9 !important;
+  color: black !important;
+}
+
+.offCampusButton .pressed {
+  box-shadow: none !important;
+}
+
+.onCampusButton .pressed {
+  box-shadow: -5px 0 10px rgba(0, 0, 0, 1);
+}
+
+.pressed:hover {
+  background-color: #b4874e !important;
+  color: white !important
+}
+
+.onCampusButton {
+  border-radius: 10px 0 0 0;
+}
+
+.offCampusButton {
+  border-radius: 0 10px 0 0;
 }
 
 .onCampusButton,
 .offCampusButton {
-  padding: 0.8rem 1.5rem;
+  padding: 0.05rem 1.25rem !important;
   font-size: 1rem;
   font-weight: bold;
   color: white;
-  background: #501315;
+  background: #b4874e;
   border: none;
-  border-radius: 5px;
   cursor: pointer;
   transition: background-color 0.3s;
+  margin: 0;
 }
 
 .onCampusButton:hover,
 .offCampusButton:hover {
-  background: #cd9f58;
+  background-color: #f9f9f9 !important;
+  color: black !important
 }
   
 
@@ -67,10 +112,4 @@
   justify-content: center;
   align-items: center;
   background: rgba(0, 0, 0, 0.4); /* Dark overlay for contrast */
-}
-  
-.searchBarWrapper {
-  width: 100%;
-  max-width: 600px;
-  margin: 0 auto;
 }

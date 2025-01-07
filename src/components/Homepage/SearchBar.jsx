@@ -2,7 +2,6 @@ import React, { useContext, useState } from 'react';
 import { SearchContext } from '../../context/searchContext.jsx';
 import OnCampusSearchForm from './onCampusSearchForm';
 import OffCampusSearchForm from './offCampusSearchForm';
-import css from "../../styles/SearchBar.module.css";
 
 //NOTE: if the context changes frequently, it can trigger unecessary re-renders across the components subscribing to it.
 const SearchBar = () => {
@@ -29,17 +28,11 @@ const SearchBar = () => {
   };*/
 
   return (
-    <section className={css.container}>
-      <div className={css.formWrapper}>
-          {/* Render the form dynamically based on the selected listing location */}
-          {listingLocation == 'oncampus' &&
-            <OnCampusSearchForm />
-          } {/* <OnCampusSearchForm onChange={handleFormChange} /> will not render if the condition is falsey (will short circuit instead) */}
-          {listingLocation == 'offcampus' &&
-            <OffCampusSearchForm />
-          }
-      </div>
-    </section>
+    <>
+      {/* Render the form dynamically based on the selected listing location */}
+      {listingLocation === 'oncampus' && <OnCampusSearchForm />}
+      {listingLocation === 'offcampus' && <OffCampusSearchForm />}
+    </>
   );
 };
 
