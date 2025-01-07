@@ -148,18 +148,20 @@ const OnCampusSearchForm = () => {
             <option value ="" disabled hidden>
               Select One
             </option>
-            <option value="Ninety St. Thomas More">Ninety St. Thomas More</option>
-            <option value="Vanderslice Hall">Vanderslice Hall</option>
-            <option value="Walsh Hall">Walsh Hall</option>
-            <option value="Thomas More Apartments">Thomas More Apartments</option>
-            <option value="Stayer Hall">Stayer Hall</option>
-            <option value="Gabelli Hall">Gabelli Hall</option>
-            <option value="Voute Hall">Voute Hall</option>
-            <option value="Rubenstein Hall">Rubenstein Hall</option>
-            <option value="Ignacio Hall">Ignacio Hall</option>
-            <option value="66">66 Hall</option>
-            <option value="Roncalli Hall">Roncalli Hall</option>
-            <option value="Welch Hall">Welch Hall</option>
+            <option value="Ninety-St-Thomas-More">Ninety St. Thomas More</option>
+            <option value="Vanderslice">Vanderslice Hall</option>
+            <option value="Walsh">Walsh Hall</option>
+            <option value="Thomas-More">Thomas More Apartments</option>
+            <option value="Modulars">The Mods</option>
+            <option value="Reservoir">2000 Commonwealth Avenue</option>
+            <option value="Stayer">Stayer Hall</option>
+            <option value="Gabelli">Gabelli Hall</option>
+            <option value="Voute">Voute Hall</option>
+            <option value="Rubenstein">Rubenstein Hall</option>
+            <option value="Ignacio">Ignacio Hall</option>
+            <option value="66">66 Commonwealth Avenue</option> {/*Need images of 66*/}
+            <option value="Roncalli">Roncalli Hall</option> {/*Need images of Roncalli*/}
+            <option value="Welch">Welch Hall</option> {/*Need images of Welch*/}
           </select>
         </div>
 
