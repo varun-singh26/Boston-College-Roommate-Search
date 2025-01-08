@@ -2,8 +2,6 @@ import React from 'react';
 import css from "./styles/TopPost.module.css";
 
 const Top = ({ building }) => {
-    console.log(building);
-
   return (
     <div
       className={css.top}
