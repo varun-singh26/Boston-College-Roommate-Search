@@ -30,7 +30,7 @@ const Navbar = () => {
                             <Link to= "/welcomeToPostings" className={css.postingsLink}>Postings</Link>
                         </p>
 
-                        <p>
+                        {/* <p>
                             <a
                                 href="https://www.bc.edu/bc-web/offices/studentaffairs/sites/residential-life/living-in-bc-housing/hall-openings-closings.html"
                                 target="_blank"
@@ -39,8 +39,8 @@ const Navbar = () => {
                             >
                                 Housing Calendar
                             </a>
-                        </p>
-                        <p>
+                        </p> */}
+                        {/* <p>
                             <a
                                 href="https://www.bc.edu/bc-web/offices/studentaffairs/sites/residential-life/living-in-bc-housing.html"
                                 target="_blank"
@@ -49,7 +49,7 @@ const Navbar = () => {
                             >
                                 Resources 
                             </a>
-                        </p>
+                        </p> */}
                     </div>
                     <div className= {css.signInContainer}>
                         <Link to="/signin" className={css.signInLink}>Sign In</Link>

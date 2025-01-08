@@ -90,7 +90,7 @@ const OnCampusSearchForm = () => {
     <form 
       method="post" 
       action="" 
-      className={css.form}
+      className={css.formOn}
       onSubmit={handleSearch}
     >
 

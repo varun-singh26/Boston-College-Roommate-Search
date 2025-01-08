@@ -151,6 +151,7 @@ const PostingForm = () => {
         <h2 className={css.headerText}> Can't find the right housing group?</h2>  
         <h2> Make your own <span className={css.keyword}>Posting</span> and have potential roommates find you: </h2>
       </header>  
+      <div className={css.formHolder}>
       <form className={css.postForm} onSubmit={handleSubmit}>
         <div className={css.formGroup}>
           <label htmlFor="location">Location:</label>
@@ -327,6 +328,7 @@ const PostingForm = () => {
 
         <button type="submit" className={css.submitButton}>Submit</button>
       </form>
+    </div>
     </div>
   );
 };

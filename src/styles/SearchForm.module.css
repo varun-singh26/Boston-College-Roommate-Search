@@ -8,10 +8,17 @@
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
-.form {
+.formOn {
     display: flex;
     flex-direction: row; /* Ensures elements are arranged in a row */
     gap: 4rem;
+    background-color: #f9f9f9;
+}
+
+.formOff {
+    display: flex;
+    flex-direction: row; /* Ensures elements are arranged in a row */
+    gap: 5.4rem;
     background-color: #f9f9f9;
 }
 

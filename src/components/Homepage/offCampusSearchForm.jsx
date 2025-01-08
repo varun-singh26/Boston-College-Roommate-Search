@@ -82,7 +82,7 @@ const OffCampusSearchForm = () => {
     <form
       method="post"
       action=""
-      className={css.form}
+      className={css.formOff}
       onSubmit={handleSearch}
     >
 
