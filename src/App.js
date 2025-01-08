@@ -1,5 +1,7 @@
 import React from "react";
 import { BrowserRouter as Router, Routes, Route, useLocation } from "react-router-dom"
+import FilteredPostingsProvider from "./context/FilteredPostingsContext.jsx";
+import PostingsProvider from "./context/PostingsContext.jsx";
 import Navbar from './components/Navbar.jsx';
 import LandingSplash from "./components/Homepage/LandingSplash.jsx";
 import Posts from "./components/Posts/Posts.jsx"
@@ -92,9 +94,13 @@ function RoutesWrapper({ data }) {
 function App({data}) {
   return (
     <Router>
-      <Navbar />
-      <RoutesWrapper data={data} />
-      <Footer />
+      <PostingsProvider > {/*PostingsProvider needs to be within a <Router> component due to its use of the useLocation() hook */}
+        <FilteredPostingsProvider >
+          <Navbar />
+          <RoutesWrapper data={data} />
+          <Footer />
+        </FilteredPostingsProvider>
+      </PostingsProvider >
     </Router>
   );
 }

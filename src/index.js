@@ -2,8 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.css';
 import SearchProvider from './context/searchContext.jsx';
-import DataProvider from './context/dataContext.jsx';
-import FilteredPostingsProvider from './context/FilteredPostingsContext.jsx';
+import ResetTriggerProvider from './context/resetTriggerContext.jsx';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 
@@ -13,11 +12,9 @@ const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
     <SearchProvider>
-      <DataProvider>
-        <FilteredPostingsProvider>
-          <App />
-        </FilteredPostingsProvider>
-      </DataProvider>
+      <ResetTriggerProvider>
+        <App />
+      </ResetTriggerProvider>
     </SearchProvider>
   </React.StrictMode>
 );
