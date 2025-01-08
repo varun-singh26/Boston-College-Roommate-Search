@@ -1,0 +1,85 @@
+/* Sign-up container */
+.signup-container {
+    display: flex;
+    flex-direction: horizontal;
+    max-height: 100vh;
+    min-width: auto;
+    font-family: "Lexend", sans-serif;
+    color: #ffffff; /* White text for contrast */
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background-color: #231f20; /* Dark gray background for the card */
+    padding: 2rem;
+    text-align: center;
+  }
+
+  /* Heading */
+.signup-container h1 {
+    font-size: 2rem;
+    color: #cd9f58; /* Gold color for the heading */
+    margin-bottom: 1rem;
+}
+
+/* Input fields */
+.signup-container input[type="text"],
+.signup-container input[type="email"],
+.signup-container input[type="password"],
+.signup-container input[type="date"],
+.signup-container input[type="tel"] {
+    width: 100%;
+    padding: 0.8rem;
+    margin: 0.5rem 0;
+    border: none;
+    border-radius: 0.3rem;
+    background-color: #ffffff; /* White background for inputs */
+    color: #231F20; /* Dark gray text */
+    font-size: 1rem;
+}
+
+/* Checkbox styling */
+.signup-container label {
+    display: block;
+    text-align: left;
+    margin-top: 0.5rem;
+    font-size: 0.9rem;
+    color: #ffffff;
+}
+
+.signup-container input[type="checkbox"] {
+    margin-right: 0.5rem;
+}
+
+/* Button styling */
+.signup-container button {
+    width: 100%;
+    padding: 0.8rem;
+    margin-top: 1rem;
+    background-color: #cd9f58; /* Gold background */
+    color: #231F20; /* Dark text for contrast */
+    font-size: 1rem;
+    font-weight: bold;
+    border: none;
+    border-radius: 0.3rem;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.signup-container button:hover {
+    background-color: #b88844; /* Darker gold for hover */
+}
+
+/* Links */
+.signup-container a {
+    display: block;
+    margin-top: 1rem;
+    color: #cd9f58; /* Gold for links */
+    text-decoration: none;
+    font-size: 0.9rem;
+}
+
+.signup-container a:hover {
+    text-decoration: underline;
+}
+
+

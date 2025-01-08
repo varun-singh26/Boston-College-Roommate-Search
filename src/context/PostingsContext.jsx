@@ -1,6 +1,6 @@
 import React, {createContext, useState, useEffect} from "react";
 import { useLocation } from "react-router-dom";
-import GetPostings from "../helperFunctions/GetPostings.jsx"; //This redline is fine
+import GetPostings from "../helperFunctions/GetPostings.jsx"; 
 import {collection, getDocs, doc} from "firebase/firestore";
 
 
