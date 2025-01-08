@@ -1,0 +1,179 @@
+.detailView {
+    width: 100%;
+    max-width: 900px;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    background-color: #ffffff;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    margin: 30px auto;
+    overflow: hidden;
+    box-sizing: border-box;
+}
+
+.info {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px;
+    border-radius: 8px;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+.info > * {
+    min-width: 0;
+    flex-shrink: 1;
+}
+
+.info:hover {
+    background-color: #f5f5f5;
+    transform: translateY(-2px);
+}
+
+.location, .numPeople {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.location img, .numPeople img {
+    width: 18px;
+    height: 18px;
+    object-fit: contain;
+}
+
+.location span, .numPeople span {
+    font-size: 16px;
+    color: #333;
+    font-weight: 500;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.imageListing {
+    display: block;
+    width: 100%;
+    max-width: 100%;
+    height: auto;
+    border-radius: 8px;
+    object-fit: cover;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.imageListing:hover {
+    transform: scale(1.02);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+}
+
+.detailView > span {
+    font-size: 18px;
+    font-weight: bold;
+    color: #333;
+    padding: 10px 20px;
+    border-radius: 12px;
+    display: inline-block;
+    margin-top: 20px;
+    text-align: center;
+    width: max-content;
+    transition: background-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.detailView > span:hover {
+    background-color: #f7f7f7;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.admin {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    padding: 18px;
+    border-radius: 8px;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+.admin:hover {
+    background-color: #f5f5f5;
+    transform: translateY(-2px);
+}
+
+.adminContact {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.adminContact img {
+    width: 20px;
+    height: 20px;
+    object-fit: contain;
+}
+
+.adminContact span {
+    font-size: 14px;
+    color: #333;
+    font-weight: 500;
+}
+
+.members {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    padding: 20px;
+    border-radius: 8px;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+.members:hover {
+    background-color: #f5f5f5;
+    transform: translateY(-2px);
+}
+
+.members span {
+    font-size: 18px;
+    font-weight: bold;
+    color: #444;
+}
+
+.member {
+    display: flex;
+    flex-direction: column;
+    padding: 12px;
+    border-radius: 8px;
+    background-color: #ffffff;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+    transition: box-shadow 0.3s ease, transform 0.3s ease;
+}
+
+.member:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+.member span {
+    font-size: 14px;
+    color: #444;
+    font-weight: 600;
+    margin-bottom: 2px;
+}
+
+.memberEmail, .memberIG {
+    display: flex;
+    align-items: center;
+}
+
+.memberEmail img, .memberIG img {
+    width: 18px;
+    height: 18px;
+    object-fit: contain;
+}
+
+
+* {
+    box-sizing: border-box;
+    word-wrap: break-word;
+}
