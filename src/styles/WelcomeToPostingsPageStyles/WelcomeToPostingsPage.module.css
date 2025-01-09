@@ -74,8 +74,41 @@
     font-weight: bold;
 }
 
+.postings {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 10px; /* Adds spacing between posts */
+}
 
-/*
+.showMore {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: solid 2px #333;
+    border-radius: 7%;
+    padding: 10px 15px;
+    color: #333;
+    background-color: transparent;
+    transition: all 0.3s ease;
+    cursor: pointer;
+}
+
+.showMore:hover {
+    box-shadow: -3px -3px 9px #888888;
+}
+
+.showMore:active {
+    transform: scale(0.98);
+}
+
+.showMore:focus {
+    outline: none;
+    border-color: #333;
+}
+
+
+/* 
 .welcomeWrapper {
     display: flex;
     justify-content: center;
@@ -114,6 +147,6 @@
 
 .buttonWrapper {
     display: flex;
-}
-*/
+} */
+
 
