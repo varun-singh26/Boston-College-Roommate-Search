@@ -32,24 +32,27 @@ const PostDetailView = () => {
  if (posting.listingLocation === "oncampus") {
     return (
         <div className={css.detailView}>
-            <div className={css.info}>
-                <div className={css.location}>
-                    <img src="../../assets/postings/location.png" alt="Location" />
-                    <span>{posting.dorm}</span>
-                </div>
-            <div className={css.numPeople}>
-                <img src="../../assets/postings/group.png" alt="Group" />
-                <span>{posting.aimInteger} Total</span>
-            </div>
-            <div className={css.numPeople}>
-                <img src="../../assets/postings/bullseye.png" alt="Target"></img>
-                <span>Seeking {posting.curNumSeek} More</span>
-            </div>
+            <div className={css.infoAndImage}>
+    <div className={css.info}>
+        <div className={css.location}>
+            <img src="../../assets/postings/location.png" alt="Location" />
+            <span>{posting.dorm}</span>
         </div>
-
-        {/*This image is currently a placeholder to later be replaced with an image carousel*/}
-        <img className={css.imageListing} src="../../assets/oncampus/Vanderslice.jpg" alt="Listing"></img>
         
+        <div className={css.numPeople}>
+            <img src="../../assets/postings/group.png" alt="Group" />
+            <span>{posting.aimInteger} Total</span>
+        </div>
+        
+        <div className={css.numPeople}>
+            <img src="../../assets/postings/bullseye.png" alt="Target" />
+            <span>Seeking {posting.curNumSeek} More</span>
+        </div>
+    </div>
+
+    {/* This image is currently a placeholder to later be replaced with an image carousel */}
+    <img className={css.imageListing} src="../../assets/oncampus/Vanderslice.jpg" alt="Listing" />
+</div>
           <div className={css.admin}>
             <span>Contact Lister:</span>
             <div className={css.adminContact}>
@@ -89,6 +92,7 @@ const PostDetailView = () => {
  else {
     return (
         <div className={css.detailView}>
+            <div className={css.infoAndImage}>
             <div className={css.info}>
                 <div className={css.location}>
                     <img src="../../assets/postings/location.png" alt="Location" />
@@ -110,7 +114,7 @@ const PostDetailView = () => {
 
         {/*This image is currently a placeholder to later be replaced with an image carousel*/}
         <img className={css.imageListing} src="../../assets/oncampus/Vanderslice.jpg" alt="Listing"></img>
-        
+    </div>
           <div className={css.admin}>
             <span>Contact Lister:</span>
             <div className={css.adminContact}>

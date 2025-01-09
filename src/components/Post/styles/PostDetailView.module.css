@@ -1,3 +1,4 @@
+/* Default Detail View */
 .detailView {
     width: 100%;
     max-width: 900px;
@@ -11,6 +12,12 @@
     margin: 30px auto;
     overflow: hidden;
     box-sizing: border-box;
+}
+
+.infoAndImage {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
 }
 
 .info {
@@ -53,6 +60,7 @@
     text-overflow: ellipsis;
 }
 
+/* Image directly below info */
 .imageListing {
     display: block;
     width: 100%;
@@ -69,24 +77,7 @@
     box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
 }
 
-.detailView > span {
-    font-size: 18px;
-    font-weight: bold;
-    color: #333;
-    padding: 10px 20px;
-    border-radius: 12px;
-    display: inline-block;
-    margin-top: 20px;
-    text-align: center;
-    width: max-content;
-    transition: background-color 0.3s ease, box-shadow 0.3s ease;
-}
-
-.detailView > span:hover {
-    background-color: #f7f7f7;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-}
-
+/* Contact info section */
 .admin {
     display: flex;
     flex-direction: column;
@@ -119,6 +110,7 @@
     font-weight: 500;
 }
 
+/* Group members section */
 .members {
     display: flex;
     flex-direction: column;
@@ -172,8 +164,67 @@
     object-fit: contain;
 }
 
+/* For better visibility and user experience */
+.detailView > span {
+    font-size: 18px;
+    font-weight: bold;
+    color: #333;
+    padding: 10px 20px;
+    border-radius: 12px;
+    display: inline-block;
+    margin-top: 20px;
+    text-align: center;
+    width: max-content;
+    transition: background-color 0.3s ease, box-shadow 0.3s ease;
+}
 
+.detailView > span:hover {
+    background-color: #f7f7f7;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+/* Global box-sizing */
 * {
     box-sizing: border-box;
     word-wrap: break-word;
+}
+
+/* Grid Layout for Screens Wider than 768px */
+@media (min-width: 768px) {
+    .detailView {
+        display: grid;
+        grid-template-areas:
+            "info right-column"
+            "info right-column";
+        grid-template-columns: 2fr 1fr;
+        grid-template-rows: auto auto auto; /* Adjust for three total rows */
+        gap: 20px;
+        max-width: 1200px;
+        margin: 40px auto;
+        align-items: start;
+    }
+
+    .infoAndImage {
+        grid-area: info;
+    }
+
+    .admin, .members {
+        grid-area: right-column;
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+    }
+
+    .admin {
+        grid-row: 1; /* Takes the first row in the right column */
+    }
+
+    .members {
+        grid-row: 2; /* Takes the second row in the right column */
+    }
+
+    .detailView > span {
+        grid-column: span 2;
+        justify-self: center;
+    }
 }
