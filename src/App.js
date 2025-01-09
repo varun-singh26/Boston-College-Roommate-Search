@@ -7,6 +7,8 @@ import LandingSplash from "./components/Homepage/LandingSplash.jsx";
 import Posts from "./components/Posts/Posts.jsx"
 import WelcomeToPostingsPage from "./components/Posts/WelcomeToPostingsPage/WelcomeToPostingsPage.jsx";
 import PostDetailView from "./components/Post/PostDetailView.jsx";
+import SignIn from "./components/SignInSignUp/SignIn.jsx";
+import SignUp from "./components/SignInSignUp/SignUp.jsx";
 import Footer from "./components/Footer.jsx";
 import css from './App.css';
 
@@ -15,11 +17,6 @@ import css from './App.css';
 
 //Path "/" (root):
 //Right now the LandingSplash component only contains the image of Gasson Hall, the On-Campus and Off-Campus button, and the search for a posting form (broken up into two forms).
-
-//Path "/postings":
-//Right now the two ways of getting to "/postings" are by submitting the search form from the root path,
-//(doing so updates listingLocation and formData in the SearchContext), or by clicking the "Postings" link in the Navbar. 
-//However if you submit the search form but navigate back to the root page, the SearchContext becomes reinitalized again (to 0/empty).
 
 //Path "/detailView":
 //When rendering the detailView for a specific posting, we can add query parameters (of the posting that was clicked, such as ID) to the url.
@@ -70,6 +67,7 @@ function RoutesWrapper({ data }) {
           path ="/signIn"
           element = {
             <>
+              <SignIn />
             </>
           }
         />
@@ -77,6 +75,7 @@ function RoutesWrapper({ data }) {
           path ="/signUp"
           element = {
             <>
+              <SignUp />
             </>
           }
         />

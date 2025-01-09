@@ -52,7 +52,7 @@ const Navbar = () => {
                         </p> */}
                     </div>
                     <div className= {css.signInContainer}>
-                        <Link to="/signin" className={css.signInLink}>Sign In</Link>
+                        <Link to="/signIn" className={css.signInLink}>Sign In / Make an Account</Link>
                         <img
                             src="https://cdn.glitch.global/c7d70598-61bb-4c55-ac66-58662df41931/Profile%20Icon.png?v=1732691728436"
                             alt="Profile Icon"

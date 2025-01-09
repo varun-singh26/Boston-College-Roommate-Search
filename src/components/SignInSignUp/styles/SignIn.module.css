@@ -1,0 +1,67 @@
+.signin-container {
+    display: flex;
+    flex-direction: horizontal;
+    max-height: 100vh;
+    min-width: auto;
+    font-family: "Lexend", sans-serif;
+    color: #ffffff; /* White text for contrast */
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background-color: #231f20; /* Dark gray background for the card */
+    padding: 2rem;
+    text-align: center;
+  }
+
+
+/* Logo or heading */
+.signin-container h1 {
+    font-size: 2rem;
+    color: #cd9f58; /* Gold color for the heading */
+    margin-bottom: 1rem;
+  }
+
+  /* Input fields */
+.signin-container input[type="text"],
+.signin-container input[type="password"] {
+  width: 100%;
+  padding: 0.8rem;
+  margin: 0.5rem 0;
+  border: none;
+  border-radius: 0.3rem;
+  background-color: #ffffff; /* White background for inputs */
+  color: #231f20; /* Dark gray text */
+  font-size: 1rem;
+}
+
+/* Button styling */
+.signin-container button {
+  width: 100%;
+  padding: 0.8rem;
+  margin-top: 1rem;
+  background-color: #cd9f58; /* Gold background */
+  color: #231f20; /* Dark text for contrast */
+  font-size: 1rem;
+  font-weight: bold;
+  border: none;
+  border-radius: 0.3rem;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.signin-container button:hover {
+    background-color: #b88844; /* Darker gold for hover */
+  }
+  
+  /* Link for sign-up or forgotten password */
+  .signin-container a {
+    display: block;
+    margin-top: 1rem;
+    color: #cd9f58; /* Gold for links */
+    text-decoration: none;
+    font-size: 0.9rem;
+  }
+  
+  .signin-container a:hover {
+    text-decoration: underline;
+  }
