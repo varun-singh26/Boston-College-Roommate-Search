@@ -16,6 +16,7 @@
     border-radius: 20px;
     margin-bottom: 10%;
   }
+
   .headerTextContainer {
     display: flex;
     flex-direction: column;
@@ -42,6 +43,13 @@
   .formGroup {
     display: flex;
     flex-direction: column;
+    grid-column: span 1;
+  }
+
+  .formGroup2 {
+    display: flex;
+    flex-direction: column;
+    grid-column: span 2;
   }
   
   .formGroup label {
@@ -49,14 +57,27 @@
     margin-bottom: 0.5rem;
   }
   
+  .assignGroupAdminTag {
+    font-size: 0.8rem;
+    color: #333;
+    margin-bottom: 1rem;
+  }
+
   .residentsContainer {
     margin-top: 1rem;
   }
   
-  .residentRow {
+  #residentRow {
     display: flex;
     gap: 1rem;
     margin-bottom: 1rem;
+  }
+
+  #residentRowAdmin {
+    display: flex;
+    gap: 1rem;
+    margin-bottom: 1rem;
+    align-items: center;
   }
   
   .addButton {
@@ -67,8 +88,21 @@
     cursor: pointer;
     border-radius: 4px;
   }
+
+  .removeButton {
+    background-color: #cd9f58;
+    border: none;
+    padding: 0.5rem 1rem;
+    color: white;
+    cursor: pointer;
+    border-radius: 4px;
+  }
   
   .addButton:hover {
+    background-color: #b5894e;
+  }
+
+  .removeButton:hover {
     background-color: #b5894e;
   }
   

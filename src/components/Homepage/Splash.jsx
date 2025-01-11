@@ -1,6 +1,7 @@
 import React, { useContext, useEffect } from 'react';
 import { SearchContext } from '../../context/searchContext.jsx';
 import SearchBar from "./SearchBar.jsx";
+import Backdrop from "./backdrop.jsx";
 import css from "../../styles/Splash.module.css";
 
 const Splash = () => {
@@ -28,6 +29,7 @@ const Splash = () => {
 
   return (
     <div className={css.container} aria-label="Image of Gasson Hall">
+      <Backdrop />
       <div className={css.contentWrapper}>
         <div className={css.buttonsContainer}>
           {/* On-Campus Button */}

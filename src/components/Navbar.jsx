@@ -1,16 +1,34 @@
-import React, { useState } from "react";
+import React, { useEffect} from "react";
 import { useLocation } from "react-router-dom";
-//We want to use Link for internal links of our web app to avoid full page reloads when they are clicked (to preserve any contexts)
-//Not having full page reloads means that css and javascript don't have to be rerendered when a Link is clicked
 import { Link } from "react-router-dom";
-import css from "../styles/Navbar.module.css" 
+import css from "../styles/Navbar.module.css";
 
 const Navbar = () => {
+  const location = useLocation(); // Provides access to the current location object
 
-    const location = useLocation(); //provides access to the current location object (ie. location.pathname, location.search)
-                                    //useLocation dynamically updates whenever the route changes (which changes when the path changes)
-                                    //Allows us to update this component based on the current route
-    const isActive = (path) => location.pathname === path; 
+  const isActive = (path) => location.pathname === path;
+
+  useEffect(() => {
+    const navbar = document.getElementById("nav");
+    let lastScrollY = window.scrollY;
+
+    const handleScroll = () => {
+      if (window.scrollY > lastScrollY) {
+        // Scrolling down
+        navbar.classList.add(css.hidden);
+      } else {
+        // Scrolling up
+        navbar.classList.remove(css.hidden);
+      }
+      lastScrollY = window.scrollY;
+    };
+
+    window.addEventListener("scroll", handleScroll);
+
+    // Cleanup the event listener when the component unmounts
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []); // Empty dependency array ensures this runs only on mount and unmount
+
 
     return (
         <header>
