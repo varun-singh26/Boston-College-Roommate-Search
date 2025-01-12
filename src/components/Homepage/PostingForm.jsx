@@ -155,7 +155,7 @@ const PostingForm = () => {
   return (
     <div className={css.container}>
       <header className={css.headerTextContainer}>
-        <h2 className={css.headerText}> Can't find the right housing group?</h2>  
+        <h2 className={css.headerText}> Can't find the right housing group using our search?</h2>  
         <h2> Make your own <span className={css.keyword}>Posting</span> and have potential roommates find you: </h2>
       </header>  
       <div className={css.formHolder}>
