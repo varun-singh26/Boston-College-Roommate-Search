@@ -119,6 +119,7 @@ nav p a:hover {
 
 /* NavBar Container*/
 .navContainer {
+    /* position:fixed; */
     top: 0;
     width: 100%;
     z-index: 1000;

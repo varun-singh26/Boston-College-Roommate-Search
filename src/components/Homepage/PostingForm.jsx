@@ -160,7 +160,7 @@ const PostingForm = () => {
       </header>  
       <div className={css.formHolder}>
       <form className={css.postForm} onSubmit={handleSubmit}>
-        <div className={css.formGroup}>
+        <div className={`${css.formGroup} ${css.formLocationSelector}`}>
           <label htmlFor="location">Location:</label>
           <select id="location" value={location} onChange={(e) => setLocation(e.target.value)}>
             <option value="offcampus">Off-Campus</option>
