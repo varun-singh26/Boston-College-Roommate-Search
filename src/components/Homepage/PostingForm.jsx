@@ -413,7 +413,7 @@ const PostingForm = () => {
 
 
 
-          <label htmlFor="admin-phone-number">Group Administrator Phone Number:</label>
+          {/* <label htmlFor="admin-phone-number">Group Administrator Phone Number:</label>
           <input
             type="text"
             id="admin-phone-number"
@@ -436,7 +436,7 @@ const PostingForm = () => {
             value={postingFormData.adminEmail}
             onChange={(e) => setPostingFormData({...postingFormData, adminEmail: e.target.value})}
             placeholder="e.g, example@bc.edu"
-          />
+          /> */}
 
         <div className={css.formGroup}>
           <label htmlFor="looking-for">How many more roomates do you need?:</label>

@@ -30,6 +30,10 @@ const Splash = () => {
   return (
     <div className={css.container} aria-label="Image of Gasson Hall">
       <Backdrop />
+      {/* <div className={css.introText}>
+        <p>Welcome to BCRS!</p>
+        <p>Your pal throughout the BC Housing Lottery</p>
+      </div> */}
       <div className={css.contentWrapper}>
         <div className={css.buttonsContainer}>
           {/* On-Campus Button */}
