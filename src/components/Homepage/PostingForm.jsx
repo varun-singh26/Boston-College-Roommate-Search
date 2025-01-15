@@ -163,10 +163,11 @@ const PostingForm = () => {
         <div className={`${css.formGroup} ${css.formLocationSelector}`}>
           <label htmlFor="location">Location:</label>
           <select id="location" value={location} onChange={(e) => setLocation(e.target.value)}>
-            <option value="offcampus">Off-Campus</option>
             <option value="oncampus">On-Campus</option>
+            <option value="offcampus">Off-Campus</option>
           </select>
         </div>
+
 
         <div className={css.formGroup2}>
   <div className={css.residentsContainer}>
@@ -438,6 +439,8 @@ const PostingForm = () => {
             placeholder="e.g, example@bc.edu"
           /> */}
 
+        <div className={css.formGroup3}>
+
         <div className={css.formGroup}>
           <label htmlFor="looking-for">How many more roomates do you need?:</label>
           <input
@@ -486,7 +489,7 @@ const PostingForm = () => {
             </div>
 
             <div className={css.formGroup}>
-              <label htmlFor="start-date">Start Date:</label>
+              <label htmlFor="start-date" className={css.startDate}>Start Date:</label>
               <input
                 type="date"
                 id="start-date"
@@ -494,7 +497,7 @@ const PostingForm = () => {
                 onChange={(e) => setPostingFormData({ ...postingFormData, startDate: e.target.value })}
               />
 
-              <label htmlFor="end-date">End Date:</label>
+              <label htmlFor="end-date" className={css.endDate}>End Date:</label>
               <input
                 type="date"
                 id="end-date"
@@ -535,6 +538,7 @@ const PostingForm = () => {
           <label htmlFor="upload-images">Upload Images:</label>
           <input type="file" id="upload-images" multiple />
         </div>
+      </div>
 
         <button type="submit" className={css.submitButton}>Submit</button>
       </form>
