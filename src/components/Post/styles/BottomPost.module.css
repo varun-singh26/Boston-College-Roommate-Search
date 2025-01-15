@@ -5,16 +5,19 @@
     margin: 10px;
 }
 
-.looking {
+.container {
     display: flex;
     justify-content: flex-end;
     width: 100%; 
-}
-
-/* What does this style */
-.looking * {
     margin-right: 30px;
     margin-top: 10px;
+}
+
+.container img {
+    width: 25px;
+    height: 20px;
+    margin-right: 30px;
+    margin-left: 5px;
 }
 
 .bottomIMGcontainer {

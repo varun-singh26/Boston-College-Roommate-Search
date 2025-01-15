@@ -7,6 +7,11 @@
     background-color: #f9f9f9;
     font-family: 'Arial', sans-serif;
   }
+
+  .link {
+    text-decoration: none;
+  }
+  
   .formHolder {
     width: 80%;
     padding: 2rem;
@@ -16,12 +21,11 @@
     border-radius: 20px;
     margin-bottom: 10%;
   }
-
   .headerTextContainer {
     display: flex;
     flex-direction: column;
     align-items: center;
-    margin-bottom: 7%;
+    margin-bottom: 5%;
   }
 
   .headerText{
@@ -31,7 +35,7 @@
   }
   
   .keyword {
-    color: #cd9f58;
+    color: #501315;
   }
   
   .postForm {
@@ -43,167 +47,34 @@
   .formGroup {
     display: flex;
     flex-direction: column;
-    grid-column: span 1;
   }
-
-  .formGroup2 {
-    display: flex;
-    flex-direction: column;
-    grid-column: span 2;
-  }
-
-  .formGroup3 {
-    display: flex;
-    flex-direction: column;
-    border-radius: 10px;
-    grid-column: span 2;
-    padding: 2rem;
-    padding-top: 0rem !important;
-    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
-    transition: box-shadow 0.3s ease, transform 0.3s ease;
-  }
-
-  .formGroup3:hover {
-    transform: translateY(-2px);
-    box-shadow: 0px 7px 12px rgba(0, 0, 0, 0.2);
-  }
-
-  .formGroup3 .formGroup {
-    padding-top: 2rem;
-  }
-
-  .endDate {
-    padding-top: 2rem;
-  }
-
-
-  form input {
-    border-radius: 10px;
-    padding: 7px;
-    border: 1px solid #c4c0c0;
-    background-color: white;
-    transition: box-shadow 0.3s ease, transform 0.3s ease;
-  }
-
-  form input:hover {
-    transform: translateY(-1px);
-    box-shadow: 0 3px 7px rgba(0, 0, 0, 0.2);
-  }
-
-  form input:focus {
-    transform: translateY(-1px);
-    box-shadow: 0 3px 7px rgba(0, 0, 0, 0.2);
-    outline: 2px solid #cd9f58;
-  }
-
-  form select {
-    border-radius: 10px;
-    padding: 7px;
-    border: 1px solid #c4c0c0;
-    background-color: white;
-    transition: box-shadow 0.3s ease, transform 0.3s ease;
-  }
-
-  form select:hover {
-    transform: translateY(-1px);
-    box-shadow: 0 3px 7px rgba(0, 0, 0, 0.2);
-  }
-
-  form select:focus {
-    transform: translateY(-1px);
-    box-shadow: 0 3px 7px rgba(0, 0, 0, 0.2);
-    outline: none;
-  }
-
   
   .formGroup label {
     font-weight: bold;
     margin-bottom: 0.5rem;
   }
   
-  .assignGroupAdminTag {
-    font-size: 0.8rem;
-    color: #333;
-    margin-bottom: 1rem;
-  }
-
-  .formLocationSelector select {
-      border-radius: 10px;
-      padding: 0.5rem;
-      border: 1px solid #c4c0c0;
-      background-color: white;
-      transition: box-shadow 0.3s ease, transform 0.3s ease;
-  }
-
-  .formLocationSelector select:hover {
-    transform: translateY(-1px);
-    box-shadow: 0 3px 7px rgba(0, 0, 0, 0.2);
-  }
-
   .residentsContainer {
-    display: flex;
-    flex-direction: column;
-    padding: 2rem;
     margin-top: 1rem;
-    border-radius: 10px;
-    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
-    transition: box-shadow 0.3s ease, transform 0.3s ease;
   }
-
-.residentsContainer:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 7px 12px rgba(0, 0, 0, 0.2);
-}
   
-
   .residentRow {
     display: flex;
-    flex-direction: space-between;
-    gap: 2rem;
-    margin-top: 1rem;
-  }
-
-  .residentRowAdmin {
-    display: flex;
-    flex-direction: space-between;
-    gap: 2rem;
-    align-items: center;
-    margin-top: 1rem;
-    margin-bottom: 2rem;
+    gap: 1rem;
+    margin-bottom: 1rem;
   }
   
   .addButton {
-    display: block;
-    margin-top: 1rem;
     background-color: #cd9f58;
     border: none;
     padding: 0.5rem 1rem;
     color: white;
     cursor: pointer;
     border-radius: 4px;
-    transition: box-shadow 0.3s ease, transform 0.3s ease;
-  }
-
-  .removeButton {
-    background-color: #cd9f58;
-    border: none;
-    padding: 0.5rem 1rem;
-    color: white;
-    cursor: pointer;
-    border-radius: 4px;
-    transition: box-shadow 0.3s ease, transform 0.3s ease;
   }
   
   .addButton:hover {
     background-color: #b5894e;
-    transform: translateY(-1px);
-    box-shadow: 0 3px 7px rgba(0, 0, 0, 0.2);
-  }
-
-  .removeButton:hover {
-    background-color: #b5894e;
-    transform: translateY(-1px);
-    box-shadow: 0 3px 7px rgba(0, 0, 0, 0.2);
   }
   
   .submitButton {
@@ -216,11 +87,8 @@
     font-weight: bold;
     cursor: pointer;
     border-radius: 4px;
-    transform: box-shadow 0.3s ease, transform 0.3s ease;
   }
   
   .submitButton:hover {
     background-color: #b5894e;
-    transform: translateY(-1px);
-    box-shadow: 0px 3px 7px rgba(0, 0, 0, 0.2)
   }

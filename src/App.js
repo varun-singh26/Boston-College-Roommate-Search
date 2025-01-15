@@ -9,6 +9,7 @@ import WelcomeToPostingsPage from "./components/Posts/WelcomeToPostingsPage/Welc
 import PostDetailView from "./components/Post/PostDetailView.jsx";
 import SignIn from "./components/SignInSignUp/SignIn.jsx";
 import SignUp from "./components/SignInSignUp/SignUp.jsx";
+import MyProfile from "./components/myProfile.jsx";
 import Footer from "./components/Footer.jsx";
 import css from './App.css';
 
@@ -83,6 +84,14 @@ function RoutesWrapper({ data }) {
           path ="/about"
           element = {
             <>
+            </>
+          }
+        />
+        <Route
+          path ="/myProfile"
+          element = {
+            <>
+              <MyProfile />
             </>
           }
         />

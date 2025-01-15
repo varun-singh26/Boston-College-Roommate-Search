@@ -21,6 +21,12 @@
     margin-bottom: 1rem;
 }
 
+.errorMessage {
+    color: red;
+    font-size: 0.9rem;
+    margin: 0.5rem 0;
+}
+
 /* Input fields */
 .signup-container input[type="text"],
 .signup-container input[type="email"],
