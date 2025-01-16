@@ -1,17 +1,13 @@
-import React, { useContext, useState, useEffect } from 'react';
-import { AuthContext } from '../../context/authContext';
-import { auth } from '../../config/firestore';
+import React, { useState, useEffect } from 'react';
+import css from "../../styles/Homepage/Form.module.css"
 import {db} from "../../config/firestore";
 import {collection, addDoc} from "firebase/firestore";
-import css from "../../styles/Homepage/Form.module.css";
 
 const PostingForm = () => {
-  const {userLoggedIn} = useContext(AuthContext);
-
   const debugMode = true;
   const [location, setLocation] = useState('offcampus');
   const [residents, setResidents] = useState([
-    { name: '', academicYear: 'freshman', instagramHandle: '', email: '' },
+    { name: '', academicYear: '', gender: '', instagramHandle: '', email: '', isAdmin: true},
   ]);
   const [postingFormData, setPostingFormData] = useState({
     numSeek: '',
@@ -44,8 +40,12 @@ const PostingForm = () => {
   }, [location]);
 
   // Add a new resident row
+  
   const addResident = () => {
-    setResidents((prev) => [...prev, { name: '', academicYear: 'freshman' }]);
+    setResidents((prev) => [
+      ...prev,
+      { name: '', academicYear: '', gender: '', instagramHandle: '', email: '', admin: false },
+    ]);
   };
 
   //Remove a resident row
@@ -54,6 +54,7 @@ const PostingForm = () => {
         prevResidents.filter((_, index) => index != indexToRemove)
     );
   };
+
 
   // Handle resident change
   const handleResidentChange = (index, field, value) => {
@@ -121,9 +122,11 @@ const PostingForm = () => {
     const members = residents.map((resident) => ({
         name: resident.name,
         academicYear: resident.academicYear,
+        gender: resident.gender,
         instagramHandle: resident.instagramHandle,
         email: resident.email
     }));
+    console.log("Members: ", residents);
     const adminContactInfo = {
         email: postingFormData.adminEmail,
         instagramHandle: postingFormData.adminInstagramHandle,
@@ -149,76 +152,269 @@ const PostingForm = () => {
     }
   };
 
-  //If no user isn't logged in, Posting Form won't render. A message prompting the user to log in will.
-  if (!userLoggedIn) {
-    return (
-      <div className={css.container}>
-        <h2 className={css.headerText}> 
-          <a href="/signIn" className={`${css.keyword} ${css.link}`}>Sign into your account</a> or 
-          <a href='/signUp' className={`${css.keyword} ${css.link}`}> Make a new account with us </a> to create a posting others can view.
-        </h2>
-      </div>
-    )
-  }
-
   return (
     <div className={css.container}>
       <header className={css.headerTextContainer}>
-        <h2 className={css.headerText}> Can't find the right housing group?</h2>  
-        <h2 className={css.headerText}> Make your own <span className={css.keyword}>Posting</span> and have potential roommates find you: </h2>
+        <h2 className={css.headerText}> Can't find the right housing group using our search?</h2>  
+        <h2> Make your own <span className={css.keyword}>Posting</span> and have potential roommates find you: </h2>
       </header>  
       <div className={css.formHolder}>
       <form className={css.postForm} onSubmit={handleSubmit}>
-        <div className={css.formGroup}>
+        <div className={`${css.formGroup} ${css.formLocationSelector}`}>
           <label htmlFor="location">Location:</label>
           <select id="location" value={location} onChange={(e) => setLocation(e.target.value)}>
-            <option value="offcampus">Off-Campus</option>
             <option value="oncampus">On-Campus</option>
+            <option value="offcampus">Off-Campus</option>
           </select>
         </div>
 
-        <div className={css.formGroup}>
-          <label>Current Group Members:</label>
-          <div className={css.residentsContainer}>
-            {residents.map((resident, index) => (
-              <div key={index} className={css.residentRow}>
-                <input
-                  type="text"
-                  value={resident.name}
-                  placeholder="First and Last Name"
-                  aria-label= {`Name of Resident ${index + 1}`}
-                  onChange={(e) => handleResidentChange(index, 'name', e.target.value)}
-                />
-                <select
-                  value={resident.academicYear}
-                  aria-label= {`Academic year of Resident ${index + 1}`}
-                  onChange={(e) => handleResidentChange(index, 'academicYear', e.target.value)}
-                >
-                  <option value="freshman">Freshman</option>
-                  <option value="sophomore">Sophomore</option>
-                  <option value="junior">Junior</option>
-                  <option value="senior">Senior</option>
-                </select>
-                <input
-                  type="text"
-                  value={resident.instagramHandle}
-                  placeholder="Instagram Handle"
-                  aria-label= {`Instagram Handle of Resident ${index + 1}`}
-                  onChange={(e) => handleResidentChange(index, "instagramHandle", e.target.value)}
-                />
-                <input
-                  type="text"
-                  value={resident.email}
-                  placeholder="Email"
-                  aria-label= {`Email of Resident ${index + 1}`}
-                  onChange={(e) => handleResidentChange(index, "email", e.target.value)}
-                />
-                <button type="button" aria-label= {`Remove resident ${index + 1}`} onClick={() => removeResident(index)} className={css.addButton}>Remove</button>
-              </div>
-            ))}
+
+        <div className={css.formGroup2}>
+  <div className={css.residentsContainer}>
+    <label>Group Administrator:</label>
+    {residents.length === 0 ? (
+      <div className={css.residentRowAdmin}>
+        <input
+          type="text"
+          value={postingFormData.adminName || ''}
+          placeholder="First and Last Name"
+          aria-label="Admin Name"
+          onChange={(e) => setPostingFormData({ ...postingFormData, adminName: e.target.value })}
+          required
+        />
+        <select
+          value={postingFormData.adminAcademicYear || ''}
+          aria-label="Admin Academic Year"
+          onChange={(e) => setPostingFormData({ ...postingFormData, adminAcademicYear: e.target.value })}
+          required
+        >
+          <option value="" disabled hidden>
+            Select One
+          </option>
+          <option value="freshman">Freshman</option>
+          <option value="sophomore">Sophomore</option>
+          <option value="junior">Junior</option>
+          <option value="senior">Senior</option>
+        </select>
+
+        <select
+          value={postingFormData.adminGender || ''}
+          aria-label="Admin Gender"
+          onChange={(e) => setPostingFormData({ ...postingFormData, adminGender: e.target.value })}
+          required
+        >
+          <option value="" disabled hidden>
+            Select One
+          </option>
+          <option value="male">Male</option>
+          <option value="female">Female</option>
+          <option value="other">Other</option>
+        </select>
+
+        {postingFormData.adminGender === 'other' && (
+          <input
+            type="text"
+            value={postingFormData.customGender || ''}
+            placeholder="Specify Gender"
+            onChange={(e) => setPostingFormData({ ...postingFormData, customGender: e.target.value })}
+            required
+          />
+        )}
+
+        <input
+          type="text"
+          value={postingFormData.adminInstagramHandle || ''}
+          placeholder="Instagram Handle"
+          aria-label="Admin Instagram Handle"
+          onChange={(e) => setPostingFormData({ ...postingFormData, adminInstagramHandle: e.target.value })}
+        />
+
+        <input
+          type="text"
+          value={postingFormData.adminEmail || ''}
+          placeholder="Email"
+          aria-label="Admin Email"
+          onChange={(e) => setPostingFormData({ ...postingFormData, adminEmail: e.target.value })}
+          required
+        />
+
+        <input
+          type="text"
+          id="admin-phone-number"
+          value={postingFormData.adminPhoneNumber || ''}
+          onChange={(e) => setPostingFormData({ ...postingFormData, adminPhoneNumber: e.target.value })}
+          placeholder="Phone Number (e.g., 001-123-456-7890)"
+        />
+      </div>
+    ) : (
+      <>
+        {residents.length > 0 && (
+          <div className={css.residentRowAdmin}>
+            <input
+              type="text"
+              value={residents[0].name}
+              placeholder="First and Last Name"
+              aria-label="Admin Name"
+              onChange={(e) => handleResidentChange(0, 'name', e.target.value)}
+              required
+            />
+            <select
+              value={residents[0].academicYear}
+              aria-label="Admin Academic Year"
+              onChange={(e) => handleResidentChange(0, 'academicYear', e.target.value)}
+              required
+            >
+              <option value="" disabled hidden>
+                Select One
+              </option>
+              <option value="freshman">Freshman</option>
+              <option value="sophomore">Sophomore</option>
+              <option value="junior">Junior</option>
+              <option value="senior">Senior</option>
+            </select>
+
+            <select
+              value={residents[0].gender}
+              aria-label="Admin Gender"
+              onChange={(e) => handleResidentChange(0, 'gender', e.target.value)}
+              required
+            >
+              <option value="" disabled hidden>
+                Select One
+              </option>
+              <option value="male">Male</option>
+              <option value="female">Female</option>
+              <option value="other">Other</option>
+            </select>
+
+            {residents[0].gender === 'other' && (
+              <input
+                type="text"
+                value={residents[0].customGender || ''}
+                placeholder="Specify Gender"
+                onChange={(e) => handleResidentChange(0, 'customGender', e.target.value)}
+                required
+              />
+            )}
+
+            <input
+              type="text"
+              value={residents[0].email || ''}
+              placeholder="BC Email"
+              aria-label="Admin Email"
+              onChange={(e) => handleResidentChange(0, 'email', e.target.value)}
+              required
+            />
+
+            <input
+              type="text"
+              value={residents[0].instagramHandle || ''}
+              placeholder="Instagram Handle"
+              aria-label="Admin Instagram Handle"
+              onChange={(e) => handleResidentChange(0, 'instagramHandle', e.target.value)}
+            />
+
+            <input
+              type="text"
+              id="admin-phone-number"
+              value={postingFormData.adminPhoneNumber || ''}
+              onChange={(e) => setPostingFormData({ ...postingFormData, adminPhoneNumber: e.target.value })}
+              placeholder="Phone Number (e.g., 001-123-456-7890)"
+            />
           </div>
-          <button type="button" onClick={addResident} className={css.addButton}>Add More</button>
-          <label htmlFor="admin-phone-number">Group Administrator Phone Number:</label>
+        )}
+      </>
+    )}
+
+    <label>Additional Members:</label>
+    {residents.slice(1).map((resident, index) => (
+      <div key={`member-${index}`} className={css.residentRow}>
+        <input
+          type="text"
+          value={resident.name}
+          placeholder="First and Last Name"
+          aria-label={`Name of Resident ${index + 1}`}
+          onChange={(e) => handleResidentChange(index + 1, 'name', e.target.value)}
+          required
+        />
+        <select
+          value={resident.academicYear}
+          aria-label={`Academic year of Resident ${index + 1}`}
+          onChange={(e) => handleResidentChange(index + 1, 'academicYear', e.target.value)}
+          required
+        >
+          <option value="" disabled hidden>
+            Select One
+          </option>
+          <option value="freshman">Freshman</option>
+          <option value="sophomore">Sophomore</option>
+          <option value="junior">Junior</option>
+          <option value="senior">Senior</option>
+        </select>
+
+        <select
+          value={resident.gender}
+          aria-label={`Gender of Resident ${index + 1}`}
+          onChange={(e) => {
+            const value = e.target.value;
+            handleResidentChange(index + 1, 'gender', value);
+            if (value !== 'other') {
+              handleResidentChange(index + 1, 'customGender', ''); // Clear custom input
+            }
+          }}
+          required
+        >
+          <option value="" disabled hidden>
+            Select One
+          </option>
+          <option value="male">Male</option>
+          <option value="female">Female</option>
+          <option value="other">Other</option>
+        </select>
+
+        {resident.gender === 'other' && (
+          <input
+            type="text"
+            value={resident.customGender || ''}
+            placeholder="Specify Gender"
+            onChange={(e) => handleResidentChange(index + 1, 'customGender', e.target.value)}
+            required
+          />
+        )}
+
+        <input
+          type="text"
+          value={resident.email || ''}
+          placeholder="BC Email"
+          aria-label={`Email of Resident ${index + 1}`}
+          onChange={(e) => handleResidentChange(index + 1, 'email', e.target.value)}
+          required
+        />
+
+        <input
+          type="text"
+          value={resident.instagramHandle || ''}
+          placeholder="Instagram Handle"
+          aria-label={`Instagram Handle of Resident ${index + 1}`}
+          onChange={(e) => handleResidentChange(index + 1, 'instagramHandle', e.target.value)}
+        />
+
+        <button type="button" onClick={() => removeResident(index + 1)} className={css.removeButton}>
+          Remove
+        </button>
+      </div>
+    ))}
+
+    <button type="button" onClick={addResident} className={css.addButton}>
+      Add More
+    </button>
+  </div>
+</div>
+
+
+
+
+          {/* <label htmlFor="admin-phone-number">Group Administrator Phone Number:</label>
           <input
             type="text"
             id="admin-phone-number"
@@ -241,17 +437,18 @@ const PostingForm = () => {
             value={postingFormData.adminEmail}
             onChange={(e) => setPostingFormData({...postingFormData, adminEmail: e.target.value})}
             placeholder="e.g, example@bc.edu"
-          />
-        </div>
+          /> */}
+
+        <div className={css.formGroup3}>
 
         <div className={css.formGroup}>
-          <label htmlFor="looking-for">Looking for:</label>
+          <label htmlFor="looking-for">How many more roomates do you need?:</label>
           <input
             type="number"
             id="looking-for"
             value={postingFormData.numSeek}
             onChange={(e) => setPostingFormData({ ...postingFormData, numSeek: e.target.value })}
-            placeholder="e.g., 8"
+            placeholder="e.g., 7"
           />
         </div>
 
@@ -292,7 +489,7 @@ const PostingForm = () => {
             </div>
 
             <div className={css.formGroup}>
-              <label htmlFor="start-date">Start Date:</label>
+              <label htmlFor="start-date" className={css.startDate}>Start Date:</label>
               <input
                 type="date"
                 id="start-date"
@@ -300,7 +497,7 @@ const PostingForm = () => {
                 onChange={(e) => setPostingFormData({ ...postingFormData, startDate: e.target.value })}
               />
 
-              <label htmlFor="end-date">End Date:</label>
+              <label htmlFor="end-date" className={css.endDate}>End Date:</label>
               <input
                 type="date"
                 id="end-date"
@@ -341,6 +538,7 @@ const PostingForm = () => {
           <label htmlFor="upload-images">Upload Images:</label>
           <input type="file" id="upload-images" multiple />
         </div>
+      </div>
 
         <button type="submit" className={css.submitButton}>Submit</button>
       </form>
