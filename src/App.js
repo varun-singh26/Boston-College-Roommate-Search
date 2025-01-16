@@ -11,6 +11,7 @@ import SignIn from "./components/SignInSignUp/SignIn.jsx";
 import SignUp from "./components/SignInSignUp/SignUp.jsx";
 import MyProfile from "./components/myProfile.jsx";
 import Footer from "./components/Footer.jsx";
+import Purpose from "./components/Purpose/purposeLandingSplash.jsx";
 import css from './App.css';
 
 
@@ -95,6 +96,15 @@ function RoutesWrapper({ data }) {
             </>
           }
         />
+
+      <Route
+          path ="/our-purpose"
+          element = {
+            <>
+              <Purpose />
+            </>
+          }
+        />  
       </Routes>
   );
 }

@@ -1,6 +1,6 @@
 import React from 'react';
-import Title from 'title.jsx';
-import Explanation from 'explanation.jsx';
+import Title from './title.jsx';
+import Explanation from './explanation.jsx';
 
 const purposeLandingSplash = () => {
 
@@ -17,4 +17,4 @@ const purposeLandingSplash = () => {
     );
 
 };
-export default purposeLandingSplash
+export default purposeLandingSplash;
