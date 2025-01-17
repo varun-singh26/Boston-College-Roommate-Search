@@ -29,6 +29,11 @@
     font-weight: bold;
     margin-bottom: 1.5rem;
   }
+
+  .errorMessage {
+    color: red;
+    margin: 0.5rem 0;
+}
   
   .keyword {
     color: #cd9f58;

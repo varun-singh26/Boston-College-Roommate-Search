@@ -1,10 +1,15 @@
-import React, { useEffect} from "react";
+import React, { useState, useEffect} from "react";
 import { useLocation } from "react-router-dom";
+//We want to use Link for internal links of our web app to avoid full page reloads when they are clicked (to preserve any contexts)
+//Not having full page reloads means that css and javascript don't have to be rerendered when a Link is clicked
 import { Link } from "react-router-dom";
+import { useAuth } from "../context/authContext";
 import css from "../styles/Navbar.module.css";
 
 const Navbar = () => {
   const location = useLocation(); // Provides access to the current location object
+
+  const { userLoggedIn } = useAuth(); //render certain components based on if userLoggedIn is true
 
   const isActive = (path) => location.pathname === path;
 
@@ -75,13 +80,29 @@ const Navbar = () => {
                             </a>
                         </p> */}
                     </div>
-                    <div className= {css.signInContainer}>
-                        <Link to="/signIn" className={css.signInLink}>Sign In / Make an Account</Link>
-                        <img
-                            src="https://cdn.glitch.global/c7d70598-61bb-4c55-ac66-58662df41931/Profile%20Icon.png?v=1732691728436"
-                            alt="Profile Icon"
-                            className={css.signInImage}
-                        />
+                    {/* Render this or div or myProfile box depending on if userLoggedin is true */}
+                    <div className= {css.profileContainer}>
+                        {
+                            userLoggedIn ? (
+                                <>
+                                    <Link to="/myProfile" className={css.profileLink}>My Profile</Link>
+                                    <img
+                                        src="https://cdn.glitch.global/c7d70598-61bb-4c55-ac66-58662df41931/Profile%20Icon.png?v=1732691728436"
+                                        alt="Profile Icon"
+                                        className={css.profileImage}
+                                    />
+                                </>
+                            ) : (
+                                <>
+                                    <Link to="/signIn" className={css.profileLink}>Sign In / Make an Account</Link>
+                                    <img
+                                        src="https://cdn.glitch.global/c7d70598-61bb-4c55-ac66-58662df41931/Profile%20Icon.png?v=1732691728436"
+                                        alt="Profile Icon"
+                                        className={css.profileImage}
+                                    />
+                                </>
+                            )
+                        }
                     </div>
                 </nav>
             </div>
