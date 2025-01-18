@@ -94,7 +94,7 @@ const Navbar = () => {
                                 </>
                             ) : (
                                 <>
-                                    <Link to="/signIn" className={css.profileLink}>Sign In / Make an Account</Link>
+                                    <Link to="/signIn" className={css.profileLink}>Sign In</Link>
                                     <img
                                         src="https://cdn.glitch.global/c7d70598-61bb-4c55-ac66-58662df41931/Profile%20Icon.png?v=1732691728436"
                                         alt="Profile Icon"
