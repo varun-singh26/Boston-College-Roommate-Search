@@ -60,7 +60,7 @@ export const doPasswordChange = (password) => {
 //What does this function do?
 export const doSendEmailVerifiction = () => {
     return sendEmailVerification(auth.currentUser, {
-        url: `${window.location.origin}/home`,
+        url: `${window.location.origin}/myProfile`,
     });
 };
 
