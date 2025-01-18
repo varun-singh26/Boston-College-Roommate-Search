@@ -8,7 +8,7 @@
     font-family: 'Arial', sans-serif;
   }
   .formHolder {
-    width: 80%;
+    width: 90%;
     padding: 2rem;
     background-color: white;
     border-radius: 4px;
@@ -82,7 +82,17 @@
     padding-top: 2rem;
   }
 
-  .required {
+  .requiredInputAdmin {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    width: 100%; 
+    max-width: 100%;
+    border:1px solid red;
+
+  }
+
+  .requiredAdmin {
     color: #fc9700;
     padding-left: 0.5rem;
     font-size: 1.5rem;
@@ -91,6 +101,16 @@
   .requiredInput {
     display: flex;
     flex-direction: row;
+    align-items: center;
+    width: 100%; 
+    max-width: 100%;
+    border:1px solid red;
+  }
+
+  .required {
+    color: #fc9700;
+    padding-left: 0.5rem;
+    font-size: 1.5rem;
   }
 
   .genderBlock {

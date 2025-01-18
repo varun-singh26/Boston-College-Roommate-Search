@@ -205,6 +205,8 @@ const PostingForm = () => {
     <label>Group Administrator:</label>
     {residents.length === 0 ? (
       <div className={css.residentRowAdmin}>
+
+        <div className={css.requiredInputAdmin}>
         <input
           type="text"
           value={postingFormData.adminName || ''}
@@ -213,6 +215,11 @@ const PostingForm = () => {
           onChange={(e) => setPostingFormData({ ...postingFormData, adminName: e.target.value })}
           required
         />
+        <div className={css.requiredAdmin}>*</div>
+        </div>
+
+        {/* The div around the input field won't appear/integrate. It doesn't appear under inspect element tools */}
+
         <select
           value={postingFormData.adminAcademicYear || ''}
           aria-label="Admin Academic Year"
@@ -274,7 +281,7 @@ const PostingForm = () => {
           id="admin-phone-number"
           value={postingFormData.adminPhoneNumber || ''}
           onChange={(e) => setPostingFormData({ ...postingFormData, adminPhoneNumber: e.target.value })}
-          placeholder="Phone Number (e.g., 001-123-456-7890)"
+          placeholder="Phone Number"
         />
       </div>
     ) : (
@@ -350,7 +357,7 @@ const PostingForm = () => {
               id="admin-phone-number"
               value={postingFormData.adminPhoneNumber || ''}
               onChange={(e) => setPostingFormData({ ...postingFormData, adminPhoneNumber: e.target.value })}
-              placeholder="Phone Number (e.g., 001-123-456-7890)"
+              placeholder="Phone Number"
             />
           </div>
         )}
@@ -360,6 +367,7 @@ const PostingForm = () => {
     <label>Additional Members:</label>
     {residents.slice(1).map((resident, index) => (
       <div key={`member-${index}`} className={css.residentRow}>
+        <div className={css.requiredInput}>
         <input
           type="text"
           value={resident.name}
@@ -368,6 +376,10 @@ const PostingForm = () => {
           onChange={(e) => handleResidentChange(index + 1, 'name', e.target.value)}
           required
         />
+        <div className={css.required}>*</div>
+        </div>
+
+        <div className={css.requiredInput}>
         <select
           value={resident.academicYear}
           aria-label={`Academic year of Resident ${index + 1}`}
@@ -382,7 +394,10 @@ const PostingForm = () => {
           <option value="junior">Junior</option>
           <option value="senior">Senior</option>
         </select>
+        <div  className={css.required}>*</div>
+        </div>
 
+        <div className={css.requiredInput}>
         <select
           value={resident.gender}
           aria-label={`Gender of Resident ${index + 1}`}
@@ -412,7 +427,10 @@ const PostingForm = () => {
             required
           />
         )}
+        <div className={css.required}>*</div>
+        </div>
 
+        <div className={css.requiredInput}>
         <input
           type="text"
           value={resident.email || ''}
@@ -421,6 +439,8 @@ const PostingForm = () => {
           onChange={(e) => handleResidentChange(index + 1, 'email', e.target.value)}
           required
         />
+        <div className={css.required}>*</div>
+        </div>
 
                   <input
                     type="text"
@@ -479,7 +499,7 @@ const PostingForm = () => {
             id="looking-for"
             value={postingFormData.numSeek}
             onChange={(e) => setPostingFormData({ ...postingFormData, numSeek: e.target.value })}
-            placeholder="e.g., 7"
+            placeholder="e.g. 7"
           />
         </div>
 
@@ -492,7 +512,7 @@ const PostingForm = () => {
                 id="address"
                 value={postingFormData.address}
                 onChange={(e) => setPostingFormData({ ...postingFormData, address: e.target.value })}
-                placeholder="e.g., 140 Commonwealth Ave, Chestnut Hill, MA 02467"
+                placeholder="e.g. 140 Commonwealth Ave, Chestnut Hill, MA 02467"
               />
             </div>
 
@@ -503,7 +523,7 @@ const PostingForm = () => {
                 id="rent"
                 value={postingFormData.rent}
                 onChange={(e) => setPostingFormData({ ...postingFormData, rent: e.target.value })}
-                placeholder="e.g., 1500"
+                placeholder="e.g. 1500"
               />
             </div>
 
@@ -514,6 +534,7 @@ const PostingForm = () => {
                     value={postingFormData.utilities}
                     onChange={(e) => setPostingFormData({ ...postingFormData, utilities: e.target.value })}
                   >
+                    <option value="" disabled hidden>Select One</option>
                     <option value="included">Included</option>
                     <option value="not-included">Not Included</option>
                   </select>
