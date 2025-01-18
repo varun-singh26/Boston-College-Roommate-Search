@@ -1,0 +1,82 @@
+.container {
+    width: 80%;
+    margin: 1rem auto;
+    padding: 2rem;
+    background-color: white;
+    border-radius: 20px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+
+    display: grid;
+    gap: 1.5rem;
+}
+
+.title {
+    font-size: 2rem;
+    font-weight: bold;
+    text-align: center;
+    margin-bottom: 1rem;
+}
+
+p {
+    text-align: center;
+}
+
+.emailVerification {
+    display: flex;
+    flex-direction: column;
+}
+.emailVerification button {
+    border: 1px solid #ccc;
+    background-color: #cd9f58;
+    color: white;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.changePassword {
+    display: flex;
+    flex-direction: column;
+}
+
+.changePassword input {
+    width: 100%;
+    padding: 0.8rem;
+    border-radius: 10px;
+    border: 1px solid #ccc;
+    font-size: 1rem;
+}
+
+.changePassword button {
+    border: 1px solid #ccc;
+    background-color: #cd9f58;
+    color: white;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+/*Add spacing between children of changePassword container */
+.changePassword * {
+    margin: 1rem;
+}
+
+.message {
+    color: red;
+    font-size: 1rem;
+    text-align: center;
+}
+
+.signOut {
+    display: flex;
+    flex-direction: column;
+}
+
+.signOut button {
+    border: 1px solid #ccc;
+    background-color: #EA4335;
+    color: white;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}

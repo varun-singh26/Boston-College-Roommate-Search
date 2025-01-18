@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../context/authContext/index";
 import { doSignOut } from "../../config/auth";
+import css from "../../styles/Profile/myProfile.module.css"
 
 
 const SignOut = () => {
@@ -56,12 +57,12 @@ const SignOut = () => {
     };
 
     return (
-        <>
-        {errorMessage && <p className="error-message"> {errorMessage} </p>}
-        <button onClick={handleSignOut} disabled={loading}>
-            {loading ? "Signing Out..." : "Sign Out"}
-        </button>
-        </>
+        <div className={css.signOut}>
+            {errorMessage && <p className={css.message}> {errorMessage} </p>}
+            <button onClick={handleSignOut} disabled={loading}>
+                {loading ? "Signing Out..." : "Sign Out"}
+            </button>
+        </div>
     )
 };
 
