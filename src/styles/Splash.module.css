@@ -1,5 +1,15 @@
 /* ChatGPT Styling: */
 
+.backgroundLayer {
+  position: absolute;
+  /* background: linear-gradient(to bottom, rgba(74, 24, 23, 0.5), rgba(74, 24, 23, 1)); */
+  background: linear-gradient(to bottom, rgba(89, 89, 89, 0), rgba(89, 89, 89, 1));
+  z-index: -30;
+  width: 100%;
+  max-width: 100%;
+  height: 100%;
+  max-height: 100%;
+}
 .container {
   display: flex;
   flex-direction: column;
@@ -7,10 +17,26 @@
   align-items: center;
   width: 100%; /* Stretches the image to the full width of the page */
   height: 70vh; /* Restricts the height to 70% of the viewable area */
-  /* background: url('https://cdn.glitch.global/da9cfe19-f6cb-435e-ae30-d04e66913eee/gassonHall.jpg?v=1731984555342') no-repeat center center; */
-  /* background-size: cover;
-  position: relative; */
 }
+
+@media (max-width: 1200px) {
+  .container {
+      height: auto;
+  }
+}
+
+@media (max-width: 370px) {
+  .container {
+    align-items: flex-start;
+  }
+}
+
+@media (max-width: 333px) {
+  .container {
+    align-items: flex-start;
+  }
+}
+
 
 /* .introText {
   display: flex;
@@ -27,19 +53,20 @@
 .contentWrapper {
   display: grid;
   justify-items: left;
-  width: 80%;
+  width: 80% !important;
   grid-template-columns: 1fr;
   grid-template-rows:  auto auto;
   grid-gap: 0;
   text-align: center;
   margin-top: 15%;
   color: white;
-
   /* background: rgba(0, 0, 0, 0.6); */
   padding: 2rem;
   border-radius: 10px;
   transition: transform 0.3s ease;
 }
+
+
 
 .contentWrapper:hover {
   transform: translateY(-2px);
@@ -48,11 +75,14 @@
 .searchBarWrapper {
   display: flex;
   text-align: center;
+  max-width: 100%;
+  width: 100% !important;
   grid-row: 2;
   margin-left: 0;
   border-radius: 10px;
   box-shadow: 0px 5px 7px #6d6969;
   transition: box-shadow 0.3s ease;
+
 }
 
 .searchBarWrapper:hover {
@@ -72,6 +102,7 @@
 
 .buttonsContainer {
   display: flex;
+  flex: 1 1 100%;
   flex-direction: row;
   justify-content: center;
   align-items: flex-end;

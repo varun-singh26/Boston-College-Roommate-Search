@@ -173,15 +173,22 @@ const PostingForm = () => {
   <div className={css.residentsContainer}>
     <label>Group Administrator:</label>
     {residents.length === 0 ? (
+    
       <div className={css.residentRowAdmin}>
-        <input
-          type="text"
-          value={postingFormData.adminName || ''}
-          placeholder="First and Last Name"
-          aria-label="Admin Name"
-          onChange={(e) => setPostingFormData({ ...postingFormData, adminName: e.target.value })}
-          required
-        />
+        
+        <div className={css.requiredInput}>
+          <input
+            type="text"
+            value={postingFormData.adminName || ''}
+            placeholder="First and Last Name"
+            aria-label="Admin Name"
+            onChange={(e) => setPostingFormData({ ...postingFormData, adminName: e.target.value })}
+            required
+          />
+          <div className={css.required}>*</div>
+        </div>
+
+        <div className={css.requiredInput}>
         <select
           value={postingFormData.adminAcademicYear || ''}
           aria-label="Admin Academic Year"
@@ -196,6 +203,8 @@ const PostingForm = () => {
           <option value="junior">Junior</option>
           <option value="senior">Senior</option>
         </select>
+        <div className={css.required}>*</div>
+        </div>
 
         <select
           value={postingFormData.adminGender || ''}
@@ -243,7 +252,7 @@ const PostingForm = () => {
           id="admin-phone-number"
           value={postingFormData.adminPhoneNumber || ''}
           onChange={(e) => setPostingFormData({ ...postingFormData, adminPhoneNumber: e.target.value })}
-          placeholder="Phone Number (e.g., 001-123-456-7890)"
+          placeholder="Phone Number"
         />
       </div>
     ) : (
@@ -319,7 +328,7 @@ const PostingForm = () => {
               id="admin-phone-number"
               value={postingFormData.adminPhoneNumber || ''}
               onChange={(e) => setPostingFormData({ ...postingFormData, adminPhoneNumber: e.target.value })}
-              placeholder="Phone Number (e.g., 001-123-456-7890)"
+              placeholder="Phone Number"
             />
           </div>
         )}
@@ -329,6 +338,7 @@ const PostingForm = () => {
     <label>Additional Members:</label>
     {residents.slice(1).map((resident, index) => (
       <div key={`member-${index}`} className={css.residentRow}>
+        <div className={css.requiredInput}>
         <input
           type="text"
           value={resident.name}
@@ -337,6 +347,10 @@ const PostingForm = () => {
           onChange={(e) => handleResidentChange(index + 1, 'name', e.target.value)}
           required
         />
+        <div className={css.required}>*</div>
+        </div>
+
+        <div className={css.requiredInput}>
         <select
           value={resident.academicYear}
           aria-label={`Academic year of Resident ${index + 1}`}
@@ -351,37 +365,46 @@ const PostingForm = () => {
           <option value="junior">Junior</option>
           <option value="senior">Senior</option>
         </select>
+        <div className={css.required}>*</div>
+        </div>
 
-        <select
-          value={resident.gender}
-          aria-label={`Gender of Resident ${index + 1}`}
-          onChange={(e) => {
-            const value = e.target.value;
-            handleResidentChange(index + 1, 'gender', value);
-            if (value !== 'other') {
-              handleResidentChange(index + 1, 'customGender', ''); // Clear custom input
-            }
-          }}
-          required
-        >
-          <option value="" disabled hidden>
-            Select One
-          </option>
-          <option value="male">Male</option>
-          <option value="female">Female</option>
-          <option value="other">Other</option>
-        </select>
+        <div className={css.requiredInput}>
+          <div className={css.genderBlock}>
+            <select
+              value={resident.gender}
+              aria-label={`Gender of Resident ${index + 1}`}
+              onChange={(e) => {
+                const value = e.target.value;
+                handleResidentChange(index + 1, 'gender', value);
+                if (value !== 'other') {
+                  handleResidentChange(index + 1, 'customGender', ''); // Clear custom input
+                }
+              }}
+              required
+            >
+              <option value="" disabled hidden>
+                Select One
+              </option>
+              <option value="male">Male</option>
+              <option value="female">Female</option>
+              <option value="other">Other</option>
+            </select>
+            
 
-        {resident.gender === 'other' && (
-          <input
-            type="text"
-            value={resident.customGender || ''}
-            placeholder="Specify Gender"
-            onChange={(e) => handleResidentChange(index + 1, 'customGender', e.target.value)}
-            required
-          />
-        )}
+            {resident.gender === 'other' && (
+              <input
+                type="text"
+                value={resident.customGender || ''}
+                placeholder="Specify Gender"
+                onChange={(e) => handleResidentChange(index + 1, 'customGender', e.target.value)}
+                required
+              />
+            )}
+          </div>
+          <div className={css.required}>*</div>
+        </div>
 
+        <div className={css.requiredInput}>
         <input
           type="text"
           value={resident.email || ''}
@@ -390,6 +413,8 @@ const PostingForm = () => {
           onChange={(e) => handleResidentChange(index + 1, 'email', e.target.value)}
           required
         />
+        <div className={css.required}>*</div>
+        </div>
 
         <input
           type="text"
@@ -448,7 +473,7 @@ const PostingForm = () => {
             id="looking-for"
             value={postingFormData.numSeek}
             onChange={(e) => setPostingFormData({ ...postingFormData, numSeek: e.target.value })}
-            placeholder="e.g., 7"
+            placeholder="e.g. 7"
           />
         </div>
 
@@ -461,7 +486,7 @@ const PostingForm = () => {
                 id="address"
                 value={postingFormData.address}
                 onChange={(e) => setPostingFormData({ ...postingFormData, address: e.target.value })}
-                placeholder="e.g., 140 Commonwealth Ave, Chestnut Hill, MA 02467"
+                placeholder="e.g. 140 Commonwealth Ave, Chestnut Hill, MA 02467"
               />
             </div>
 
@@ -472,7 +497,7 @@ const PostingForm = () => {
                 id="rent"
                 value={postingFormData.rent}
                 onChange={(e) => setPostingFormData({ ...postingFormData, rent: e.target.value })}
-                placeholder="e.g., 1500"
+                placeholder="e.g. 1500"
               />
             </div>
 

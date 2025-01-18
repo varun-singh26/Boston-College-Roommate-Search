@@ -28,6 +28,7 @@ const Splash = () => {
   }, [setListingLocation]);
 
   return (
+    /*<div className={css.backgroundLayer}>*/
     <div className={css.container} aria-label="Image of Gasson Hall">
       <Backdrop />
       {/* <div className={css.introText}>
@@ -56,7 +57,9 @@ const Splash = () => {
           <SearchBar />
         </div>
       </div>
+      <div className={css.backgroundLayer}></div>
     </div>
+    /*</div>*/
   );
 };
 

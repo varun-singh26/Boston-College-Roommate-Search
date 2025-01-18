@@ -1,26 +1,61 @@
 .formContainer {
     display: flex;
+    flex: 1 1 100%;
     flex-direction: column;
+    max-width: 100%;
+    width: 100% !important;
     align-items: flex-start;
     background: #f9f9f9;
     padding: 1rem;
     border-radius: 0 10px 10px 10px;
 }
 
-.formOn {
+@media (min-width: 2000px) {
+    .formContainer {
+        min-height: 10vh;
+    }
+}
+
+.formOn, .formOff {
     display: flex;
     flex-direction: row; /* Ensures elements are arranged in a row */
-    gap: 4rem;
+    justify-content: space-between;
+    gap: clamp(0.1rem, 5vw, 20rem);
+    max-width: 100%;
+    width: 100%;
     background-color: #f9f9f9;
 }
 
-.formOff {
-    display: flex;
-    flex-direction: row; /* Ensures elements are arranged in a row */
-    gap: 5.4rem;
-    background-color: #f9f9f9;
+
+@media (max-width: 1740px) {
+    .formOn, .formOff {
+        gap: 4vw
+    }
 }
 
+@media (max-width: 1550px) {
+    .formOn, .formOff {
+        gap: 3vw
+    }
+}
+
+@media (max-width: 1440px) {
+    .formOn, .formOff {
+        gap: 2vw
+    }
+}
+
+@media (max-width: 1300px) {
+    .formOn, .formOff {
+        gap: 1vw
+    }
+}
+
+@media (max-width: 1200px) {
+    .formOn, .formOff {
+        flex-wrap: wrap;
+    }
+}
 
 .searchButton {
     flex: 1 1 100%;
@@ -65,7 +100,7 @@
 
 .fieldGroup select {
     border-radius: 10px;
-    padding: 7px;
+    padding: 0.45rem;
     border: 1px solid #c4c0c0;
     background-color: white;
     transition: box-shadow 0.3 ease, transform 0.3 ease;
