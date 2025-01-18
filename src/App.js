@@ -10,6 +10,7 @@ import PostDetailView from "./components/Post/PostDetailView.jsx";
 import SignIn from "./components/SignInSignUp/SignIn.jsx";
 import SignUp from "./components/SignInSignUp/SignUp.jsx";
 import MyProfile from "./components/myProfile.jsx";
+import ForgotPassword from "./components/SignInSignUp/ForgotPassword.jsx";
 import Footer from "./components/Footer.jsx";
 import Purpose from "./components/Purpose/purposeLandingSplash.jsx";
 import css from './App.css';
@@ -97,7 +98,16 @@ function RoutesWrapper({ data }) {
           }
         />
 
-      <Route
+        <Route 
+          path="/forgot-password"
+          element = {
+            <>
+              <ForgotPassword />
+            </>
+          }
+        />
+
+        <Route
           path ="/our-purpose"
           element = {
             <>

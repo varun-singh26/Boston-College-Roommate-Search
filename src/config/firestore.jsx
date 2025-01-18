@@ -25,5 +25,7 @@ const db = getFirestore(app);
 // Initialize Auth and get a reference to it
 const auth = getAuth(app);
 
+// Initialize reference to storage provider
+
 export {app, db, auth};
 

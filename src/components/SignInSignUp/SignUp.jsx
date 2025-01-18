@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../context/authContext/index";
-import css from "./styles/SignUp.module.css"
+import css from "./styles/Form.module.css"
 import { doCreateUserWithEmailAndPassword } from "../../config/auth";
 
 
@@ -10,12 +10,15 @@ const SignUp = () => {
     //destructure AuthContext
     const { currentUser, setCurrentUser, userLoggedIn, setUserLoggedIn, loading, setLoading } = useAuth(); 
 
-    //Print state of AuthContext vars for debugging
-    console.log("AuthContext: ");
-    console.log("current user: ", currentUser);
-    console.log("user logged in?: ", userLoggedIn);
-    console.log("loading: ", loading);
+    const DEBUG_MODE = true;
 
+    if (DEBUG_MODE) {
+        //Print state of AuthContext vars for debugging
+        console.log("AuthContext: ");
+        console.log("current user: ", currentUser);
+        console.log("user logged in?: ", userLoggedIn);
+        console.log("loading: ", loading);
+    }
 
     const [name, setName] = useState('');
     const [email, setEmail] = useState('');
@@ -23,9 +26,8 @@ const SignUp = () => {
     const [confirmPassword, setConfirmPassword] = useState('');
     const [isBCStudent, setIsBCStudent] = useState(false);
     const [phoneNumber, setPhoneNumber] = useState('');
-
     const [errorMessage, setErrorMessage] = useState('');
-    console.log("error message: ", errorMessage);
+
 
     //used to navigate to a new path
     const navigate = useNavigate();
@@ -107,29 +109,31 @@ const SignUp = () => {
 
     //When a new user signs up send them an email confirmation?
     return (
-        <section className={css["signup-container"]}>
-            <div className="signupDiv">
-                <h1>Sign Up</h1>
-                {errorMessage && <p className={css.errorMessage}>{errorMessage}</p>}
-                <form onSubmit={handleSubmit} action="" method="POST">
-                    <input type="text" value={name} name="name" placeholder="Full Name" onChange={(e) => handleName(e.target.value)}  required />
-                    <input type="email" value={email} name="email" placeholder="Email Address" onChange={(e) => handleEmail(e.target.value)} required />
-                    {/*password needs to be atleast 6 characters for signup to work with firebase auth. TODO: implement a check for this*/}
-                    <input type="password" value={password} name="password" placeholder="Password" onChange={(e) => handlePassword(e.target.value)} required />
-                    <input type="password" value={confirmPassword} name="confirmPassword" placeholder="Confirm Password" onChange={(e) => handleConfirmPassword(e.target.value)} required />
-                    {/*<input type="date" name="dob" placeholder="Date of Birth" required />*/}
-                    <label>
-                        {/*With check boxes, checked attribute is better to use than value attribute. OnChange attribute is better to use than onClick attribute */}
-                        {/*With the current value for onChange, the function will only execute when the box is checked and NOT when the component first executes*/}
-                        <input type="checkbox" checked={isBCStudent} name="isBCStudent" onChange={() => setIsBCStudent(!isBCStudent)} />
-                            Are you a Boston College student?
-                    </label>
-                    <input type="tel" value={phoneNumber} name="phone" placeholder="Phone Number (Optional)" onChange={(e) => handlePhoneNumber(e.target.value)} />
-                    <button type="submit">Sign Up</button>
-                </form>
-                <a href="/signIn">Already have an account? Sign In</a>
-            </div>
-      </section>
+        <div className={css.formHolder}>
+            <h2>Sign Up</h2>
+            {errorMessage && <p className={css.errorMessage}>{errorMessage}</p>}
+            <form className={css.form} onSubmit={handleSubmit} action="" method="POST">
+                <input type="text" value={name} name="name" placeholder="Full Name" onChange={(e) => handleName(e.target.value)}  required />
+                <input type="email" value={email} name="email" placeholder="Email Address" onChange={(e) => handleEmail(e.target.value)} required />
+                {/*password needs to be atleast 6 characters for signup to work with firebase auth. TODO: implement a check for this*/}
+                <input type="password" value={password} name="password" placeholder="Password" onChange={(e) => handlePassword(e.target.value)} required />
+                <input type="password" value={confirmPassword} name="confirmPassword" placeholder="Confirm Password" onChange={(e) => handleConfirmPassword(e.target.value)} required />
+                {/*<input type="date" name="dob" placeholder="Date of Birth" required />*/}
+                <div className={css.checkboxContainer}>
+                    <input 
+                        type="checkbox" 
+                        id="bc-student-checkbox"
+                        checked={isBCStudent} 
+                        name="isBCStudent" 
+                        onChange={() => setIsBCStudent(!isBCStudent)} 
+                    />
+                    <label htmlFor="bc-student-checkbox">Are you a Boston College student?</label>
+                </div>
+                <input type="tel" value={phoneNumber} name="phone" placeholder="Phone Number (Optional)" onChange={(e) => handlePhoneNumber(e.target.value)} />
+                <button type="submit" className={css.submitButton}>Sign Up</button>
+                <p><a href="/signIn">Already have an account? Sign In</a></p>
+            </form>
+      </div>
     )
 
 };

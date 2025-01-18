@@ -1,0 +1,81 @@
+/* SignIn and SignUp Page styling */
+
+.formHolder {
+    width: 80%;
+    margin: 1rem auto;
+    padding: 2rem;
+    background-color: white;
+    border-radius: 20px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+h2 {
+    font-size: 2rem;
+    font-weight: bold;
+    text-align: center;
+    margin-bottom: 1rem;
+}
+
+.errorMessage {
+    color: red;
+    font-size: 1rem;
+    text-align: center;
+}
+
+.form {
+    display: grid;
+    gap: 1.5rem;
+}
+
+.checkboxContainer {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+label {
+    font-size: 1rem;
+    color: #333;
+}
+
+input[type="checkbox"] {
+    transform: scale(1.2); /* Adjust size */
+    cursor: pointer;
+    flex-basis: 5%;
+}
+
+input, button {
+    width: 100%;
+    padding: 0.8rem;
+    border-radius: 10px;
+    border: 1px solid #ccc;
+    font-size: 1rem;
+}
+
+.submitButton {
+    background-color: #cd9f58;
+    color: white;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.googleSubmitButton {
+    background-color: #4285F4;
+    color: white;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+button:hover {
+    background-color: #b88844;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+h1 {
+    text-align: center;
+}

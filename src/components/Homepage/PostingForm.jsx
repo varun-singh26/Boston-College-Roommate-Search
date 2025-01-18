@@ -1,13 +1,20 @@
-import React, { useState, useEffect } from 'react';
-import css from "../../styles/Homepage/Form.module.css"
+import React, { useContext, useState, useEffect } from 'react';
+import { AuthContext } from "../../context/authContext/index";
+import { auth } from "../../config/firestore";
 import {db} from "../../config/firestore";
 import {collection, addDoc} from "firebase/firestore";
+import css from "../../styles/Homepage/Form.module.css"
 
 const PostingForm = () => {
+
+  //destructure userLoggedIn from AuthContext
+  const {userLoggedIn} = useContext(AuthContext);
   const debugMode = true;
+
+  const [errorMessage, setErrorMessage] = useState("");
   const [location, setLocation] = useState('offcampus');
   const [residents, setResidents] = useState([
-    { name: '', academicYear: '', gender: '', instagramHandle: '', email: '', isAdmin: true},
+    { name: '', academicYear: '', gender: '', customGender: '', instagramHandle: '', email: '', isAdmin: true},
   ]);
   const [postingFormData, setPostingFormData] = useState({
     numSeek: '',
@@ -17,6 +24,8 @@ const PostingForm = () => {
     utilities: 'included',
     startDate: '',
     endDate: '',
+    adminName: '',
+    adminAcademicYear: '',
     adminPhoneNumber: '',
     adminInstagramHandle: '',
     adminEmail: ''
@@ -40,7 +49,6 @@ const PostingForm = () => {
   }, [location]);
 
   // Add a new resident row
-  
   const addResident = () => {
     setResidents((prev) => [
       ...prev,
@@ -58,16 +66,26 @@ const PostingForm = () => {
 
   // Handle resident change
   const handleResidentChange = (index, field, value) => {
+
+    //Check if we're modifying info about the admin
+    //If so, we have to update the corresponding admin fields of the postingForm object
+    if (residents[index]["isAdmin"]) {
+      const updatedPostingFormData = postingFormData;
+
+    }
+
+
     const updatedResidents = [...residents];
     updatedResidents[index][field] = value;
     setResidents(updatedResidents);
+
   };
 
   //Perform form validation
   const validateForm = () => {
     const errors = [];
 
-    //Check to ensure posting as at least one current member (which would be the group admin). If not, form is invalid
+    //Check to ensure posting has at least one current member (which would be the group admin). If not, form is invalid
     if (residents.length == 0 || residents[0].name == "") { //will short circuit
         errors.push("Please add at least one current member to your posting");
     }
@@ -84,7 +102,7 @@ const PostingForm = () => {
         errors.push("Please select a dorm!");
     }
 
-    if (!postingFormData.adminEmail || !postingFormData.adminPhoneNumber) {
+    if (!postingFormData.adminEmail && !postingFormData.adminPhoneNumber) {
         errors.push("Please provide either admin phone number or email (or both)");
     }
 
@@ -99,6 +117,15 @@ const PostingForm = () => {
   // Handle form submission to cloud firestore:
   const handleSubmit = async(e) => {
     e.preventDefault();
+
+    setErrorMessage(""); //clear previous error message, if any
+
+    //if user isn't signed in, set the error message and stop executing the handleSubmit function
+    if (!userLoggedIn) {
+      setErrorMessage("You must be have an account to submit a posting for others to view and reach out to. Sign-in or create a new account with us");
+      return; //This just exits from the handleSubmit function but not from the PostingForm component
+    }
+
     console.log({ location, residents, postingFormData });
 
     //If form isn't valid, don't submit to cloud firestore
@@ -126,17 +153,20 @@ const PostingForm = () => {
         instagramHandle: resident.instagramHandle,
         email: resident.email
     }));
-    console.log("Members: ", residents);
+    console.log("Residents: ", residents);
+    console.log("Members: ", members);
+
     const adminContactInfo = {
         email: postingFormData.adminEmail,
         instagramHandle: postingFormData.adminInstagramHandle,
         phoneNumber: postingFormData.adminPhoneNumber
     }
-    try {
+    //add new doc with the entered information to postings collection in cloud firestore
+    try { 
         const docRef = await addDoc(collection(db, "postings"), {
-            address: postingFormData.address || "",
+            address: location == "offcampus" ? postingFormData.address : null,
             adminContact: adminContactInfo,
-            aimInteger: residents.length + parseInt(postingFormData.numSeek,10),
+            aimInteger: residents.length + parseInt(postingFormData.numSeek, 10),
             curGroupSize: residents.length,
             curNumSeek: parseInt(postingFormData.numSeek, 10),
             dorm: location == "oncampus" ? postingFormData.dorm : null,
@@ -157,38 +187,32 @@ const PostingForm = () => {
       <header className={css.headerTextContainer}>
         <h2 className={css.headerText}> Can't find the right housing group using our search?</h2>  
         <h2> Make your own <span className={css.keyword}>Posting</span> and have potential roommates find you: </h2>
+        {errorMessage && <h2 className={css.errorMessage}>{errorMessage}</h2>} {/* render not signed-in error message here, if necessary. TODO: make this look nicer */}
       </header>  
       <div className={css.formHolder}>
-      <form className={css.postForm} onSubmit={handleSubmit}>
-        <div className={`${css.formGroup} ${css.formLocationSelector}`}>
-          <label htmlFor="location">Location:</label>
-          <select id="location" value={location} onChange={(e) => setLocation(e.target.value)}>
-            <option value="oncampus">On-Campus</option>
-            <option value="offcampus">Off-Campus</option>
-          </select>
-        </div>
+        <form className={css.postForm} onSubmit={handleSubmit}>
+          <div className={`${css.formGroup} ${css.formLocationSelector}`}>
+            <label htmlFor="location">Location:</label>
+            <select id="location" value={location} onChange={(e) => setLocation(e.target.value)}>
+              <option value="oncampus">On-Campus</option>
+              <option value="offcampus">Off-Campus</option>
+            </select>
+          </div>
 
 
         <div className={css.formGroup2}>
   <div className={css.residentsContainer}>
     <label>Group Administrator:</label>
     {residents.length === 0 ? (
-    
       <div className={css.residentRowAdmin}>
-        
-        <div className={css.requiredInput}>
-          <input
-            type="text"
-            value={postingFormData.adminName || ''}
-            placeholder="First and Last Name"
-            aria-label="Admin Name"
-            onChange={(e) => setPostingFormData({ ...postingFormData, adminName: e.target.value })}
-            required
-          />
-          <div className={css.required}>*</div>
-        </div>
-
-        <div className={css.requiredInput}>
+        <input
+          type="text"
+          value={postingFormData.adminName || ''}
+          placeholder="First and Last Name"
+          aria-label="Admin Name"
+          onChange={(e) => setPostingFormData({ ...postingFormData, adminName: e.target.value })}
+          required
+        />
         <select
           value={postingFormData.adminAcademicYear || ''}
           aria-label="Admin Academic Year"
@@ -203,8 +227,6 @@ const PostingForm = () => {
           <option value="junior">Junior</option>
           <option value="senior">Senior</option>
         </select>
-        <div className={css.required}>*</div>
-        </div>
 
         <select
           value={postingFormData.adminGender || ''}
@@ -252,7 +274,7 @@ const PostingForm = () => {
           id="admin-phone-number"
           value={postingFormData.adminPhoneNumber || ''}
           onChange={(e) => setPostingFormData({ ...postingFormData, adminPhoneNumber: e.target.value })}
-          placeholder="Phone Number"
+          placeholder="Phone Number (e.g., 001-123-456-7890)"
         />
       </div>
     ) : (
@@ -282,53 +304,53 @@ const PostingForm = () => {
               <option value="senior">Senior</option>
             </select>
 
-            <select
-              value={residents[0].gender}
-              aria-label="Admin Gender"
-              onChange={(e) => handleResidentChange(0, 'gender', e.target.value)}
-              required
-            >
-              <option value="" disabled hidden>
-                Select One
-              </option>
-              <option value="male">Male</option>
-              <option value="female">Female</option>
-              <option value="other">Other</option>
-            </select>
+                  <select
+                    value={residents[0].gender}
+                    aria-label="Admin Gender"
+                    onChange={(e) => handleResidentChange(0, 'gender', e.target.value)}
+                    required
+                  >
+                    <option value="" disabled hidden>
+                      Select One
+                    </option>
+                    <option value="male">Male</option>
+                    <option value="female">Female</option>
+                    <option value="other">Other</option>
+                  </select>
 
-            {residents[0].gender === 'other' && (
-              <input
-                type="text"
-                value={residents[0].customGender || ''}
-                placeholder="Specify Gender"
-                onChange={(e) => handleResidentChange(0, 'customGender', e.target.value)}
-                required
-              />
-            )}
+                  {residents[0].gender === 'other' && (
+                    <input
+                      type="text"
+                      value={residents[0].customGender}
+                      placeholder="Specify Gender"
+                      onChange={(e) => handleResidentChange(0, 'customGender', e.target.value)}
+                      required
+                    />
+                  )}
 
-            <input
-              type="text"
-              value={residents[0].email || ''}
-              placeholder="BC Email"
-              aria-label="Admin Email"
-              onChange={(e) => handleResidentChange(0, 'email', e.target.value)}
-              required
-            />
+                  <input
+                    type="text"
+                    value={postingFormData.adminEmail}
+                    placeholder="BC Email"
+                    aria-label="Admin Email"
+                    onChange={(e) => setPostingFormData({...postingFormData, adminEmail: e.target.value}) }
+                    required
+                  />
 
-            <input
-              type="text"
-              value={residents[0].instagramHandle || ''}
-              placeholder="Instagram Handle"
-              aria-label="Admin Instagram Handle"
-              onChange={(e) => handleResidentChange(0, 'instagramHandle', e.target.value)}
-            />
+                  <input
+                    type="text"
+                    value={postingFormData.adminInstagramHandle}
+                    placeholder="Instagram Handle"
+                    aria-label="Admin Instagram Handle"
+                    onChange={(e) => setPostingFormData({...postingFormData, adminInstagramHandle: e.target.value} )}
+                  />
 
             <input
               type="text"
               id="admin-phone-number"
               value={postingFormData.adminPhoneNumber || ''}
               onChange={(e) => setPostingFormData({ ...postingFormData, adminPhoneNumber: e.target.value })}
-              placeholder="Phone Number"
+              placeholder="Phone Number (e.g., 001-123-456-7890)"
             />
           </div>
         )}
@@ -338,7 +360,6 @@ const PostingForm = () => {
     <label>Additional Members:</label>
     {residents.slice(1).map((resident, index) => (
       <div key={`member-${index}`} className={css.residentRow}>
-        <div className={css.requiredInput}>
         <input
           type="text"
           value={resident.name}
@@ -347,10 +368,6 @@ const PostingForm = () => {
           onChange={(e) => handleResidentChange(index + 1, 'name', e.target.value)}
           required
         />
-        <div className={css.required}>*</div>
-        </div>
-
-        <div className={css.requiredInput}>
         <select
           value={resident.academicYear}
           aria-label={`Academic year of Resident ${index + 1}`}
@@ -365,46 +382,37 @@ const PostingForm = () => {
           <option value="junior">Junior</option>
           <option value="senior">Senior</option>
         </select>
-        <div className={css.required}>*</div>
-        </div>
 
-        <div className={css.requiredInput}>
-          <div className={css.genderBlock}>
-            <select
-              value={resident.gender}
-              aria-label={`Gender of Resident ${index + 1}`}
-              onChange={(e) => {
-                const value = e.target.value;
-                handleResidentChange(index + 1, 'gender', value);
-                if (value !== 'other') {
-                  handleResidentChange(index + 1, 'customGender', ''); // Clear custom input
-                }
-              }}
-              required
-            >
-              <option value="" disabled hidden>
-                Select One
-              </option>
-              <option value="male">Male</option>
-              <option value="female">Female</option>
-              <option value="other">Other</option>
-            </select>
-            
+        <select
+          value={resident.gender}
+          aria-label={`Gender of Resident ${index + 1}`}
+          onChange={(e) => {
+            const value = e.target.value;
+            handleResidentChange(index + 1, 'gender', value);
+            if (value !== 'other') {
+              handleResidentChange(index + 1, 'customGender', ''); // Clear custom input
+            }
+          }}
+          required
+        >
+          <option value="" disabled hidden>
+            Select One
+          </option>
+          <option value="male">Male</option>
+          <option value="female">Female</option>
+          <option value="other">Other</option>
+        </select>
 
-            {resident.gender === 'other' && (
-              <input
-                type="text"
-                value={resident.customGender || ''}
-                placeholder="Specify Gender"
-                onChange={(e) => handleResidentChange(index + 1, 'customGender', e.target.value)}
-                required
-              />
-            )}
-          </div>
-          <div className={css.required}>*</div>
-        </div>
+        {resident.gender === 'other' && (
+          <input
+            type="text"
+            value={resident.customGender || ''}
+            placeholder="Specify Gender"
+            onChange={(e) => handleResidentChange(index + 1, 'customGender', e.target.value)}
+            required
+          />
+        )}
 
-        <div className={css.requiredInput}>
         <input
           type="text"
           value={resident.email || ''}
@@ -413,28 +421,26 @@ const PostingForm = () => {
           onChange={(e) => handleResidentChange(index + 1, 'email', e.target.value)}
           required
         />
-        <div className={css.required}>*</div>
-        </div>
 
-        <input
-          type="text"
-          value={resident.instagramHandle || ''}
-          placeholder="Instagram Handle"
-          aria-label={`Instagram Handle of Resident ${index + 1}`}
-          onChange={(e) => handleResidentChange(index + 1, 'instagramHandle', e.target.value)}
-        />
+                  <input
+                    type="text"
+                    value={resident.instagramHandle}
+                    placeholder="Instagram Handle"
+                    aria-label={`Instagram Handle of Resident ${index + 1}`}
+                    onChange={(e) => handleResidentChange(index + 1, 'instagramHandle', e.target.value)}
+                  />
 
-        <button type="button" onClick={() => removeResident(index + 1)} className={css.removeButton}>
-          Remove
-        </button>
-      </div>
-    ))}
+                  <button type="button" onClick={() => removeResident(index + 1)} className={css.removeButton}>
+                    Remove
+                  </button>
+                </div>
+              ))}
 
-    <button type="button" onClick={addResident} className={css.addButton}>
-      Add More
-    </button>
-  </div>
-</div>
+              <button type="button" onClick={addResident} className={css.addButton}>
+                Add More
+              </button>
+            </div>
+          </div>
 
 
 
@@ -473,7 +479,7 @@ const PostingForm = () => {
             id="looking-for"
             value={postingFormData.numSeek}
             onChange={(e) => setPostingFormData({ ...postingFormData, numSeek: e.target.value })}
-            placeholder="e.g. 7"
+            placeholder="e.g., 7"
           />
         </div>
 
@@ -486,7 +492,7 @@ const PostingForm = () => {
                 id="address"
                 value={postingFormData.address}
                 onChange={(e) => setPostingFormData({ ...postingFormData, address: e.target.value })}
-                placeholder="e.g. 140 Commonwealth Ave, Chestnut Hill, MA 02467"
+                placeholder="e.g., 140 Commonwealth Ave, Chestnut Hill, MA 02467"
               />
             </div>
 
@@ -497,77 +503,77 @@ const PostingForm = () => {
                 id="rent"
                 value={postingFormData.rent}
                 onChange={(e) => setPostingFormData({ ...postingFormData, rent: e.target.value })}
-                placeholder="e.g. 1500"
+                placeholder="e.g., 1500"
               />
             </div>
 
+                <div className={css.formGroup}>
+                  <label htmlFor="utilities">Utilities:</label>
+                  <select
+                    id="utilities"
+                    value={postingFormData.utilities}
+                    onChange={(e) => setPostingFormData({ ...postingFormData, utilities: e.target.value })}
+                  >
+                    <option value="included">Included</option>
+                    <option value="not-included">Not Included</option>
+                  </select>
+                </div>
+
+                <div className={css.formGroup}>
+                  <label htmlFor="start-date" className={css.startDate}>Start Date:</label>
+                  <input
+                    type="date"
+                    id="start-date"
+                    value={postingFormData.startDate}
+                    onChange={(e) => setPostingFormData({ ...postingFormData, startDate: e.target.value })}
+                  />
+
+                  <label htmlFor="end-date" className={css.endDate}>End Date:</label>
+                  <input
+                    type="date"
+                    id="end-date"
+                    value={postingFormData.endDate}
+                    onChange={(e) => setPostingFormData({ ...postingFormData, endDate: e.target.value })}
+                  />
+                </div>
+              </>
+            ) : (
+              <div className={css.formGroup}>
+                <label htmlFor="dorm">Preferred Dorm:</label>
+                <select
+                  id="dorm"
+                  value={postingFormData.dorm}
+                  onChange={(e) => setPostingFormData({ ...postingFormData, dorm: e.target.value })}
+                >
+                  <option value="">Select One</option>
+                  <option value="Gabelli">Gabelli Hall</option>
+                  <option value="Ignacio">Ignacio Hall</option>
+                  <option value="Modulars">The Mods</option>
+                  <option value="Ninety-St-Thomas-More">Ninety St. Thomas More Hall</option>
+                  <option value="Reservoir">2000 Commonwealth Avenue</option>
+                  <option value="Rubenstein">Rubenstein Hall</option>
+                  <option value="Stayer">Stayer Hall</option>
+                  <option value="Thomas-More">Thomas More Apartments</option>
+                  <option value="Vanderslice">Vanderslice Hall</option>
+                  <option value="Voute">Voute Hall</option>
+                  <option value="Walsh">Walsh Hall</option>
+                  <option value="66">66 Commonwealth Avenue</option> {/*Need images of 66*/}
+                  <option value="Roncalli">Roncalli Hall</option> {/*Need images of Roncalli*/}
+                  <option value="Welch">Welch Hall</option> {/*Need images of Welch*/}
+                </select>
+              </div>
+            )}
+
+            {/*Need to integrate image uploades using Firebase Storage */}
             <div className={css.formGroup}>
-              <label htmlFor="utilities">Utilities:</label>
-              <select
-                id="utilities"
-                value={postingFormData.utilities}
-                onChange={(e) => setPostingFormData({ ...postingFormData, utilities: e.target.value })}
-              >
-                <option value="included">Included</option>
-                <option value="not-included">Not Included</option>
-              </select>
+              <label htmlFor="upload-images">Upload Images:</label>
+              <input type="file" id="upload-images" multiple />
             </div>
-
-            <div className={css.formGroup}>
-              <label htmlFor="start-date" className={css.startDate}>Start Date:</label>
-              <input
-                type="date"
-                id="start-date"
-                value={postingFormData.startDate}
-                onChange={(e) => setPostingFormData({ ...postingFormData, startDate: e.target.value })}
-              />
-
-              <label htmlFor="end-date" className={css.endDate}>End Date:</label>
-              <input
-                type="date"
-                id="end-date"
-                value={postingFormData.endDate}
-                onChange={(e) => setPostingFormData({ ...postingFormData, endDate: e.target.value })}
-              />
-            </div>
-          </>
-        ) : (
-          <div className={css.formGroup}>
-            <label htmlFor="dorm">Preferred Dorm:</label>
-            <select
-              id="dorm"
-              value={postingFormData.dorm}
-              onChange={(e) => setPostingFormData({ ...postingFormData, dorm: e.target.value })}
-            >
-              <option value="">Select One</option>
-              <option value="Gabelli">Gabelli Hall</option>
-              <option value="Ignacio">Ignacio Hall</option>
-              <option value="Modulars">The Mods</option>
-              <option value="Ninety-St-Thomas-More">Ninety St. Thomas More Hall</option>
-              <option value="Reservoir">2000 Commonwealth Avenue</option>
-              <option value="Rubenstein">Rubenstein Hall</option>
-              <option value="Stayer">Stayer Hall</option>
-              <option value="Thomas-More">Thomas More Apartments</option>
-              <option value="Vanderslice">Vanderslice Hall</option>
-              <option value="Voute">Voute Hall</option>
-              <option value="Walsh">Walsh Hall</option>
-              <option value="66">66 Commonwealth Avenue</option> {/*Need images of 66*/}
-              <option value="Roncalli">Roncalli Hall</option> {/*Need images of Roncalli*/}
-              <option value="Welch">Welch Hall</option> {/*Need images of Welch*/}
-            </select>
           </div>
-        )}
 
-        {/*Need to integrate image uploades using Firebase Storage */}
-        <div className={css.formGroup}>
-          <label htmlFor="upload-images">Upload Images:</label>
-          <input type="file" id="upload-images" multiple />
-        </div>
+          <button type="submit" className={css.submitButton}>Submit</button>
+        </form>
       </div>
-
-        <button type="submit" className={css.submitButton}>Submit</button>
-      </form>
-    </div>
     </div>
   );
 };
