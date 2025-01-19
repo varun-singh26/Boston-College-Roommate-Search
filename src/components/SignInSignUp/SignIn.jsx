@@ -2,7 +2,9 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { doSignInWithEmailAndPassword, doSignInWithGoogle } from "../../config/auth";
 import { useAuth } from "../../context/authContext/index";
+import { createUserInFirestore } from "../../services/userService";
 import css from "./styles/Form.module.css"
+
 
 const SignIn = () => {
 
@@ -72,7 +74,7 @@ const SignIn = () => {
   };
 
   const onGoogleSignIn = async (e) => {
-    e.preventDefault()
+    e.preventDefault() //Is this necessary
     if(!loading) {
       setLoading(true);
       try {
@@ -81,12 +83,20 @@ const SignIn = () => {
         if (result) { //What type of object is result?
           console.log("Google Sign-In successful:", result.user);
           //CurrentUser and userLoggedIn are set to the logged in user and true, respectively via auth/index.jsx
-          //setCurrentUser(result.user);
-          //setUserLoggedIn(true);
           console.log("current user: ", result.user); //runs immediately, here so we can see the updated state in the console
           console.log("user logged in? ", true); //Here for same reason as above
 
+          const user = result.user; //reference user field from result object
+
+          //Navigate first before asynchronous call to createUserInFirestore, to ensure
+          //myProfile component renders after form submission
           navigate("/myProfile");
+
+          //The rest of the function still executes while the MyProfile component renders:
+          
+          //Add a corresponding document to the "users" collection in firestore when a user signs-in with Google (for the first time)
+          await createUserInFirestore(user);
+
         }
       } catch (err) {  //could be an error with users signing in w Google popup. If so, we need to catch this error.
         console.error("Google Sign-In error:", err);

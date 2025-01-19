@@ -1,8 +1,9 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../context/authContext/index";
-import css from "./styles/Form.module.css"
 import { doCreateUserWithEmailAndPassword } from "../../config/auth";
+import { createUserInFirestore } from "../../services/userService";
+import css from "./styles/Form.module.css"
 
 
 const SignUp = () => {
@@ -96,11 +97,19 @@ const SignUp = () => {
                 console.log("Sign up was successful!");
 
                 //CurrentUser and userLoggedIn are set to the newly created user and true, respectively, via auth/index.jsx
-
                 console.log("current user: ", result.user); //runs immediately, here so we can see the updated state in the console
                 console.log("user logged in? ", true); //Here for same reason as above
 
-                navigate("/myProfile"); //Redirect
+                const user = result.user; //reference user field from result object
+
+                //Navigate first before asynchronous call to createUserInFirestore, to ensure
+                //myProfile component renders after form submission
+                navigate("/myProfile"); 
+
+                //The rest of the function still executes while the MyProfile component renders:
+
+                //Add a corresponding document to the "users" collection in firestore when a user signs up
+                await createUserInFirestore(user);
             }
 
             setLoading(false); // Reset loading state regardless of if sign-up was successful or not
