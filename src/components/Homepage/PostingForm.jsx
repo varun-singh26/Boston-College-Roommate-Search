@@ -200,184 +200,93 @@ const PostingForm = () => {
               <option value="offcampus">Off-Campus</option>
             </select>
           </div>
-
-
           <div className={css.formGroup2}>
             <div className={css.residentsContainer}>
               <label>Group Administrator:</label>
-              {residents.length === 0 ? (
-                <div className={css.residentRowAdmin}>
-                  <div className={css.requiredInputAdmin}>
-                    <input
-                      type="text"
-                      value={postingFormData.adminName || ''}
-                      placeholder="First and Last Name"
-                      aria-label="Admin Name"
-                      onChange={(e) => setPostingFormData({ ...postingFormData, adminName: e.target.value })}
-                      required
-                    />
-                    <div className={css.requiredAdmin}>*</div>
-                  </div>
-                  {/* The div around the input field won't appear/integrate. It doesn't appear under inspect element tools */}
-                    
-                  <div className={css.requiredInputAdmin}>
-                    <select
-                      value={postingFormData.adminAcademicYear || ''}
-                      aria-label="Admin Academic Year"
-                      onChange={(e) => setPostingFormData({ ...postingFormData, adminAcademicYear: e.target.value })}
-                      required
-                    >
-                      <option value="" disabled hidden>
-                        Select One
-                      </option>
-                      <option value="freshman">Freshman</option>
-                      <option value="sophomore">Sophomore</option>
-                      <option value="junior">Junior</option>
-                      <option value="senior">Senior</option>
-                    </select>
-                    <div className={css.requiredAdmin}>*</div>
-                  </div>
-                  <div className={css.requiredInputAdmin}>
-                    <select
-                      value={postingFormData.adminGender || ''}
-                      aria-label="Admin Gender"
-                      onChange={(e) => setPostingFormData({ ...postingFormData, adminGender: e.target.value })}
-                      required
-                    >
-                      <option value="" disabled hidden>
-                        Select One
-                      </option>
-                      <option value="male">Male</option>
-                      <option value="female">Female</option>
-                      <option value="other">Other</option>
-                    </select>
-
-                    {postingFormData.adminGender === 'other' && (
+              <>
+                {residents.length > 0 && (
+                  <div className={css.residentRowAdmin}>
+                    <div className={css.requiredInputAdmin}>
                       <input
                         type="text"
-                        value={postingFormData.customGender || ''}
-                        placeholder="Specify Gender"
-                        onChange={(e) => setPostingFormData({ ...postingFormData, customGender: e.target.value })}
+                        value={residents[0].name}
+                        placeholder="First and Last Name"
+                        aria-label="Admin Name"
+                        onChange={(e) => handleResidentChange(0, 'name', e.target.value)}
                         required
                       />
-                    )}
-                    <div className={css.requiredAdmin}>*</div>
-                  </div>
-                  <div className={css.requiredInputAdmin}>
+                      <div className={css.requiredAdmin}>*</div>
+                    </div>
+                    <div className={css.requiredInputAdmin}>
+                      <select
+                        value={residents[0].academicYear}
+                        aria-label="Admin Academic Year"
+                        onChange={(e) => handleResidentChange(0, 'academicYear', e.target.value)}
+                        required
+                      >
+                        <option value="" disabled hidden>
+                          Select One
+                        </option>
+                        <option value="freshman">Freshman</option>
+                        <option value="sophomore">Sophomore</option>
+                        <option value="junior">Junior</option>
+                        <option value="senior">Senior</option>
+                      </select>
+                      <div className={css.requiredAdmin}>*</div>
+                    </div>
+                    <div className={css.requiredInputAdmin}>
+                      <select
+                        value={residents[0].gender}
+                        aria-label="Admin Gender"
+                        onChange={(e) => handleResidentChange(0, 'gender', e.target.value)}
+                        required
+                      >
+                        <option value="" disabled hidden>
+                          Select One
+                        </option>
+                        <option value="male">Male</option>
+                        <option value="female">Female</option>
+                        <option value="other">Other</option>
+                      </select>
+                      {residents[0].gender === 'other' && (
+                        <input
+                          type="text"
+                          value={residents[0].customGender}
+                          placeholder="Specify Gender"
+                          onChange={(e) => handleResidentChange(0, 'customGender', e.target.value)}
+                          required
+                        />
+                      )}
+                      <div className={css.requiredAdmin}>*</div>
+                    </div>
+                    <div className={css.requiredInputAdmin}>
+                      <input
+                        type="text"
+                        value={postingFormData.adminEmail}
+                        placeholder="BC Email"
+                        aria-label="Admin Email"
+                        onChange={(e) => setPostingFormData({...postingFormData, adminEmail: e.target.value}) }
+                        required
+                      />
+                      <div className={css.requiredAdmin}>*</div>
+                    </div>
                     <input
                       type="text"
-                      value={postingFormData.adminEmail || ''}
-                      placeholder="Email"
-                      aria-label="Admin Email"
-                      onChange={(e) => setPostingFormData({ ...postingFormData, adminEmail: e.target.value })}
-                      required
-                    />
-                    <div className={css.requiredAdmin}>*</div>
-                  </div>
-                  <div className={css.requiredInputAdmin}>
-                    <input
-                      type="text"
-                      value={postingFormData.adminInstagramHandle || ''}
+                      value={postingFormData.adminInstagramHandle}
                       placeholder="Instagram Handle"
                       aria-label="Admin Instagram Handle"
-                      onChange={(e) => setPostingFormData({ ...postingFormData, adminInstagramHandle: e.target.value })}
+                      onChange={(e) => setPostingFormData({...postingFormData, adminInstagramHandle: e.target.value} )}
                     />
-                    <div className={css.requiredAdmin}>*</div>
+                    <input
+                      type="text"
+                      id="admin-phone-number"
+                      value={postingFormData.adminPhoneNumber || ''}
+                      onChange={(e) => setPostingFormData({ ...postingFormData, adminPhoneNumber: e.target.value })}
+                      placeholder="Phone Number"
+                    />
                   </div>
-                  <input
-                    type="text"
-                    id="admin-phone-number"
-                    value={postingFormData.adminPhoneNumber || ''}
-                    onChange={(e) => setPostingFormData({ ...postingFormData, adminPhoneNumber: e.target.value })}
-                    placeholder="Phone Number"
-                  />
-                </div>
-              ) : (
-                <>
-                  {residents.length > 0 && (
-                    <div className={css.residentRowAdmin}>
-                      <div className={css.requiredInputAdmin}>
-                        <input
-                          type="text"
-                          value={residents[0].name}
-                          placeholder="First and Last Name"
-                          aria-label="Admin Name"
-                          onChange={(e) => handleResidentChange(0, 'name', e.target.value)}
-                          required
-                        />
-                        <div className={css.requiredAdmin}>*</div>
-                      </div>
-                      <div className={css.requiredInputAdmin}>
-                        <select
-                          value={residents[0].academicYear}
-                          aria-label="Admin Academic Year"
-                          onChange={(e) => handleResidentChange(0, 'academicYear', e.target.value)}
-                          required
-                        >
-                          <option value="" disabled hidden>
-                            Select One
-                          </option>
-                          <option value="freshman">Freshman</option>
-                          <option value="sophomore">Sophomore</option>
-                          <option value="junior">Junior</option>
-                          <option value="senior">Senior</option>
-                        </select>
-                        <div className={css.requiredAdmin}>*</div>
-                      </div>
-                      <div className={css.requiredInputAdmin}>
-                        <select
-                          value={residents[0].gender}
-                          aria-label="Admin Gender"
-                          onChange={(e) => handleResidentChange(0, 'gender', e.target.value)}
-                          required
-                        >
-                          <option value="" disabled hidden>
-                            Select One
-                          </option>
-                          <option value="male">Male</option>
-                          <option value="female">Female</option>
-                          <option value="other">Other</option>
-                        </select>
-                        {residents[0].gender === 'other' && (
-                          <input
-                            type="text"
-                            value={residents[0].customGender}
-                            placeholder="Specify Gender"
-                            onChange={(e) => handleResidentChange(0, 'customGender', e.target.value)}
-                            required
-                          />
-                        )}
-                        <div className={css.requiredAdmin}>*</div>
-                      </div>
-                      <div className={css.requiredInputAdmin}>
-                        <input
-                          type="text"
-                          value={postingFormData.adminEmail}
-                          placeholder="BC Email"
-                          aria-label="Admin Email"
-                          onChange={(e) => setPostingFormData({...postingFormData, adminEmail: e.target.value}) }
-                          required
-                        />
-                        <div className={css.requiredAdmin}>*</div>
-                      </div>
-                      <input
-                        type="text"
-                        value={postingFormData.adminInstagramHandle}
-                        placeholder="Instagram Handle"
-                        aria-label="Admin Instagram Handle"
-                        onChange={(e) => setPostingFormData({...postingFormData, adminInstagramHandle: e.target.value} )}
-                      />
-                      <input
-                        type="text"
-                        id="admin-phone-number"
-                        value={postingFormData.adminPhoneNumber || ''}
-                        onChange={(e) => setPostingFormData({ ...postingFormData, adminPhoneNumber: e.target.value })}
-                        placeholder="Phone Number"
-                      />
-                    </div>
-                  )}
-                </>
-              )}
+                )}
+              </>
               <label>Additional Group Members:</label>
               {residents.slice(1).map((resident, index) => (
                 <div key={`member-${index}`} className={css.residentRow}>
