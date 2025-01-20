@@ -60,10 +60,13 @@
 
   .formGroup3 {
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
     border-radius: 10px;
     grid-column: span 2;
     padding: 2rem;
+    gap: 2.5rem;
     padding-top: 0rem !important;
     box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
     transition: box-shadow 0.3s ease, transform 0.3s ease;
@@ -76,19 +79,39 @@
 
   .formGroup3 .formGroup {
     padding-top: 2rem;
+    max-width: 500px;
   }
 
-  .endDate {
-    padding-top: 2rem;
+  @media (max-width: 580px) {
+    .formGroup {
+      text-align: center;
+    }
+  }
+
+  .dateGroup {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    gap: 2rem;
+  }
+
+  @media (max-width: 530px) {
+    .dateGroup {
+      flex-direction: column;
+    }
+  }
+
+  .dateGroupFields {
+    display: flex;
+    flex-direction: column;
   }
 
   .requiredInputAdmin {
     display: flex;
-    flex-direction: row;
+    flex-direction: xow;
     align-items: center;
     width: 100%; 
     max-width: 100%;
-    border:1px solid red;
 
   }
 
@@ -104,7 +127,6 @@
     align-items: center;
     width: 100%; 
     max-width: 100%;
-    border:1px solid red;
   }
 
   .required {
@@ -202,6 +224,34 @@
     flex-direction: space-between;
     gap: 2rem;
     margin-top: 1rem;
+  }
+
+  @media (max-width: 1200px) {
+
+    .residentRow, .residentRowAdmin {
+      flex-direction: row;
+      flex-wrap: wrap;
+      justify-content: center;
+      padding: 1rem;
+      border-radius: 10px;
+      box-shadow: 0 3px 7px rgba(0, 0, 0, 0.2);
+      transition: box-shadow 0.3s ease, transform 0.3s ease;
+    }
+    
+    .residentRow:hover, .residentRowAdmin:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 7px 12px rgba(0, 0, 0, 0.2);
+    }
+
+    .residentRow input, .residentRow select, .residentRowAdmin input, .residentRowAdmin select  {
+      max-width: 300px;
+    }
+
+    .requiredInput {
+      width: auto;
+      max-width: 300px;
+    }
+
   }
 
   .residentRowAdmin {

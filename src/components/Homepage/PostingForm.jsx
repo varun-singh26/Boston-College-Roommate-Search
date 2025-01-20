@@ -493,26 +493,27 @@ const PostingForm = () => {
         <div className={css.formGroup3}>
 
         <div className={css.formGroup}>
-          <label htmlFor="looking-for">How many more roomates do you need?:</label>
+          <label htmlFor="looking-for">How many more roomates do you need?:<span className={css.required}>*</span></label>
           <input
             type="number"
             id="looking-for"
             value={postingFormData.numSeek}
             onChange={(e) => setPostingFormData({ ...postingFormData, numSeek: e.target.value })}
             placeholder="e.g. 7"
+            required
           />
         </div>
 
         {location === 'offcampus' ? (
           <>
             <div className={css.formGroup}>
-              <label htmlFor="address">Address:</label>
+              <label htmlFor="address">Street Address:</label>
               <input
                 type="text"
                 id="address"
                 value={postingFormData.address}
                 onChange={(e) => setPostingFormData({ ...postingFormData, address: e.target.value })}
-                placeholder="e.g. 140 Commonwealth Ave, Chestnut Hill, MA 02467"
+                placeholder="e.g. Foster Street"
               />
             </div>
 
@@ -540,7 +541,8 @@ const PostingForm = () => {
                   </select>
                 </div>
 
-                <div className={css.formGroup}>
+                <div className={`${css.formGroup} ${css.dateGroup}`}>
+                  <div className={css.dateGroupFields}>
                   <label htmlFor="start-date" className={css.startDate}>Start Date:</label>
                   <input
                     type="date"
@@ -548,7 +550,8 @@ const PostingForm = () => {
                     value={postingFormData.startDate}
                     onChange={(e) => setPostingFormData({ ...postingFormData, startDate: e.target.value })}
                   />
-
+                  </div>
+                  <div className={css.dateGroupFields}>
                   <label htmlFor="end-date" className={css.endDate}>End Date:</label>
                   <input
                     type="date"
@@ -556,6 +559,7 @@ const PostingForm = () => {
                     value={postingFormData.endDate}
                     onChange={(e) => setPostingFormData({ ...postingFormData, endDate: e.target.value })}
                   />
+                  </div>
                 </div>
               </>
             ) : (
