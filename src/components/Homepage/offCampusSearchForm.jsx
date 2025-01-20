@@ -115,7 +115,6 @@ const OffCampusSearchForm = () => {
             className= {css.select}
             value={housingAim}
             onChange={handleHousingAimChange}
-            disabled={!numPeople} // Disable if no "Number of people" is selected
           >
             <option value ="" disabled hidden>
               Select One

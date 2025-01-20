@@ -26,7 +26,7 @@ const BottomOnCampus = ({ members, curNumSeek, dorm, totalGroupSize, id, listing
       <div className={css.container}>
           Bookmark 
           <img onClick={handleBookmarkClick} className='bookmarkWhite' src='/assets/postings/bookmark-white.png' alt='whiteBookmark'/>
-        <span>Looking for {curNumSeek} more</span>
+        <span>{totalGroupSize - curNumSeek} looking for {curNumSeek} more</span>
       </div>
       <div className={css.bottomIMGcontainer}>
         <div className={css.bottomIMG}>
@@ -35,7 +35,7 @@ const BottomOnCampus = ({ members, curNumSeek, dorm, totalGroupSize, id, listing
         </div>
         <div className={css.bottomIMG}>
           <img className="bed" src="/assets/postings/bed.png" alt="bed" />
-          <span>{totalGroupSize} People Total</span>
+          <span>{totalGroupSize}-man Housing</span>
         </div>
       </div>
       <div className={`${css.showMore} offCampus`} id={id}>

@@ -69,7 +69,7 @@ const PostDetailView = () => {
             </div>
           </div>
           <div className={css.members}>
-            <span>Current Group Members:</span>
+            <span>Current Group Members ({posting.aimInteger - posting.curNumSeek}):</span>
             {posting.members.map((member, index) => (
               <div className={css.member} key={index}>
                 <span>{member.name}</span>
@@ -131,7 +131,7 @@ const PostDetailView = () => {
             </div>
           </div>
           <div className={css.members}>
-            <span>Current Group Members:</span>
+            <span>Current Group Members ({posting.aimInteger - posting.curNumSeek}):</span>
             {posting.members.map((member, index) => (
               <div className={css.member} key={index}>
                 <span>{member.name}</span>

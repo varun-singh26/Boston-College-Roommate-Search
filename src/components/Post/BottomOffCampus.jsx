@@ -27,7 +27,7 @@ const BottomOffCampus = ({ members, curNumSeek, address, totalGroupSize, id, lis
       <div className={css.container}>
         Bookmark posting 
         <img className='bookmarkWhite' src='/assets/postings/bookmark-white.png' alt='whiteBookmark'/>
-        <span>Looking for {curNumSeek} more</span>
+        <span>{totalGroupSize - curNumSeek} looking for {curNumSeek} more</span>
       </div>
       <div className={css.bottomIMGcontainer}>
         <div className={css.bottomIMG}>
