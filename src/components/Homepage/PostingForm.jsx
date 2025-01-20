@@ -220,6 +220,7 @@ const PostingForm = () => {
 
         {/* The div around the input field won't appear/integrate. It doesn't appear under inspect element tools */}
 
+        <div className={css.requiredInputAdmin}>
         <select
           value={postingFormData.adminAcademicYear || ''}
           aria-label="Admin Academic Year"
@@ -234,7 +235,10 @@ const PostingForm = () => {
           <option value="junior">Junior</option>
           <option value="senior">Senior</option>
         </select>
+        <div className={css.requiredAdmin}>*</div>
+        </div>
 
+        <div className={css.requiredInputAdmin}>
         <select
           value={postingFormData.adminGender || ''}
           aria-label="Admin Gender"
@@ -258,15 +262,10 @@ const PostingForm = () => {
             required
           />
         )}
+        <div className={css.requiredAdmin}>*</div>
+        </div>
 
-        <input
-          type="text"
-          value={postingFormData.adminInstagramHandle || ''}
-          placeholder="Instagram Handle"
-          aria-label="Admin Instagram Handle"
-          onChange={(e) => setPostingFormData({ ...postingFormData, adminInstagramHandle: e.target.value })}
-        />
-
+        <div className={css.requiredInputAdmin}>
         <input
           type="text"
           value={postingFormData.adminEmail || ''}
@@ -275,6 +274,19 @@ const PostingForm = () => {
           onChange={(e) => setPostingFormData({ ...postingFormData, adminEmail: e.target.value })}
           required
         />
+        <div className={css.requiredAdmin}>*</div>
+        </div>
+
+        <div className={css.requiredInputAdmin}>
+        <input
+          type="text"
+          value={postingFormData.adminInstagramHandle || ''}
+          placeholder="Instagram Handle"
+          aria-label="Admin Instagram Handle"
+          onChange={(e) => setPostingFormData({ ...postingFormData, adminInstagramHandle: e.target.value })}
+        />
+        <div className={css.requiredAdmin}>*</div>
+        </div>
 
         <input
           type="text"
@@ -288,6 +300,8 @@ const PostingForm = () => {
       <>
         {residents.length > 0 && (
           <div className={css.residentRowAdmin}>
+            
+            <div className={css.requiredInputAdmin}>
             <input
               type="text"
               value={residents[0].name}
@@ -296,6 +310,10 @@ const PostingForm = () => {
               onChange={(e) => handleResidentChange(0, 'name', e.target.value)}
               required
             />
+            <div className={css.requiredAdmin}>*</div>
+            </div>
+
+            <div className={css.requiredInputAdmin}>
             <select
               value={residents[0].academicYear}
               aria-label="Admin Academic Year"
@@ -310,7 +328,10 @@ const PostingForm = () => {
               <option value="junior">Junior</option>
               <option value="senior">Senior</option>
             </select>
+            <div className={css.requiredAdmin}>*</div>
+            </div>
 
+            <div className={css.requiredInputAdmin}>
                   <select
                     value={residents[0].gender}
                     aria-label="Admin Gender"
@@ -334,7 +355,10 @@ const PostingForm = () => {
                       required
                     />
                   )}
+                  <div className={css.requiredAdmin}>*</div>
+                  </div>
 
+                  <div className={css.requiredInputAdmin}>
                   <input
                     type="text"
                     value={postingFormData.adminEmail}
@@ -343,6 +367,8 @@ const PostingForm = () => {
                     onChange={(e) => setPostingFormData({...postingFormData, adminEmail: e.target.value}) }
                     required
                   />
+                  <div className={css.requiredAdmin}>*</div>
+                  </div>
 
                   <input
                     type="text"
@@ -364,9 +390,10 @@ const PostingForm = () => {
       </>
     )}
 
-    <label>Additional Members:</label>
+    <label>Additional Group Members:</label>
     {residents.slice(1).map((resident, index) => (
       <div key={`member-${index}`} className={css.residentRow}>
+        
         <div className={css.requiredInput}>
         <input
           type="text"

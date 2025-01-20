@@ -108,7 +108,7 @@
 
   .requiredInputAdmin {
     display: flex;
-    flex-direction: xow;
+    flex-direction: row;
     align-items: center;
     width: 100%; 
     max-width: 100%;
@@ -247,7 +247,7 @@
       max-width: 300px;
     }
 
-    .requiredInput {
+    .requiredInput, .requiredInputAdmin {
       width: auto;
       max-width: 300px;
     }
