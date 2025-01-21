@@ -2,13 +2,17 @@ import React, { useContext, useState, useEffect } from 'react';
 import { AuthContext } from "../../context/authContext/index";
 import { auth } from "../../config/firestore";
 import {db} from "../../config/firestore";
-import {collection, addDoc} from "firebase/firestore";
+import {collection, addDoc, updateDoc, doc, arrayUnion} from "firebase/firestore";
 import css from "../../styles/Homepage/Form.module.css"
 
 const PostingForm = () => {
 
   //destructure userLoggedIn from AuthContext
   const {currentUser, userLoggedIn} = useContext(AuthContext);
+
+  //create a reference to the document of the current signed-in user
+  const [userRef, setUserRef] = useState(null);
+
   const debugMode = true;
 
   const [errorMessage, setErrorMessage] = useState("");
@@ -48,11 +52,15 @@ const PostingForm = () => {
         updatedResidents[0].email = currentUser.email ?? "";
         return updatedResidents;
       });
+
+      //update the userRef
+      setUserRef(doc(db, "users", currentUser.uid));
     }
   }, [currentUser]); //Runs everytime the value of currentUser (from the auth Context) changes
 
   //print statements for debugging (when in debug mode)
   if (debugMode) {
+    console.log("userRef (doc): ", userRef);
     console.log("posting formdata: ", postingFormData);
     console.log("residents: ", residents);
     console.log("location (offcampus is default): ", location);
@@ -186,7 +194,7 @@ const PostingForm = () => {
 
     //add new doc with the entered information to postings collection in cloud firestore
     try { 
-        const docRef = await addDoc(collection(db, "postings"), {
+        const postingDocRef = await addDoc(collection(db, "postings"), {
             address: location == "offcampus" ? postingFormData.address : null,
             adminContact: adminContactInfo,
             aimInteger: residents.length + parseInt(postingFormData.numSeek, 10),
@@ -199,7 +207,19 @@ const PostingForm = () => {
             rentPeriod: location == "offcampus" ? period : null,
             utilities: postingFormData.utilities
         });
-        console.log("Document written with ID: ", docRef.id);
+        console.log("Document written with ID: ", postingDocRef.id);
+
+        //Also want to update the administeredPostings field of the corresponding user doc in the "users" collection
+        try {
+          await updateDoc(userRef, {
+            administeredPostings: arrayUnion(postingDocRef.id) //a firestore method that adds a value to an array field. If value already exists in array, Firestore ensures its not added again.
+          });
+          console.log("posting", postingDocRef);
+          console.log("Added to administeredPostings array of user", userRef);
+        } catch (err) {
+          console.error("Error updating administeredPostings field of corresponding user (group admin) doc")
+          //As of now, the posting will still occur even if the administeredPostings field of corresponding user (group admin) doc isn't updated
+        }
     } catch (error) {
         console.error("Error adding document: ", error);
         alert("Failed to submit the posting. Please try again.");
