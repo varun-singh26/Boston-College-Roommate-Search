@@ -8,7 +8,7 @@ import css from "../../styles/Homepage/Form.module.css"
 const PostingForm = () => {
 
   //destructure userLoggedIn from AuthContext
-  const {userLoggedIn} = useContext(AuthContext);
+  const {currentUser, userLoggedIn} = useContext(AuthContext);
   const debugMode = true;
 
   const [errorMessage, setErrorMessage] = useState("");
@@ -31,6 +31,25 @@ const PostingForm = () => {
     adminEmail: '',
     adminuid: ''
   });
+
+  //Check if a user is signed in. If so extract username, email, userID and add to the posting form data
+  useEffect(() => {
+    if (currentUser) {
+      setPostingFormData((prev) => ({
+        ...prev, 
+        adminName: currentUser.displayName ?? "",
+        adminPhoneNumber: currentUser.phoneNumber ?? "",
+        adminEmail: currentUser.email ?? "",
+        adminuid: currentUser.uid
+      }));
+      setResidents((prev) => {
+        const updatedResidents = [...prev];
+        updatedResidents[0].name = currentUser.displayName ?? "";
+        updatedResidents[0].email = currentUser.email ?? "";
+        return updatedResidents;
+      });
+    }
+  }, [currentUser]); //Runs everytime the value of currentUser (from the auth Context) changes
 
   //print statements for debugging (when in debug mode)
   if (debugMode) {
@@ -157,7 +176,9 @@ const PostingForm = () => {
     console.log("Members: ", members);
 
     const adminContactInfo = {
+        name: postingFormData.adminName,
         email: postingFormData.adminEmail,
+        academicYear: postingFormData.adminAcademicYear,
         instagramHandle: postingFormData.adminInstagramHandle,
         phoneNumber: postingFormData.adminPhoneNumber,
         uid: postingFormData.adminuid
@@ -176,6 +197,7 @@ const PostingForm = () => {
             members: members,
             monthlyRent: postingFormData.rent || 0,
             rentPeriod: location == "offcampus" ? period : null,
+            utilities: postingFormData.utilities
         });
         console.log("Document written with ID: ", docRef.id);
     } catch (error) {
@@ -209,19 +231,20 @@ const PostingForm = () => {
                     <div className={css.requiredInputAdmin}>
                       <input
                         type="text"
-                        value={residents[0].name}
+                        value={postingFormData.adminName} //Always tied to the state variable
                         placeholder="First and Last Name"
                         aria-label="Admin Name"
-                        onChange={(e) => handleResidentChange(0, 'name', e.target.value)}
+                        readOnly = {userLoggedIn} //Editable only if no user is signed in
+                        onChange={(e) => !userLoggedIn && setPostingFormData({...postingFormData, adminName: e.target.value} )}
                         required
                       />
                       <div className={css.requiredAdmin}>*</div>
                     </div>
                     <div className={css.requiredInputAdmin}>
                       <select
-                        value={residents[0].academicYear}
+                        value={postingFormData.adminAcademicYear}
                         aria-label="Admin Academic Year"
-                        onChange={(e) => handleResidentChange(0, 'academicYear', e.target.value)}
+                        onChange={(e) => setPostingFormData({...postingFormData, adminAcademicYear: e.target.value} )}
                         required
                       >
                         <option value="" disabled hidden>
@@ -262,10 +285,11 @@ const PostingForm = () => {
                     <div className={css.requiredInputAdmin}>
                       <input
                         type="text"
-                        value={postingFormData.adminEmail}
+                        value={postingFormData.adminEmail} //Always tied to the state variable
                         placeholder="BC Email"
                         aria-label="Admin Email"
-                        onChange={(e) => setPostingFormData({...postingFormData, adminEmail: e.target.value}) }
+                        readOnly = {userLoggedIn} //Editable only if no user is signed in
+                        onChange={(e) => !userLoggedIn && setPostingFormData({...postingFormData, adminEmail: e.target.value} )}
                         required
                       />
                       <div className={css.requiredAdmin}>*</div>
@@ -280,7 +304,7 @@ const PostingForm = () => {
                     <input
                       type="text"
                       id="admin-phone-number"
-                      value={postingFormData.adminPhoneNumber || ''}
+                      value={postingFormData.adminPhoneNumber}
                       onChange={(e) => setPostingFormData({ ...postingFormData, adminPhoneNumber: e.target.value })}
                       placeholder="Phone Number"
                     />
