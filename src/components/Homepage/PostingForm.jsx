@@ -7,7 +7,7 @@ import css from "../../styles/Homepage/Form.module.css"
 
 const PostingForm = () => {
 
-  //destructure userLoggedIn from AuthContext
+  //destructure currentUser, userLoggedIn from AuthContext
   const {currentUser, userLoggedIn} = useContext(AuthContext);
 
   //create a reference to the document of the current signed-in user
@@ -217,7 +217,7 @@ const PostingForm = () => {
           console.log("posting", postingDocRef);
           console.log("Added to administeredPostings array of user", userRef);
         } catch (err) {
-          console.error("Error updating administeredPostings field of corresponding user (group admin) doc")
+          console.error("Error updating administeredPostings field of corresponding user (group admin) doc");
           //As of now, the posting will still occur even if the administeredPostings field of corresponding user (group admin) doc isn't updated
         }
     } catch (error) {
