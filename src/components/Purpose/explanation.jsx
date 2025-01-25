@@ -1,5 +1,6 @@
 import React, { useEffect, useState, useRef } from "react";
 import css from "../../styles/purpose.module.css";
+import { Link } from "react-router-dom";
 import Stairs from "../../images/backdropImages/MillionDollarStairs.jpeg";
 
 const Explanation = () => {
@@ -83,7 +84,13 @@ const Explanation = () => {
                         <p>On Campus Purpose</p>
                     </div>
                     <div className={css.textBody}>
-                        <p>hello world</p>
+                    <p className={css.paragraph1}>
+                        If you need additional roommates to form your housing group—whether before the housing lottery or after an unexpected lottery outcome—you can <Link to="/postings" className={css.keyword1}>search our database</Link>, where we are confident there waits a match for you.
+                    </p>
+                    <p className={css.paragraph2}>
+                        If no postings meet your criteria, <Link to="/create-posting" className={css.keyword2}>create your own</Link>, and we are confident the right match will find you.
+                    </p>
+
                     </div>
                 </div>
                 <div className={css.onCampusImageBlock}>
@@ -119,18 +126,22 @@ const Explanation = () => {
                         <p>Off Campus Purpose</p>
                     </div>
                     <div className={css.textBody}>
-                        <p>hello world</p>
+                    <p className={css.paragraph3}>
+                        If you're looking to sublet or are searching for additional roommates for an off-campus property you can <Link to="/postings" className={css.keyword1}>search our database</Link>, where we are confident you'll find a match for you.
+                    </p>
+                    <p className={css.paragraph4}>
+                        If no postings meet your criteria, <Link to="/create-posting" className={css.keyword2}>create your own</Link>, and we are confident the right match will find you.
+                    </p>
                     </div>
                 </div>
             </div>
 
             <div className={css.generalPurposeBlock}>
                 {[
-                    "BCRS was created by 3 BC students for BC students.",
-                    "We hope to unite BC students with their ideal roommates and housing setups.",
-                    "Thereby alleviating any stress associated with your housing journey.",
-                    "Happy searching!",
-                    "If you ever have any questions or suggestions for us, please contact us here.",
+                    "BCRS was created by 3 BC students for BC students",
+                    "We hope to unite BC students with their ideal roommates and housing setups",
+                    "Thereby alleviating any stress associated with your housing journey",
+                    "Happy searching!"
                 ].map((text, index) => (
                     <p
                         key={index}

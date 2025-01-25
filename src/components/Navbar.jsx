@@ -52,8 +52,8 @@ const Navbar = () => {
                         <p className={isActive("/postings") ? css.activeLink : ""}>
                             <Link to= "/welcomeToPostings" className={css.postingsLink}>Search Postings</Link>
                         </p>
-                        <p className={isActive("/postings") ? css.activeLink : ""}>
-                            <Link to= "/welcomeToPostings" className={css.postingsLink}>Create Posting</Link>
+                        <p className={isActive("/create-posting") ? css.activeLink : ""}>
+                            <Link to= "/create-posting" className={css.postingsLink}>Create Posting</Link>
                         </p>
                         <p className={isActive("/our-purpose") ? css.activeLink : ""}>
                             <Link to= "/our-purpose" className={css.postingsLink}>Our Purpose</Link>

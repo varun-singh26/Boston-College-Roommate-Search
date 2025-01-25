@@ -12,6 +12,7 @@ import SignUp from "./components/SignInSignUp/SignUp.jsx";
 import MyProfile from "./components/myProfile.jsx";
 import ForgotPassword from "./components/SignInSignUp/ForgotPassword.jsx";
 import Footer from "./components/Footer.jsx";
+import Creation from "./components/CreatePosting/createPostingLandingSplash.jsx";
 import Purpose from "./components/Purpose/purposeLandingSplash.jsx";
 import css from './App.css';
 
@@ -103,6 +104,15 @@ function RoutesWrapper({ data }) {
           element = {
             <>
               <ForgotPassword />
+            </>
+          }
+        />
+
+        <Route
+          path ="/create-posting"
+          element = {
+            <>
+            <Creation />
             </>
           }
         />

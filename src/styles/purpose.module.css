@@ -70,8 +70,38 @@
 }
 
 .textBody {
+    display: flex;
+    flex-direction: column;
     font-size: clamp(1.5rem, 1.5vw, 3rem);
     margin: 0.5rem;
+}
+
+.textBody .paragraph1, .textBody .paragraph2 {
+    margin-left: 2rem;
+}
+
+.keyword1 {
+    text-decoration: none;
+    color: #cd9f58;
+    font-weight: bold;
+}
+
+.keyword1:hover {
+    color: #dcbf8c;
+}
+
+.keyword2 {
+    text-decoration: none;
+    color: #831f33;
+    font-weight: bold;
+}
+
+.keyword2:hover {
+    color: #a05a5c;
+}
+
+.textBody .paragraph3, .textBody .paragraph4 {
+    margin-right: 2rem;
 }
 
 .textTitle {
@@ -83,6 +113,10 @@
 .textBody p, .textTitle p {
     font-size: clamp(1.5rem, 2vw, 3rem);
     margin: 0;
+}
+
+.paragraph2, .paragraph4 {
+    padding-top: 5%;
 }
 
 
