@@ -5,6 +5,8 @@ import { db } from "../config/firestore";
 import {getDoc, doc} from "firebase/firestore";
 import { doPasswordChange, doSendEmailVerifiction } from "../config/auth";
 import SignOut from "./SignInSignUp/SignOut";
+import OnCampusPost from "./Post/OnCampusPost";
+import OffCampusPost from "./Post/OffCampusPost";
 import css from "../styles/Profile/myProfile.module.css"
 
 
@@ -19,6 +21,8 @@ const MyProfile = () => {
 
     const [administeredPostings, setAdministeredPostings] = useState([]);
     const [bookmarkedPostings, setBookmarkedPostings] = useState([]);
+    const [postsToShow, setPostsToShow] = useState(2); // State to control number of posts shown
+    const navigate = useNavigate();
 
     console.log(`Administered postings of ${currentUser.email}: `, administeredPostings);
     console.log(`Bookmarked postings of ${currentUser.email}: `, bookmarkedPostings);
@@ -39,8 +43,11 @@ const MyProfile = () => {
 
                 // Filter valid documents and map them to their data
                 const postings = postingsDocs
-                    .filter((docSnapShot) => docSnapShot.exists())
-                    .map((docSnapShot) => docSnapShot.data());
+                    .filter((docSnapShot) => docSnapShot.exists()) // Filter valid documents
+                    .map((docSnapShot) => ({
+                        id: docSnapShot.id, //Add the document's ID
+                        ...docSnapShot.data() // Spread the document's data
+                    }));
 
                 return postings; // Return array of data
             } catch (err) {
@@ -103,6 +110,15 @@ const MyProfile = () => {
         }
     };
 
+    // Handler for "Show More"
+    const handleShowMore = (id) => {
+        navigate(`/detailView?id=${id}`);
+    };
+
+    const handleShowMorePosts = () => {
+        setPostsToShow(prevPostsToShow => prevPostsToShow + 2); // Show 2 more posts
+    };
+
 
 
     return (
@@ -110,10 +126,48 @@ const MyProfile = () => {
             {
                 currentUser ? (
                     <>
-                        <h2 className={css.title}>My Profile</h2>
+                        <h1 className={css.title}> My Profile</h1>
                         <p>
                         Hello {currentUser.displayName ? currentUser.displayName : currentUser.email}, you are now signed in
                         </p>
+                        <section className={css.administered}>
+                            <h2>Your administered postings:</h2>
+                            <div className={css.postings}>
+                                {administeredPostings.slice(0, postsToShow).map((post) => (
+                                    <div key={post.id}>
+                                        {post.listingLocation === "oncampus" ? (
+                                            <OnCampusPost post={post} onShowMoreClick={handleShowMore} />
+                                        ) : (
+                                            <OffCampusPost post={post} onShowMoreClick={handleShowMore} />
+                                        )}
+                                    </div>
+                                ))}
+                                {postsToShow < administeredPostings.length && (
+                                    <button className={css.showMore} onClick={handleShowMorePosts}>
+                                        SHOW MORE POSTINGS...
+                                    </button>
+                                )}
+                            </div>
+                        </section>
+                        <section className={css.bookmarked}>
+                            <h2>Your bookmarked postings:</h2>
+                            <div className={css.postings}>
+                                {bookmarkedPostings.slice(0, postsToShow).map((post) => (
+                                    <div key={post.id}>
+                                        {post.listingLocation === "oncampus" ? (
+                                            <OnCampusPost post={post} onShowMoreClick={handleShowMore} />
+                                        ) : (
+                                            <OffCampusPost post={post} onShowMoreClick={handleShowMore} />
+                                        )}
+                                    </div>
+                                ))}
+                                {postsToShow < bookmarkedPostings.length && (
+                                    <button className={css.showMore} onClick={handleShowMorePosts}>
+                                        SHOW MORE POSTINGS...
+                                    </button>
+                                )}
+                            </div>
+                        </section>
                         {!currentUser.emailVerified && (
                             <section className={css.emailVerification}>
                                 <p>Your email, {currentUser.email} is not verified. Please verify it. </p>
@@ -121,7 +175,7 @@ const MyProfile = () => {
                             </section>
                         )}
                         <section className={css.changePassword}>
-                            <p>Need to change your password?</p>
+                            <h2>Need to change your password?</h2>
                             <input 
                                 type="password"
                                 placeholder="Enter new password"
