@@ -365,7 +365,7 @@ const PostingForm = () => {
                     <div  className={css.required}>*</div>
                   </div>
 
-                  <div className={css.requiredInput}>
+                  <div className={`${css.requiredInput} ${css.requiredGenderInput}`}>
                     <select
                       value={resident.gender}
                       aria-label={`Gender of Resident ${index + 1}`}

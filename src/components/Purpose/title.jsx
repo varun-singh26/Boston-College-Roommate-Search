@@ -6,8 +6,8 @@ const Title = () => {
 
     return (
         <div className={css.backdropContainer}>
-            <img className={css.backdropImage} src={Stairs} alt="BC Million Dollar Stairs" />
-            <p className={css.overlayText}>Who is BCRS?</p>
+            <img id="backdropImageTop" className={css.backdropImage} src={Stairs} alt="BC Million Dollar Stairs" />
+            <p className={css.overlayText}>Welcome to BCRS!</p>
         </div>
     );
 };
