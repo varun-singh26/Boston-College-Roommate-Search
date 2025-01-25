@@ -59,6 +59,10 @@ const Navbar = () => {
                             <Link to= "/our-purpose" className={css.postingsLink}>Our Purpose</Link>
                         </p>
 
+                        <p className={isActive("/contact-us") ? css.activeLink : ""}>
+                            <Link to= "/contact-us" className={css.postingsLink}>Contact Us</Link>
+                        </p>
+
                         {/* <p>
                             <a
                                 href="https://www.bc.edu/bc-web/offices/studentaffairs/sites/residential-life/living-in-bc-housing/hall-openings-closings.html"

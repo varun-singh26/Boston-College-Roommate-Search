@@ -1,3 +1,6 @@
+.customPagePostingFormContainer {
+  background-color: #f9f9f9;
+}
 .container {
     display: flex;
     justify-content: center;
@@ -30,16 +33,27 @@
     font-weight: bold;
     margin-bottom: 1.5rem;
   }
-
-  .errorMessage {
-    color: red;
-    margin: 0.5rem 0;
-}
   
   .keyword {
     color: #cd9f58;
   }
   
+  .warning {
+    color: gray;
+    font-size: 1.5rem;
+  }
+
+  .warningLink {
+    color: #cd9f58;
+    font-weight: bold;
+    text-decoration: none;
+  }
+
+  .warningLink:hover {
+    text-decoration: underline;
+    color: #987540;
+  }
+
   .postForm {
     display: grid;
     grid-template-columns: 1fr 1fr;
@@ -315,3 +329,8 @@
     transform: translateY(-1px);
     box-shadow: 0px 3px 7px rgba(0, 0, 0, 0.2)
   }
+
+  .errorMessage {
+    color: red;
+    margin: 0.5rem 0;
+}

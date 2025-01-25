@@ -14,6 +14,7 @@ import ForgotPassword from "./components/SignInSignUp/ForgotPassword.jsx";
 import Footer from "./components/Footer.jsx";
 import Creation from "./components/CreatePosting/createPostingLandingSplash.jsx";
 import Purpose from "./components/Purpose/purposeLandingSplash.jsx";
+import Contact from "./components/Contact/contactLandingSplash.jsx";
 import css from './App.css';
 
 
@@ -124,7 +125,17 @@ function RoutesWrapper({ data }) {
               <Purpose />
             </>
           }
-        />  
+        />
+
+        <Route
+        path ="/contact-us"
+        element = {
+          <>
+            <Contact />
+          </>
+        }
+        />
+        
       </Routes>
   );
 }

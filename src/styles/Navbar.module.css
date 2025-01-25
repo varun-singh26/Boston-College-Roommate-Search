@@ -47,7 +47,7 @@
 /* Navigation Links */
 .links {
     display: flex;
-    gap: 2rem;
+    gap: 5rem;
 }
 
 .links p {

@@ -115,13 +115,13 @@ const SignIn = () => {
       <h2>Sign In</h2>
       {errorMessage && <p className={css.errorMessage}>{errorMessage}</p>}
       <form className={css.form} onSubmit={handleSubmit} action="" method="POST">
+        <button onClick={onGoogleSignIn} className={css.googleSubmitButton}>Sign In with Google</button>
+        <h1> Or </h1>
         <input type="email" value={email} name="email" placeholder="Email Address" onChange={(e) => handleEmail(e.target.value)} required />
         <input type="password" value={password} name="password" placeholder="Password" onChange={(e) => handlePassword(e.target.value)} required />
         <button type="submit" className={css.submitButton}>Sign In</button>
         <a href="/forgot-password">Forgot your password?</a>
         <a href="/signUp">Don't have an account? Sign Up</a>
-        <h1> Or </h1>
-        <button onClick={onGoogleSignIn} className={css.googleSubmitButton}>Sign In with Google</button>
       </form>
     </section>
   );

@@ -3,7 +3,9 @@ import { AuthContext } from "../../context/authContext/index";
 import { auth } from "../../config/firestore";
 import {db} from "../../config/firestore";
 import {collection, addDoc, updateDoc, doc, arrayUnion} from "firebase/firestore";
+import { Link } from 'react-router-dom';
 import css from "../../styles/Homepage/Form.module.css"
+import { updateCurrentUser } from 'firebase/auth';
 
 const PostingForm = () => {
 
@@ -231,8 +233,10 @@ const PostingForm = () => {
       <header className={css.headerTextContainer}>
         <h2 className={css.headerText}> Can't find the right housing group using our search?</h2>  
         <h2> Make your own <span className={css.keyword}>Posting</span> and have potential roommates find you: </h2>
-        {errorMessage && <h2 className={css.errorMessage}>{errorMessage}</h2>} {/* render not signed-in error message here, if necessary. TODO: make this look nicer */}
-      </header>  
+      </header>
+      {!currentUser &&
+        <h2 className={css.warning}>Make sure to <Link to="/signIn" className={css.warningLink}>sign-in</Link> before completing the form to save your posting.</h2>
+      }  
       <div className={css.formHolder}>
         <form className={css.postForm} onSubmit={handleSubmit}>
           <div className={`${css.formGroup} ${css.formLocationSelector}`}>
@@ -526,6 +530,7 @@ const PostingForm = () => {
           </div>
           <button type="submit" className={css.submitButton}>Submit</button>
         </form>
+        {errorMessage && <h2 className={css.errorMessage}>{errorMessage}</h2>} {/* render not signed-in error message here, if necessary. TODO: make this look nicer */}
       </div>
     </div>
   );
