@@ -23,6 +23,7 @@ const PostingForm = () => {
     { name: '', academicYear: '', gender: '', customGender: '', instagramHandle: '', email: '', isAdmin: true},
   ]);
   const [postingFormData, setPostingFormData] = useState({
+    sublet: false,
     numSeek: '',
     dorm: '',
     address: '',
@@ -245,7 +246,16 @@ const PostingForm = () => {
               <option value="oncampus">On-Campus</option>
               <option value="offcampus">Off-Campus</option>
             </select>
+
+            {location === 'offcampus' && (
+            <div className={css.subletGroup}>
+                  <label>Are you hoping to find sublets/subtenants with this posting?</label>
+                  <input type="checkbox" id="sublet" name="sublet" className={css.subletCheckbox} />
+            </div>
+            )}
+
           </div>
+
           <div className={css.formGroup2}>
             <div className={css.residentsContainer}>
               <label>Group Administrator:</label>

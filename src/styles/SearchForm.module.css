@@ -33,25 +33,25 @@
     }
 }
 
-@media (max-width: 1550px) {
+@media (max-width: 1580px) {
     .formOn, .formOff {
         gap: 3vw
     }
 }
 
-@media (max-width: 1440px) {
+@media (max-width: 1447px) {
     .formOn, .formOff {
         gap: 2vw
     }
 }
 
-@media (max-width: 1300px) {
+@media (max-width: 1337px) {
     .formOn, .formOff {
         gap: 1vw
     }
 }
 
-@media (max-width: 1200px) {
+@media (max-width: 1245px) {
     .formOn, .formOff {
         flex-wrap: wrap;
     }

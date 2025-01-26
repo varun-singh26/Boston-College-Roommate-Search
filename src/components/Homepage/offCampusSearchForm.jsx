@@ -19,6 +19,7 @@ const OffCampusSearchForm = () => {
   const [preferredStreet, setPreferredStreet] = useState("");
   const [gender, setGender] = useState("");
   const [classYear, setClassYear] = useState("");
+  const [sublet, setSublet] = useState("");
   
   //PRINT STATEMENTS FOR DEBUGGING
   console.log("If a field in formData changes, the value of this field must match the value from the event that triggered SearchBar to rerender");
@@ -169,7 +170,24 @@ const OffCampusSearchForm = () => {
                   <option value="2024">Sophomore</option>
                   <option value="2025">Freshman</option>
               </select>
-              </div>
+            </div>
+
+            <div className={css.fieldGroup}>
+              <label className={css.label} htmlFor="sublet">Looking to Sublet/Subtenant:</label>
+              <select
+                name="sublet"
+                id="sublet"
+                className={css.select}
+                value={sublet}
+              >
+                <option value ="" disabled hidden>
+                Select One
+                </option>
+                  <option value="yes">Yes</option>
+                  <option value="no">No</option>
+              </select>
+            </div>
+            
         <button type="submit" className={css.searchButton}>
           Search
         </button>
