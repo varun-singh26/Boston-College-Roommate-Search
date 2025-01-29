@@ -173,7 +173,7 @@ const OffCampusSearchForm = () => {
             </div>
 
             <div className={css.fieldGroup}>
-              <label className={css.label} htmlFor="sublet">Looking to Sublet/Subtenant:</label>
+              <label className={css.label} htmlFor="sublet">Sublets Only:</label>
               <select
                 name="sublet"
                 id="sublet"
