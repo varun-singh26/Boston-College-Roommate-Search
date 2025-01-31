@@ -1,4 +1,5 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
+import { IsEditingPostContext } from './contexts/IsEditingPostContext';
 import { useAuth } from '../../context/authContext';
 import { db } from "../../config/firestore";
 import { updateDoc, getDoc, doc, arrayUnion, arrayRemove } from 'firebase/firestore';
@@ -6,15 +7,26 @@ import css from "./styles/BottomPost.module.css";
 
 const BottomOnCampus = ({ members, curNumSeek, dorm, totalGroupSize, id, listingLocation, onShowMoreClick }) => {
   
+  //destructure IsEditingPostContext
+  //State to toggle editing mode of administered postings
+  const { setIsEditingPost, setIDEditingPost } = useContext(IsEditingPostContext);
+
   //destructure currentUser from AuthContext
   const { currentUser } = useAuth();
 
   //state for user document reference
   const [userRef, setUserRef] = useState(null);
+  //state for user doc
+  const [userDocState, setUserDocState] = useState(null);
+
+  //state for posting document reference (just for printing purposes)
+  const [postingRef, setPostingRef] = useState(doc(db, "postings", id)); //postingRef is initialized to be the doc reference for this particular post
 
   //Create state variables for this component
   const [bookmarked, setBookmarked] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
+  const [userBookmarks, setUserBookmarks] = useState(null);
+  const [userAdministered, setUserAdministered] = useState(null);
 
   // Set userRef and check initial bookmark state when component mounts or when currentUser changes
   useEffect(() => {
@@ -27,7 +39,14 @@ const BottomOnCampus = ({ members, curNumSeek, dorm, totalGroupSize, id, listing
         //Check if the post is already bookmarked
         try {
           const userDoc = await getDoc(userRef);
+          setUserDocState(userDoc); //update userDocState
+
           const userBookmarks = userDoc.data()?.bookmarkedPostings || []; //How does this line work?
+          const userAdministered = userDoc.data()?.administeredPostings || [];
+
+          //Update state variables for this component"
+          setUserBookmarks(userBookmarks);
+          setUserAdministered(userAdministered);
           setBookmarked(userBookmarks.includes(id));
         } catch (err) {
           console.error("Error fetching user document: ", err)
@@ -54,6 +73,7 @@ const BottomOnCampus = ({ members, curNumSeek, dorm, totalGroupSize, id, listing
           await updateDoc(userRef, {
             bookmarkedPostings: arrayUnion(id),
           });
+          console.log("posting", postingRef);
           console.log("Added to bookmarkedPostings array of user", userRef);
         } else {
           // Remove the post from the user's bookmarkedPostings array
@@ -74,11 +94,15 @@ const BottomOnCampus = ({ members, curNumSeek, dorm, totalGroupSize, id, listing
       setErrorMessage("You need to sign in to bookmark a post")
     }
   };
+
+  const handleModify = (id) => {
+    //Render posting form Filled in with the data from this posting
+    //If any changes are made, modify the corresponding document in firestore
+
+    setIsEditingPost(true); //Toggle editing mode
+    setIDEditingPost(id); //set ID of post being edited (for fetching purposes in PostingForm.jsx)
+  };
     
-  
-  //      Have bookmark-black.png render if the id of this post is in current user's saved postings. 
-  //      Have bookmark-white.png render if not
-  //      If user isn't logged in show bookmark-white.png
   return (
     <div className={css.bottom}>
       <div className={css.container}>
@@ -101,6 +125,20 @@ const BottomOnCampus = ({ members, curNumSeek, dorm, totalGroupSize, id, listing
           <img className="bed" src="/assets/postings/bed.png" alt="bed" />
           <span>{totalGroupSize}-man Housing</span>
         </div>
+        {/*Only give option to modify if currentUser is not null and this post is in currentUser's administered postings */}
+          {/*Need three conditions to be satisfied in order for modify button to appear:
+          1. User must be signed in
+          2. userAdministered var of this component must not be null (initial state is null)
+          3. userAdministered array must include the id of this posting (only the admin of a posting can modify it) */}
+          {currentUser != null && userAdministered!=null && userAdministered.includes(id) && 
+            <div className={css.bottomIMG}>
+              <img 
+                onClick={() => handleModify(id)}
+                src="/assets/postings/modify.jpeg" 
+                alt="clipboard"
+              />
+            </div>
+          }
       </div>
       <div className={`${css.showMore} offCampus`} id={id}>
         <a className={`showMoreLink ${listingLocation}`} onClick={() => onShowMoreClick(id)}>

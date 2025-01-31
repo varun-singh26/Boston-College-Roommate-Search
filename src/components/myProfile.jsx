@@ -94,7 +94,8 @@ const MyProfile = () => {
         };
 
         fetchAdministeredAndBookmarkedPostings()
-    }, [currentUser]); //Want document data refetched and administeredPostings and bookmarkedPostings vars updated everytime currentUser changes
+    }, [currentUser, isEditingPost]); //Want document data refetched and administeredPostings and bookmarkedPostings vars updated everytime currentUser changes,
+                       //Or an anytime isEditingPost changes from true to false (a post has been modified)
 
     const handleChangePassword = async () => {
         try {

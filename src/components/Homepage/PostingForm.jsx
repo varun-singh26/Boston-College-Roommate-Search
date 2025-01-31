@@ -59,7 +59,7 @@ const PostingForm = ({id = null, onClose = null}) => {
     const fillInFormWithExistingPostInformation = async (id) => {
       const postingRef = doc(db, "postings", id) //assign reference
       const postingDoc = await getDoc(postingRef) //fetch document
-      console.log(postingDoc); //debugging
+      console.log("postingDoc:", postingDoc); //debugging
 
       //Callback function within a callback:
       //(When modifying an already existing post), Extract Firestore date and convert it back to an ISO date string (in order to display date in UI

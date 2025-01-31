@@ -6,7 +6,7 @@ import { db } from '../../config/firestore';
 import {collection, updateDoc, getDoc, doc, arrayUnion, arrayRemove} from "firebase/firestore";
 import css from "./styles/BottomPost.module.css";
 
-const BottomOffCampus = ({ members, curNumSeek, address, totalGroupSize, id, listingLocation, onShowMoreClick, isEditing = false }) => {
+const BottomOffCampus = ({ members, curNumSeek, address, totalGroupSize, id, listingLocation, onShowMoreClick }) => {
 
   //destructure IsEditingPostContext
   //State to toggle editing mode of administered postings
@@ -119,7 +119,6 @@ const BottomOffCampus = ({ members, curNumSeek, address, totalGroupSize, id, lis
             src={bookmarked ? "/assets/postings/bookmark.png" : "/assets/postings/bookmark-white.png"}
             alt={bookmarked ? "Bookmark" : "White Bookmark"}
           />
-          {/*<img className='bookmarkWhite' src='/assets/postings/bookmark-white.png' alt='whiteBookmark'/>*/}
           <span>{totalGroupSize - curNumSeek} looking for {curNumSeek} more</span>
         </div>
         <div className={css.bottomIMGcontainer}>
