@@ -20,9 +20,23 @@ p {
     text-align: center;
 }
 
-.postings {
+.postingsContainer {
     display: flex;
-    flex-wrap: wrap;
+    flex-direction: row;
+    justify-content: space-around;
+
+}
+
+.postingsAdministered {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 10px;
+}
+
+.postingsBookmarked {
+    display: flex;
+    flex-direction: column;
     justify-content: center;
     gap: 10px;
 }

@@ -128,46 +128,48 @@ const MyProfile = () => {
                     <>
                         <h1 className={css.title}> My Profile</h1>
                         <p>
-                        Hello {currentUser.displayName ? currentUser.displayName : currentUser.email}, you are now signed in
+                        Hello {currentUser.displayName ? currentUser.displayName : currentUser.email}, you are signed in.
                         </p>
-                        <section className={css.administered}>
-                            <h2>Your administered postings:</h2>
-                            <div className={css.postings}>
-                                {administeredPostings.slice(0, postsToShow).map((post) => (
-                                    <div key={post.id}>
-                                        {post.listingLocation === "oncampus" ? (
-                                            <OnCampusPost post={post} onShowMoreClick={handleShowMore} />
-                                        ) : (
-                                            <OffCampusPost post={post} onShowMoreClick={handleShowMore} />
-                                        )}
-                                    </div>
-                                ))}
-                                {postsToShow < administeredPostings.length && (
-                                    <button className={css.showMore} onClick={handleShowMorePosts}>
-                                        SHOW MORE POSTINGS...
-                                    </button>
-                                )}
-                            </div>
-                        </section>
-                        <section className={css.bookmarked}>
-                            <h2>Your bookmarked postings:</h2>
-                            <div className={css.postings}>
-                                {bookmarkedPostings.slice(0, postsToShow).map((post) => (
-                                    <div key={post.id}>
-                                        {post.listingLocation === "oncampus" ? (
-                                            <OnCampusPost post={post} onShowMoreClick={handleShowMore} />
-                                        ) : (
-                                            <OffCampusPost post={post} onShowMoreClick={handleShowMore} />
-                                        )}
-                                    </div>
-                                ))}
-                                {postsToShow < bookmarkedPostings.length && (
-                                    <button className={css.showMore} onClick={handleShowMorePosts}>
-                                        SHOW MORE POSTINGS...
-                                    </button>
-                                )}
-                            </div>
-                        </section>
+                        <div className={css.postingsContainer}>
+                            <section className={css.administered}>
+                                <h2>Your administered postings:</h2>
+                                <div className={css.postings}>
+                                    {administeredPostings.slice(0, postsToShow).map((post) => (
+                                        <div key={post.id}>
+                                            {post.listingLocation === "oncampus" ? (
+                                                <OnCampusPost post={post} onShowMoreClick={handleShowMore} />
+                                            ) : (
+                                                <OffCampusPost post={post} onShowMoreClick={handleShowMore} />
+                                            )}
+                                        </div>
+                                    ))}
+                                    {postsToShow < administeredPostings.length && (
+                                        <button className={css.showMore} onClick={handleShowMorePosts}>
+                                            SHOW MORE POSTINGS...
+                                        </button>
+                                    )}
+                                </div>
+                            </section>
+                            <section className={css.bookmarked}>
+                                <h2>Your bookmarked postings:</h2>
+                                <div className={css.postings}>
+                                    {bookmarkedPostings.slice(0, postsToShow).map((post) => (
+                                        <div key={post.id}>
+                                            {post.listingLocation === "oncampus" ? (
+                                                <OnCampusPost post={post} onShowMoreClick={handleShowMore} />
+                                            ) : (
+                                                <OffCampusPost post={post} onShowMoreClick={handleShowMore} />
+                                            )}
+                                        </div>
+                                    ))}
+                                    {postsToShow < bookmarkedPostings.length && (
+                                        <button className={css.showMore} onClick={handleShowMorePosts}>
+                                            SHOW MORE POSTINGS...
+                                        </button>
+                                    )}
+                                </div>
+                            </section>
+                        </div>
                         {!currentUser.emailVerified && (
                             <section className={css.emailVerification}>
                                 <p>Your email, {currentUser.email} is not verified. Please verify it. </p>
