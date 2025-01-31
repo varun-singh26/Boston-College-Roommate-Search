@@ -4,6 +4,7 @@ import './index.css';
 import SearchProvider from './context/searchContext.jsx';
 import AuthProvider from './context/authContext/index.jsx';
 import ResetTriggerProvider from './context/resetTriggerContext.jsx';
+import IsEditingPostingsProvider from './components/Post/contexts/IsEditingPostContext.jsx';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 
@@ -15,7 +16,9 @@ root.render(
     <SearchProvider>
       <AuthProvider>
         <ResetTriggerProvider>
-          <App />
+          <IsEditingPostingsProvider>
+            <App />
+          </IsEditingPostingsProvider>
         </ResetTriggerProvider>
       </AuthProvider>
     </SearchProvider>

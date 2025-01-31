@@ -1,12 +1,14 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../context/authContext/index"
+import { IsEditingPostContext } from "./Post/contexts/IsEditingPostContext";
 import { db } from "../config/firestore";
 import {getDoc, doc} from "firebase/firestore";
 import { doPasswordChange, doSendEmailVerifiction } from "../config/auth";
-import SignOut from "./SignInSignUp/SignOut";
+import PostingForm from "./Homepage/PostingForm";
 import OnCampusPost from "./Post/OnCampusPost";
 import OffCampusPost from "./Post/OffCampusPost";
+import SignOut from "./SignInSignUp/SignOut";
 import css from "../styles/Profile/myProfile.module.css"
 
 
@@ -20,12 +22,16 @@ const MyProfile = () => {
     const [message, setMessage] = useState("");
 
     const [administeredPostings, setAdministeredPostings] = useState([]);
+    const {isEditingPost, IDEditingPost} = useContext(IsEditingPostContext); //Destructure from IsEditingPostContext
+
     const [bookmarkedPostings, setBookmarkedPostings] = useState([]);
     const [postsToShow, setPostsToShow] = useState(2); // State to control number of posts shown
     const navigate = useNavigate();
 
     console.log(`Administered postings of ${currentUser.email}: `, administeredPostings);
     console.log(`Bookmarked postings of ${currentUser.email}: `, bookmarkedPostings);
+    console.log("Value of isEditingPost:", isEditingPost);
+    console.log("ID of posting being edited:", IDEditingPost ?? "");
 
     //When component first renders, set administeredPostings and bookmarkedPostings with corresponding information from  user's document
     useEffect(() => {
@@ -132,23 +138,28 @@ const MyProfile = () => {
                         </p>
                         <div className={css.postingsContainer}>
                             <section className={css.administered}>
-                                <h2>Your administered postings:</h2>
-                                <div className={css.postings}>
-                                    {administeredPostings.slice(0, postsToShow).map((post) => (
-                                        <div key={post.id}>
-                                            {post.listingLocation === "oncampus" ? (
-                                                <OnCampusPost post={post} onShowMoreClick={handleShowMore} />
-                                            ) : (
-                                                <OffCampusPost post={post} onShowMoreClick={handleShowMore} />
+                            {isEditingPost ? <PostingForm id = {IDEditingPost} /> : //Need to pass PostingForm ID, to fetch posting information.
+                                                                                    //TODO: Create X (exit) button on PostingForm, and on close of PostingForm set isEditingPost to false
+                                <>
+                                        <h2>Your administered postings:</h2>
+                                        <div className={css.postings}>
+                                            {administeredPostings.slice(0, postsToShow).map((post) => (
+                                                <div key={post.id}>
+                                                    {post.listingLocation === "oncampus" ? (
+                                                        <OnCampusPost post={post} onShowMoreClick={handleShowMore}/>
+                                                    ) : (
+                                                        <OffCampusPost post={post} onShowMoreClick={handleShowMore}/>
+                                                    )}
+                                                </div>
+                                            ))}
+                                            {postsToShow < administeredPostings.length && (
+                                                <button className={css.showMore} onClick={handleShowMorePosts}>
+                                                    SHOW MORE POSTINGS...
+                                                </button>
                                             )}
                                         </div>
-                                    ))}
-                                    {postsToShow < administeredPostings.length && (
-                                        <button className={css.showMore} onClick={handleShowMorePosts}>
-                                            SHOW MORE POSTINGS...
-                                        </button>
-                                    )}
-                                </div>
+                                </>   
+                            }
                             </section>
                             <section className={css.bookmarked}>
                                 <h2>Your bookmarked postings:</h2>

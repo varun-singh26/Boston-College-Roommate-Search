@@ -32,32 +32,34 @@ const PostDetailView = () => {
  if (posting.listingLocation === "oncampus") {
     return (
         <div className={css.detailView}>
-            <div className={css.infoAndImage}>
-    <div className={css.info}>
-        <div className={css.location}>
-            <img src="../../assets/postings/location.png" alt="Location" />
-            <span>{posting.dorm}</span>
-        </div>
-        
-        <div className={css.numPeople}>
-            <img src="../../assets/postings/group.png" alt="Group" />
-            <span>{posting.aimInteger} Total</span>
-        </div>
-        
-        <div className={css.numPeople}>
-            <img src="../../assets/postings/bullseye.png" alt="Target" />
-            <span>Seeking {posting.curNumSeek} More</span>
-        </div>
-    </div>
+          <div className={css.infoAndImage}>
+            <div className={css.info}>
+              <div className={css.location}>
+                <img src="../../assets/postings/location.png" alt="Location" />
+                <span>{posting.dorm}</span>
+              </div>
+            
+              <div className={css.numPeople}>
+                <img src="../../assets/postings/group.png" alt="Group" />
+                <span>{posting.aimInteger} Total</span>
+              </div>
+            
+              <div className={css.numPeople}>
+                <img src="../../assets/postings/bullseye.png" alt="Target" />
+                <span>Seeking {posting.curNumSeek} More</span>
+              </div>
+            </div>
 
-    {/* This image is currently a placeholder to later be replaced with an image carousel */}
-    <img className={css.imageListing} src="../../assets/oncampus/Vanderslice.jpg" alt="Listing" />
-</div>
+            {/* This image is currently a placeholder to later be replaced with an image carousel */}
+            <img className={css.imageListing} src="../../assets/oncampus/Vanderslice.jpg" alt="Listing" />
+          </div>
           <div className={css.admin}>
-            <span>Contact Lister:</span>
+            <span>Contact Group Admin:</span>
             <div className={css.adminContact}>
                 <img src="../../assets/postings/email.png" alt="Email" />
                 <span>{posting.adminContact.email}</span>
+                {posting.adminContact.phoneNumber && <span> {posting.adminContact.phoneNumber} </span>}
+                {posting.adminContact.instagramHandle && <span> {posting.adminContact.instagramHandle} </span>}
             </div>
             <div className={css.adminContact}>
               <img src="../../assets/postings/instagram.png" alt="Instagram" />

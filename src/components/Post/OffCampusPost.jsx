@@ -1,9 +1,11 @@
-import React from "react";
+import React, { useState } from "react";
 import TopPost from "./TopPost";
 import BottomOffCampus from "./BottomOffCampus";
 import css from "./styles/Post.module.css"
 
-const OffCampusPost = ({ post, onShowMoreClick }) => {
+const OffCampusPost = ({ post, onShowMoreClick}) => {
+    //By default isEditing takes the value false, unless otherwise specified
+
     return (
       <div className={css.post}>
         {/* <Top img={post.img} />TODO: Add image field to documents. Using local data for oncampus buildings*/}
@@ -14,7 +16,7 @@ const OffCampusPost = ({ post, onShowMoreClick }) => {
           totalGroupSize={post.aimInteger}
           id={post.id}
           listingLocation={post.listingLocation}
-          onShowMoreClick={onShowMoreClick} 
+          onShowMoreClick={onShowMoreClick}
         />
       </div>
     );

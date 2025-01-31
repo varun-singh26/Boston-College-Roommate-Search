@@ -1,13 +1,18 @@
 import React, { useContext, useState, useEffect } from 'react';
+import { IsEditingPostContext } from '../Post/contexts/IsEditingPostContext';
 import { AuthContext } from "../../context/authContext/index";
 import { auth } from "../../config/firestore";
 import {db} from "../../config/firestore";
-import {collection, addDoc, updateDoc, doc, arrayUnion} from "firebase/firestore";
+import {collection, addDoc, updateDoc, doc, arrayUnion, getDoc} from "firebase/firestore";
 import { Link } from 'react-router-dom';
 import css from "../../styles/Homepage/Form.module.css"
 import { updateCurrentUser } from 'firebase/auth';
 
-const PostingForm = () => {
+//unless provided by parent component, id prop is null and onClose prop is null
+const PostingForm = ({id = null, onClose = null}) => {
+
+  //destructure isEditingPostContext
+  const {setIsEditingPost} = useContext(IsEditingPostContext);
 
   //destructure currentUser, userLoggedIn from AuthContext
   const {currentUser, userLoggedIn} = useContext(AuthContext);
@@ -39,35 +44,117 @@ const PostingForm = () => {
     adminuid: ''
   });
 
-  //Check if a user is signed in. If so extract username, email, userID and add to the posting form data
+  //additional state variables
+  //state for posting document reference
+  const [postingRefState, setPostingRefState] = useState(null);
+  //state for posting document
+  const [postingDocState, setPostingDocState] = useState(null);
+
+
+  //If id provided, fill in posting form data with values from existing posting (post modification) 
+  //If id isn't provided, Check if a user is signed in. If so extract username, email, userID and add to the posting form data (post creation)
+
+  useEffect(() => {
+
+    const fillInFormWithExistingPostInformation = async (id) => {
+      const postingRef = doc(db, "postings", id) //assign reference
+      const postingDoc = await getDoc(postingRef) //fetch document
+      console.log(postingDoc); //debugging
+
+      //Callback function within a callback:
+      //(When modifying an already existing post), Extract Firestore date and convert it back to an ISO date string (in order to display date in UI
+      // and ensure period field of posting can be updated properly (if necessary) )
+      const firestoreDateToString = (dateObj) => {
+        if (!dateObj || typeof dateObj !== "object") return ""; // Handle missing or invalid date (ie. oncampus posting )
+        const { day, month, year } = dateObj; //destructure dateObj
+        return `${year}-${String(month).padStart(2, '0')}-${String(day).padStart(2, '0')}`; //explicitly convert dateObj to ISO date string
+      };
+
+      // Update state with existing post information
+      setPostingRefState(postingRef);
+      setPostingDocState(postingDoc);
+      setLocation(postingDoc.data()?.listingLocation ?? "offcampus")
+
+      //Don't want to CREATE a new Document in cloud firestore. Instead just want to update an existing document.
+      //Keep form UI in sync with existing posting information
+      setPostingFormData((prev) => ({
+        ...prev,
+        adminName: postingDoc.data()?.adminContact.name ?? "",
+        adminAcademicYear: postingDoc.data()?.adminContact.academicYear ?? "",
+        adminPhoneNumber: postingDoc.data()?.adminContact.phoneNumber ?? "",
+        adminInstagramHandle: postingDoc.data()?.adminContact.instagramHandle ?? "",
+        adminEmail: postingDoc.data()?.adminContact.email ?? "",
+        adminuid: postingDoc.data()?.adminContact.uid ?? "",
+
+        address: postingDoc.data()?.address ?? "",
+        dorm: postingDoc.data()?.dorm ?? "",
+        rent: postingDoc.data()?.monthlyRent ?? 0,
+        utilities: postingDoc.data()?.utilities ?? "included",
+
+        startDate: firestoreDateToString(postingDoc.data()?.rentPeriod?.start), //Convert object to ISO string
+        endDate: firestoreDateToString(postingDoc.data()?.rentPeriod?.end),
+
+        sublet: postingDoc.data()?.sublet ?? "",
+        numSeek: postingDoc.data()?.curNumSeek
+      }));
+
+      //update residents with existing information
+      setResidents(postingDoc.data()?.members ?? [
+        { name: '', academicYear: '', gender: '', customGender: '', instagramHandle: '', email: '', isAdmin: true},
+      ]);
+    };
+
+     if (currentUser) { //only allow posting modification if currentUser is loggedIn
+      if (id != null) { //id has been provided to component, so fetch existing posting ref (using id) and render Posting Form with existing information (Want to update a posting)
+        fillInFormWithExistingPostInformation(id);
+      } 
+     }
+  }, [id]) //This useEffect runs everytime the id of the posting being edited (from IDEditingPostContext) changes. Will this work as expected?
+
   useEffect(() => {
     if (currentUser) {
-      setPostingFormData((prev) => ({
-        ...prev, 
-        adminName: currentUser.displayName ?? "",
-        adminPhoneNumber: currentUser.phoneNumber ?? "",
-        adminEmail: currentUser.email ?? "",
-        adminuid: currentUser.uid
-      }));
-      setResidents((prev) => {
-        const updatedResidents = [...prev];
-        updatedResidents[0].name = currentUser.displayName ?? "";
-        updatedResidents[0].email = currentUser.email ?? "";
-        return updatedResidents;
-      });
-
+      if (id == null) { //New posting creation
+        setPostingFormData((prev) => ({  
+          ...prev, 
+          adminName: currentUser.displayName ?? "",
+          adminPhoneNumber: currentUser.phoneNumber ?? "",
+          adminEmail: currentUser.email ?? "",
+          adminuid: currentUser.uid,
+          startDate: new Date().toISOString().split('T')[0], //Default to today's date
+          endDate: '',
+        }));
+        setResidents((prev) => {
+          const updatedResidents = [...prev];
+          updatedResidents[0].name = currentUser.displayName ?? "";
+          updatedResidents[0].email = currentUser.email ?? "";
+          return updatedResidents;
+        });
+      }
+      
       //update the userRef
       setUserRef(doc(db, "users", currentUser.uid));
     }
-  }, [currentUser]); //Runs everytime the value of currentUser (from the auth Context) changes
+  }, [currentUser]); //This useEffect runs everytime the value of currentUser (from the auth Context) changes
 
   //print statements for debugging (when in debug mode)
   if (debugMode) {
     console.log("userRef (doc): ", userRef);
     console.log("posting formdata: ", postingFormData);
+    console.log("posting doc: ", postingDocState);
     console.log("residents: ", residents);
     console.log("location (offcampus is default): ", location);
   }
+
+  // Function to safely convert "YYYY-MM-DD" string to Firestore date object
+  const convertToFirestoreDate = (dateStr) => {
+    if (!dateStr) return null;
+    const parts = dateStr.split("-");
+    return {
+      year: parseInt(parts[0], 10),
+      month: parseInt(parts[1], 10),
+      day: parseInt(parts[2], 10),
+    };
+  };
 
   // Handle location toggle effect
   //clears unecessary fields of formData when location changes
@@ -90,7 +177,7 @@ const PostingForm = () => {
   //Remove a resident row
   const removeResident = (indexToRemove) => {
     setResidents((prevResidents) => 
-        prevResidents.filter((_, index) => index != indexToRemove)
+        prevResidents.filter((_, index) => index !== indexToRemove)
     );
   };
 
@@ -100,10 +187,10 @@ const PostingForm = () => {
 
     //Check if we're modifying info about the admin
     //If so, we have to update the corresponding admin fields of the postingForm object
-    if (residents[index]["isAdmin"]) {
+    /*if (residents[index]["isAdmin"]) {
       const updatedPostingFormData = postingFormData;
 
-    }
+    }*/
 
     const updatedResidents = [...residents];
     updatedResidents[index][field] = value;
@@ -115,8 +202,19 @@ const PostingForm = () => {
   const validateForm = () => {
     const errors = [];
 
+    //Ensure that offcampus postings proved an end date and a start date, and that the end date is indeed after the start date.
+    if (postingFormData.listingLocation === "offcampus" && (!postingFormData.startDate || !postingFormData.endDate)) {
+      errors.push("Please select both start and end dates.");
+    } else {
+      const start = new Date(postingFormData.startDate); //Why do we cast the startDate (which is an ISO formatted string) as a Date object?
+      const end = new Date(postingFormData.endDate);
+      if (end < start) {
+        errors.push("End date cannot be before start date.");
+      }
+    }
+
     //Check to ensure posting has at least one current member (which would be the group admin). If not, form is invalid
-    if (residents.length == 0 || residents[0].name == "") { //will short circuit
+    if (residents.length === 0 || residents[0].name === "") { //will short circuit
         errors.push("Please add at least one current member to your posting");
     }
 
@@ -124,17 +222,19 @@ const PostingForm = () => {
         errors.push("Please specify the number of roomates you're looking to attract to your posting (must be at least one)");
     }
 
-    if (location == "offcampus" && (!postingFormData.address || !postingFormData.rent || !postingFormData.startDate || !postingFormData.endDate)) {
+    if (location === "offcampus" && (!postingFormData.address || !postingFormData.rent || !postingFormData.startDate || !postingFormData.endDate)) {
         errors.push("Please fill all off-campus fields!");
     }
 
-    if (location == "oncampus" && !postingFormData.dorm) {
+    if (location === "oncampus" && !postingFormData.dorm) {
         errors.push("Please select a dorm!");
     }
 
     if (!postingFormData.adminEmail && !postingFormData.adminPhoneNumber) {
         errors.push("Please provide either admin phone number or email (or both)");
     }
+
+
 
     if (errors.length > 0) {
         alert(errors.join("\n"));
@@ -145,6 +245,8 @@ const PostingForm = () => {
   };
 
   // Handle form submission to cloud firestore:
+  //if id != null, DON'T want to CREATE a new Document in cloud firestore. Instead just want to update an existing document.
+  //if id == null, DO want to CREATE a new Document in cloud firestore.
   const handleSubmit = async(e) => {
     e.preventDefault();
 
@@ -164,18 +266,12 @@ const PostingForm = () => {
     }
 
     // If form is valid, continue execution and add posting to postings collection in cloud firestore
+    //More robust and less error prone method of extracting month, day, and year from startDate and endDate fields
     const period = {
-        start: {
-            month: new Date(postingFormData.startDate).getMonth() + 1, //Months are zero-indexed
-            day: new Date(postingFormData.startDate).getDate(),
-            year: new Date(postingFormData.startDate).getFullYear()
-        },
-        end: {
-            month: new Date(postingFormData.endDate).getMonth() + 1,
-            day: new Date(postingFormData.endDate).getDate(),
-            year: new Date(postingFormData.endDate).getFullYear()
-        }
+      start: convertToFirestoreDate(postingFormData.startDate),
+      end: convertToFirestoreDate(postingFormData.endDate),
     };
+    
     const members = residents.map((resident) => ({
         name: resident.name,
         academicYear: resident.academicYear,
@@ -195,19 +291,50 @@ const PostingForm = () => {
         uid: postingFormData.adminuid
     }
 
-    //add new doc with the entered information to postings collection in cloud firestore
-    try { 
+    //If id != null, update the fields of the existing posting doc:
+    if (id != null) {
+      try {
+        //using existing postingRefState
+        await updateDoc(postingRefState, {
+          address: location === "offcampus" ? postingFormData.address : null,
+          adminContact: adminContactInfo, 
+          aimInteger: residents.length + parseInt(postingFormData.numSeek, 10),
+          curGroupSize: residents.length,
+          curNumSeek: parseInt(postingFormData.numSeek, 10),
+          dorm: location === "oncampus" ? postingFormData.dorm : null,
+          listingLocation: location,
+          members: members,
+          monthlyRent: postingFormData.rent || 0,
+          rentPeriod: location === "offcampus" ? period : null,
+          utilities: postingFormData.utilities
+        });
+        console.log("Reference in postings collection with the following ID has been updated: ", postingRefState.id);
+        console.log("Document in postings collection with the following ID has been updated: ", postingDocState.id);
+      } catch (error) {
+        console.error("Error updating document: ", error);
+        alert(`Failed to update the posting with ID: ${postingDocState.id}. Pleae try again.`);
+      }
+      finally { //always setIsEditing to false after document update (to close PostingForm component in MyProfile.jsx)
+        setIsEditingPost(false);
+      }
+    };
+    
+    //If id == null, create a new posting doc:
+    if (id == null) {
+
+      try { 
+        //creating a new reference to the "postings" collection
         const postingDocRef = await addDoc(collection(db, "postings"), {
-            address: location == "offcampus" ? postingFormData.address : null,
+            address: location === "offcampus" ? postingFormData.address : null,
             adminContact: adminContactInfo,
             aimInteger: residents.length + parseInt(postingFormData.numSeek, 10),
             curGroupSize: residents.length,
             curNumSeek: parseInt(postingFormData.numSeek, 10),
-            dorm: location == "oncampus" ? postingFormData.dorm : null,
+            dorm: location === "oncampus" ? postingFormData.dorm : null,
             listingLocation: location,
             members: members,
             monthlyRent: postingFormData.rent || 0,
-            rentPeriod: location == "offcampus" ? period : null,
+            rentPeriod: location === "offcampus" ? period : null,
             utilities: postingFormData.utilities
         });
         console.log("Document written with ID: ", postingDocRef.id);
@@ -223,9 +350,10 @@ const PostingForm = () => {
           console.error("Error updating administeredPostings field of corresponding user (group admin) doc");
           //As of now, the posting will still occur even if the administeredPostings field of corresponding user (group admin) doc isn't updated
         }
-    } catch (error) {
-        console.error("Error adding document: ", error);
-        alert("Failed to submit the posting. Please try again.");
+      } catch (error) {
+          console.error("Error adding document: ", error);
+          alert("Failed to submit the posting. Please try again.");
+      }
     }
   };
 
