@@ -22,14 +22,15 @@ const MyProfile = () => {
     const [message, setMessage] = useState("");
 
     const [administeredPostings, setAdministeredPostings] = useState([]);
-    const {isEditingPost, IDEditingPost} = useContext(IsEditingPostContext); //Destructure from IsEditingPostContext
+    const {isEditingPost, IDEditingPost, isDeletingPost,  isChangingBookmarkStatus} = useContext(IsEditingPostContext); //Destructure from IsEditingPostContext
 
     const [bookmarkedPostings, setBookmarkedPostings] = useState([]);
     const [postsToShow, setPostsToShow] = useState(2); // State to control number of posts shown
     const navigate = useNavigate();
 
-    console.log(`Administered postings of ${currentUser.email}: `, administeredPostings);
-    console.log(`Bookmarked postings of ${currentUser.email}: `, bookmarkedPostings);
+    //optionals just in case currentUser is null (although it shouldn't be null if user is on this page)
+    console.log(`Administered postings of ${currentUser?.email}: `, administeredPostings);
+    console.log(`Bookmarked postings of ${currentUser?.email}: `, bookmarkedPostings);
     console.log("Value of isEditingPost:", isEditingPost);
     console.log("ID of posting being edited:", IDEditingPost ?? "");
 
@@ -94,8 +95,9 @@ const MyProfile = () => {
         };
 
         fetchAdministeredAndBookmarkedPostings()
-    }, [currentUser, isEditingPost]); //Want document data refetched and administeredPostings and bookmarkedPostings vars updated everytime currentUser changes,
-                       //Or an anytime isEditingPost changes from true to false (a post has been modified)
+    }, [currentUser, isEditingPost, isDeletingPost, isChangingBookmarkStatus]); //Want document data refetched and administeredPostings and bookmarkedPostings vars updated everytime currentUser changes,
+                       //anytime isEditingPost changes from true to false (a post has been modified), anytime isDeletingPost changes from T to F (a post has been deleted),
+                       //or anytime isChangingBookmarkStatus changes from T to F (a bookmark has been added or removed)
 
     const handleChangePassword = async () => {
         try {

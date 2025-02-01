@@ -1,16 +1,15 @@
 import React, { useState, useEffect, useContext } from 'react';
-import PostingForm from '../Homepage/PostingForm';
 import { IsEditingPostContext } from './contexts/IsEditingPostContext';
 import { useAuth } from '../../context/authContext/index';
 import { db } from '../../config/firestore';
-import {collection, updateDoc, getDoc, doc, arrayUnion, arrayRemove} from "firebase/firestore";
+import {collection, updateDoc, deleteDoc, getDoc, getDocs, doc, arrayUnion, arrayRemove, writeBatch} from "firebase/firestore";
 import css from "./styles/BottomPost.module.css";
 
 const BottomOffCampus = ({ members, curNumSeek, address, totalGroupSize, id, listingLocation, onShowMoreClick }) => {
 
   //destructure IsEditingPostContext
   //State to toggle editing mode of administered postings
-  const { setIsEditingPost, setIDEditingPost } = useContext(IsEditingPostContext);
+  const { setIsEditingPost, setIDEditingPost, setIsDeletingPost, setIsChangingBookmarkStatus } = useContext(IsEditingPostContext);
 
   //destructure currentUser, userLoggedIn from AuthContext
   const { currentUser, userLoggedIn } = useAuth();
@@ -61,6 +60,8 @@ const BottomOffCampus = ({ members, curNumSeek, address, totalGroupSize, id, lis
   //Handle bookmark toggle
   const handleBookmarkClick = async() => {
 
+    setIsChangingBookmarkStatus(true); //Process of changing bookmark status has started
+
     console.log(`bookmark for post with id, ${id}, was clicked`);
 
     //clear previous error message, if any
@@ -90,11 +91,17 @@ const BottomOffCampus = ({ members, curNumSeek, address, totalGroupSize, id, lis
           console.error("Error updating bookmarkedPostings field: ", err);
           setErrorMessage("Something went wrong. Please try again.");
         }
+        finally {
+          setIsChangingBookmarkStatus(false); //Process of changing bookmark status has ended
+        }
+
       } else {
         // Prompt user to sign in if not logged in
         setErrorMessage("You need to sign in to bookmark a post.");
       }
     };
+
+
 
     const handleModify = (id) => {
       //Render posting form Filled in with the data from this posting
@@ -105,14 +112,81 @@ const BottomOffCampus = ({ members, curNumSeek, address, totalGroupSize, id, lis
 
     };
 
+
+
+
+    const handleDelete = async(id) => {
+
+      setIsDeletingPost(true); //Deletion process has started
+  
+      console.log(`Attempting to delete post with ID: ${id}`);
+  
+      //Clear any previous error messages
+      setErrorMessage("");
+  
+      //Confirm before deleting
+      const confirmDelete = window.confirm("Are you sure you want to delete this post? This action cannot be undone.");
+      if (!confirmDelete) return;
+  
+      if (!currentUser || !userRefState) {
+        setErrorMessage("You must be signed in to delete a post."); //also returns if userRef is null
+        return;
+      }
+  
+      try {
+        // Delete the post from Firestore
+        await deleteDoc(doc(db, "postings", id));
+        console.log(`Successfully deleted post with ID: ${id}`);
+  
+        try {
+          // Remove the post ID from the current user's administered postings
+          await updateDoc(userRefState, {                
+            administeredPostings: arrayRemove(id)
+          });
+          console.log(`Removed post ID ${id} from the user's administered postings.`);
+        } catch (updateError) {
+          console.error("Error removing post ID from user's administered postings:", updateError);
+          setErrorMessage("Post deleted, but an error occurred while updating the administered postings of your account.");
+        }
+
+        //Fetch all users to check if they bookmarked this post
+        const usersRef = collection(db, "users"); //Gets a reference to the users collection in Firestore
+        const usersSnapShot = await getDocs(usersRef); //Fetches all documents (users) in the users collection and stores them in 
+                                                       //userSnapshot
+
+        //Iterate through all users and remove the deleted post from their bookmarks (if it's there)
+        const batch = writeBatch(db); //Create a batch operation to update multiple documents at once
+                                      //Batches are used to perform multiple Firestore updates in a single transaction
+        
+        usersSnapShot.forEach((userDoc) => {
+          const userData = userDoc.data();
+          if(userData.bookmarkedPostings?.includes(id)) {
+            const userRef = doc(db, "users", userDoc.id);
+            batch.update(userRef, { //schedules an update for this user's document as part of the batch
+              bookmarkedPostings: arrayRemove(id),
+            });
+            console.log(`Queued removal of post (id: ${id}) from user's (uid: ${userDoc.id}) bookmarks.`);
+          }
+        });
+        // Commit all updates at once
+        await batch.commit(); //Much faster and more efficient than calling updateDoc() multiple times
+        console.log(`Successfully removed post (id: ${id}) from all affected users' bookmarkedPostings.`);
+
+      } catch (deleteError) {
+        console.error("Error deleting post:", deleteError);
+        setErrorMessage("Failed to delete post. Please try again.");
+      }
+      finally {
+        setIsDeletingPost(false); //Deletion process has ended
+      }
+    };
+
   return (
     <>
       <div className={css.bottom}>
         <div className={css.container}>
           Bookmark
           {errorMessage && <p className={css.errorMessage}> {errorMessage} </p>}
-          {/* The code below renders the white bookmark if a user isn't signed in. If a user is signed in, then the black bookmark will render if bookmarked is true 
-          and the white on will render if not*/}
           <img
             onClick={handleBookmarkClick}
             className={bookmarked ? "bookmark" : "bookmarkWhite"}
@@ -141,6 +215,11 @@ const BottomOffCampus = ({ members, curNumSeek, address, totalGroupSize, id, lis
                 onClick={() => handleModify(id)}
                 src="/assets/postings/modify.jpeg" 
                 alt="clipboard"
+              />
+              <img
+                onClick={() => handleDelete(id)}
+                src="/assets/postings/trashBin.jpeg"
+                alt="trashBin"
               />
             </div>
           }
