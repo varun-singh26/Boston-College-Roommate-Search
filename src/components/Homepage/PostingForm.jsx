@@ -1,13 +1,11 @@
 import React, { useContext, useState, useEffect } from 'react';
 import { IsEditingPostContext } from '../Post/contexts/IsEditingPostContext';
 import { AuthContext } from "../../context/authContext/index";
-import { auth } from "../../config/firestore";
 import {db} from "../../config/firestore";
 import {collection, addDoc, updateDoc, doc, arrayUnion, getDoc} from "firebase/firestore";
 import { Link } from 'react-router-dom';
 import { uploadFile } from "../../config/storageUpload.js";
 import css from "../../styles/Homepage/Form.module.css"
-import { updateCurrentUser } from 'firebase/auth';
 
 //unless provided by parent component, id prop is null and onClose prop is null
 const PostingForm = ({id = null, onClose = null}) => {
@@ -52,12 +50,6 @@ const PostingForm = ({id = null, onClose = null}) => {
   //state for posting document
   const [postingDocState, setPostingDocState] = useState(null);
 
-
-  const uploadFiles = async (files) => {
-    for (let i = 0; i < files.length; i++) {
-        await uploadFile(files[i]); // Ensure async behavior
-    }
-};
 
   //If id provided, fill in posting form data with values from existing posting (post modification) 
   //If id isn't provided, Check if a user is signed in. If so extract username, email, userID and add to the posting form data (post creation)
@@ -120,9 +112,10 @@ const PostingForm = ({id = null, onClose = null}) => {
      }
   }, [id]) //This useEffect runs everytime the id of the posting being edited (from IDEditingPostContext) changes. Will this work as expected?
 
+  //New posting creation
   useEffect(() => {
     if (currentUser) {
-      if (id == null) { //New posting creation
+      if (id == null) {
         setPostingFormData((prev) => ({  
           ...prev, 
           adminName: currentUser.displayName ?? "",
@@ -194,13 +187,6 @@ const PostingForm = ({id = null, onClose = null}) => {
   // Handle resident change
   const handleResidentChange = (index, field, value) => {
 
-    //Check if we're modifying info about the admin
-    //If so, we have to update the corresponding admin fields of the postingForm object
-    /*if (residents[index]["isAdmin"]) {
-      const updatedPostingFormData = postingFormData;
-
-    }*/
-
     const updatedResidents = [...residents];
     updatedResidents[index][field] = value;
     setResidents(updatedResidents);
@@ -253,6 +239,13 @@ const PostingForm = ({id = null, onClose = null}) => {
     return true;
   };
 
+
+  const uploadFiles = async (files) => {
+    for (let i = 0; i < files.length; i++) {
+        await uploadFile(files[i]); // Ensure async behavior
+    }
+  };
+
   // Handle form submission to cloud firestore:
   //if id != null, DON'T want to CREATE a new Document in cloud firestore. Instead just want to update an existing document.
   //if id == null, DO want to CREATE a new Document in cloud firestore.
@@ -273,9 +266,6 @@ const PostingForm = ({id = null, onClose = null}) => {
     if (!validateForm()) {
         return;
     }
-
-    console.log("Uploading files:", files);
-    await uploadFiles(files);
 
     // If form is valid, continue execution and add posting to postings collection in cloud firestore
     //More robust and less error prone method of extracting month, day, and year from startDate and endDate fields
@@ -302,6 +292,12 @@ const PostingForm = ({id = null, onClose = null}) => {
         phoneNumber: postingFormData.adminPhoneNumber,
         uid: postingFormData.adminuid
     }
+
+    // Upload images to firebase storage
+    console.log("Uploading files:", files);
+    await uploadFiles(files);
+
+    //TODO: 
 
     //If id != null, update the fields of the existing posting doc:
     if (id != null) {
@@ -367,8 +363,6 @@ const PostingForm = ({id = null, onClose = null}) => {
           alert("Failed to submit the posting. Please try again.");
       }
     }
-  
-    
   };
 
   return (
