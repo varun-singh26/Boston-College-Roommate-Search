@@ -5,6 +5,7 @@ import { auth } from "../../config/firestore";
 import {db} from "../../config/firestore";
 import {collection, addDoc, updateDoc, doc, arrayUnion, getDoc} from "firebase/firestore";
 import { Link } from 'react-router-dom';
+import { uploadFile } from "../../config/storageUpload.js";
 import css from "../../styles/Homepage/Form.module.css"
 import { updateCurrentUser } from 'firebase/auth';
 
@@ -24,6 +25,7 @@ const PostingForm = ({id = null, onClose = null}) => {
 
   const [errorMessage, setErrorMessage] = useState("");
   const [location, setLocation] = useState('offcampus');
+  const [files, setFiles] = useState([]);
   const [residents, setResidents] = useState([
     { name: '', academicYear: '', gender: '', customGender: '', instagramHandle: '', email: '', isAdmin: true},
   ]);
@@ -51,6 +53,12 @@ const PostingForm = ({id = null, onClose = null}) => {
   const [postingDocState, setPostingDocState] = useState(null);
 
 
+  const uploadFiles = async (files) => {
+    for (let i = 0; i < files.length; i++) {
+        await uploadFile(files[i]); // Ensure async behavior
+    }
+};
+
   //If id provided, fill in posting form data with values from existing posting (post modification) 
   //If id isn't provided, Check if a user is signed in. If so extract username, email, userID and add to the posting form data (post creation)
 
@@ -74,6 +82,7 @@ const PostingForm = ({id = null, onClose = null}) => {
       setPostingRefState(postingRef);
       setPostingDocState(postingDoc);
       setLocation(postingDoc.data()?.listingLocation ?? "offcampus")
+
 
       //Don't want to CREATE a new Document in cloud firestore. Instead just want to update an existing document.
       //Keep form UI in sync with existing posting information
@@ -155,7 +164,7 @@ const PostingForm = ({id = null, onClose = null}) => {
       day: parseInt(parts[2], 10),
     };
   };
-
+  
   // Handle location toggle effect
   //clears unecessary fields of formData when location changes
   useEffect(() => {
@@ -265,6 +274,9 @@ const PostingForm = ({id = null, onClose = null}) => {
         return;
     }
 
+    console.log("Uploading files:", files);
+    await uploadFiles(files);
+
     // If form is valid, continue execution and add posting to postings collection in cloud firestore
     //More robust and less error prone method of extracting month, day, and year from startDate and endDate fields
     const period = {
@@ -355,6 +367,8 @@ const PostingForm = ({id = null, onClose = null}) => {
           alert("Failed to submit the posting. Please try again.");
       }
     }
+  
+    
   };
 
   return (
@@ -663,7 +677,7 @@ const PostingForm = ({id = null, onClose = null}) => {
             {/*Need to integrate image uploades using Firebase Storage */}
             <div className={css.formGroup}>
               <label htmlFor="upload-images">Upload Images:</label>
-              <input type="file" id="upload-images" multiple />
+              <input type="file" id="upload-images" multiple onChange={(e) => setFiles(e.target.files)}/>
             </div>
           </div>
           <button type="submit" className={css.submitButton}>Submit</button>
