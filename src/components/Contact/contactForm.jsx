@@ -5,11 +5,26 @@ import css from '../../styles/Contact/contactForm.module.css';
 
 const ContactForm = () => {
 
+    const {currentUser} = React.useContext(AuthContext);
+    
+    const {userRef, setUserRef} = React.useState(null);
+
     const [formData, setFormData] = useState({
         name: '',
         email: '',
         message: ''
     });
+
+    useEffect(() => {
+        if (currentUser) {
+            setFormData({
+                ...formData,
+                name: currentUser.displayName,
+                email: currentUser.email
+            });
+        }
+    }, [currentUser]);
+
 
     const handleChange = (e) => {
         setFormData({
@@ -38,10 +53,6 @@ const ContactForm = () => {
 
         setFormData({ name: '', email: '', message: '' }); // Clear form after submission
     };
-
-    //const {currentUser} = React.useContext(AuthContext);
-
-   // const {userRef, setUserRef} = React.useState(null);
 
 
 
