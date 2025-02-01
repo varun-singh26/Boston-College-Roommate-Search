@@ -394,7 +394,7 @@ const PostingForm = ({id = null, onClose = null}) => {
                       <input
                         type="text"
                         value={postingFormData.adminName} //Always tied to the state variable
-                        placeholder="First and Last Name"
+                        placeholder="Full Name"
                         aria-label="Admin Name"
                         readOnly = {userLoggedIn} //Editable only if no user is signed in
                         onChange={(e) => !userLoggedIn && setPostingFormData({...postingFormData, adminName: e.target.value} )}
@@ -410,7 +410,7 @@ const PostingForm = ({id = null, onClose = null}) => {
                         required
                       >
                         <option value="" disabled hidden>
-                          Select One
+                          Current Year 
                         </option>
                         <option value="freshman">Freshman</option>
                         <option value="sophomore">Sophomore</option>
@@ -427,7 +427,7 @@ const PostingForm = ({id = null, onClose = null}) => {
                         required
                       >
                         <option value="" disabled hidden>
-                          Select One
+                          Gender
                         </option>
                         <option value="male">Male</option>
                         <option value="female">Female</option>
@@ -481,7 +481,7 @@ const PostingForm = ({id = null, onClose = null}) => {
                     <input
                       type="text"
                       value={resident.name}
-                      placeholder="First and Last Name"
+                      placeholder="Full Name"
                       aria-label={`Name of Resident ${index + 1}`}
                       onChange={(e) => handleResidentChange(index + 1, 'name', e.target.value)}
                       required
@@ -497,7 +497,7 @@ const PostingForm = ({id = null, onClose = null}) => {
                       required
                     >
                       <option value="" disabled hidden>
-                        Select One
+                        Current Year
                       </option>
                       <option value="freshman">Freshman</option>
                       <option value="sophomore">Sophomore</option>
@@ -521,7 +521,7 @@ const PostingForm = ({id = null, onClose = null}) => {
                       required
                     >
                       <option value="" disabled hidden>
-                        Select One
+                        Gender
                       </option>
                       <option value="male">Male</option>
                       <option value="female">Female</option>
