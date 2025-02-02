@@ -1,5 +1,5 @@
 import React, { useContext, useState } from 'react';
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import { SearchContext } from '../../context/searchContext';
 import css from "../../styles/SearchForm.module.css"
 
@@ -10,6 +10,9 @@ const OffCampusSearchForm = () => {
   //use SearchContext instead of local storage to confirm the most recent user data
   //When SearchBar renders, the values of the SearchContext are loaded into the following variables (which are initially empty/0)
   const {formData, setFormData, listingLocation, setListingLocation} = useContext(SearchContext)
+  const location = useLocation();
+  const useSearch = location.pathname !== "/postings";
+
   
   // State to track size of "search party"
   // Used to dynamically render available options for Housing-Aim field
@@ -18,7 +21,7 @@ const OffCampusSearchForm = () => {
   const [housingAim, setHousingAim] = useState("");
   const [preferredStreet, setPreferredStreet] = useState("");
   const [gender, setGender] = useState("");
-  const [classYear, setClassYear] = useState("");
+  const [year, setYear] = useState("");
   const [sublet, setSublet] = useState("");
   
   //PRINT STATEMENTS FOR DEBUGGING
@@ -35,7 +38,6 @@ const OffCampusSearchForm = () => {
    //If a change to formData occurrs, onCampusSearchForm rerenders and the print statements run again (w the updated Context)
    const handleFormChange = (e) => {
     const { id, value } = e.target;
-    console.log(e.target);
     const updatedValue = isNaN(value) ? value : Number(value); // Convert numerical responses to numbers
     console.log("updatedValue:",updatedValue);
     setFormData((prevFormData) => ({
@@ -57,6 +59,41 @@ const OffCampusSearchForm = () => {
     const value = e.target.value;
     setNumPeople(value);
     handleFormChange(e); // Pass change event to handleFormChange
+  };
+
+  const handleGenderChange = (e) => {
+    const value = e.target.value;
+    setGender(value);
+    handleFormChange(e);
+  }
+
+  const handleYearChange = (e) => {
+    const value = e.target.value;
+    setYear(value);
+    handleFormChange(e);
+  }
+
+  const handleSubletChange = (e) => {
+    const value = e.target.value;
+    setSublet(value);
+    handleFormChange(e);
+  }
+
+  const initialFormData = {
+    classYear: "",
+    housingAim: 0,
+    numberPeopleInGroup: 0,
+    preferredDorm: "",
+    gender: "",
+    sublet: "",
+  };
+  
+  // Reset all form fields to initial state
+  const resetForm = () => {
+    setFormData(initialFormData);
+    setNumPeople("");
+    setHousingAim("");
+    setGender("");    
   };
 
   //Options for Housing Aim based on the number of people 
@@ -88,46 +125,62 @@ const OffCampusSearchForm = () => {
     >
 
         <div className={css.fieldGroup}>
-          <label className={css.label} htmlFor="number-of-people-in-search-group">
+          <label className={css.label} htmlFor="numberPeopleInGroup">
             Current Group Size:
           </label>
           <select
             name="Number of people in your group"
-            id="number-of-people-in-search-group"
+            id="numberPeopleInGroup"
             className={css.select}
             value = {numPeople}
             onChange={handleNumPeopleChange}
           >
-            <option value ="" disabled hidden>
-              Select One
-            </option>
-            {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11].map((size) => (
-              <option key={size} value={size}>
-                {size}
-              </option>
+            {formData.numberPeopleInGroup === 0 ? (
+              <option value ="" disabled hidden>
+                Select One
+              </option>) : (
+                <option value={formData.numberPeopleInGroup} key={formData.numberPeopleInGroup}>
+                  {formData.numberPeopleInGroup}
+                </option>)}
+            {[1, 2, 3, 4, 5, 6, 7, 8].map((size) => (
+              size !== formData.numberPeopleInGroup ? (
+                <option key={size} value={size}>
+                  {size}
+                </option>
+              ) : null
             ))}
           </select>
         </div>
         <div className={css.fieldGroup}>
-          <label className={css.label} htmlFor="housing-aim">Housing Aim:</label>
+          <label className={css.label} htmlFor="housingAim">Housing Aim:</label>
           <select 
             name="Housing Aim" 
-            id="housing-aim" 
+            id="housingAim" 
             className= {css.select}
             value={housingAim}
             onChange={handleHousingAimChange}
           >
-            <option value ="" disabled hidden>
-              Select One
-            </option>
-            {housingOptions.map((num) => (
-              <option key={num} value={num}>
-                {num}-man housing
+            {formData.housingAim === 0 ? (
+              <option value ="" disabled hidden>
+                Select One
               </option>
+            ) : (
+              <option value={formData.housingAim} key={formData.housingAim}>
+                {formData.housingAim}-man housing
+              </option>
+            )}
+            {housingOptions.map((num) => (
+              num !== formData.housingAim ? (
+                <option key={num} value={num}>
+                  {num}-man housing
+                </option>
+              ) : null
             ))}
           </select>
         </div>
-        <div className={css.fieldGroup}>
+        {/*To be decided if we want to implement later. For now, I think we are good without it. */}
+
+        {/* <div className={css.fieldGroup}>
           <label className={css.label} htmlFor="preferred-street">Preferred Street:</label>
           <select
           name="Preferred Street"
@@ -137,40 +190,61 @@ const OffCampusSearchForm = () => {
           >
 
           </select>
-          </div>
-          <div className={css.fieldGroup}>
-            <label className={css.label} htmlFor="gender">Gender:</label>
-            <select
-          name="gender"
-          id="gender"
-          className={css.select}
-          value={gender}
-          >
-            <option value ="" disabled hidden>
-              Select One
-            </option>
-              <option value="male">Male</option>
-              <option value="female">Female</option>
-              <option value="other">Other</option>
-          </select>
-            </div>
-            <div className={css.fieldGroup}>
-              <label className={css.label} htmlFor="class-year">Class Year:</label>
-              <select
-              name="class-year"
-              id="class-year"
-              className={css.select}
-              value={classYear}
-              >
-                <option value ="" disabled hidden>
-                Select One
+          </div> */}
+
+        <div className={css.fieldGroup}>
+          <label className={css.label} htmlFor="gender">Gender:</label>
+            <select name="gender" 
+            id="gender" 
+            className={css.select} 
+            value={gender}
+            onChange={handleGenderChange}>
+              {formData.gender === "" ? (
+                <option value="" disabled hidden> Select One </option>
+              ) : (
+                <option value={formData.gender}>{formData.gender}</option>
+              )}
+              {["Male", "Female", "Other"].map((genderOption) => (
+                genderOption !== formData.gender ? (
+                  <option key={genderOption} value={genderOption}>
+                    {genderOption}
+                  </option>
+                ) : null
+              ))}
+            </select>
+        </div>
+
+        <div className={css.fieldGroup}>
+          <label className={css.label} htmlFor="classYear">Class Year:</label>
+          <select name="year" 
+            id="classYear" 
+            className={css.select} 
+            value={year}
+            onChange={handleYearChange}>
+              {/* Show "Select One" only if no classYear is selected */}
+              {formData.classYear === "" && (
+                <option value="" disabled hidden>
+                  Select One
                 </option>
-                  <option value="2022">Senior</option>
-                  <option value="2023">Junior</option>
-                  <option value="2024">Sophomore</option>
-                  <option value="2025">Freshman</option>
-              </select>
-            </div>
+              )}
+
+              {/* Render the selected classYear (if any) */}
+              {formData.classYear !== "" && (
+                <option value={formData.classYear} key={formData.classYear}>
+                  {formData.classYear}
+                </option>
+              )}
+
+              {/* Render other classYear options, excluding the selected one */}
+                {["Senior", "Junior", "Sophomore", "Freshman"].map((classYearOption) => (
+                  classYearOption !== formData.classYear ? (
+                    <option key={classYearOption} value={classYearOption}>
+                      {classYearOption}
+                    </option>
+                  ) : null
+                ))}
+            </select>
+        </div>
 
             <div className={css.fieldGroup}>
               <label className={css.label} htmlFor="sublet">Sublets Only:</label>
@@ -179,17 +253,33 @@ const OffCampusSearchForm = () => {
                 id="sublet"
                 className={css.select}
                 value={sublet}
+                onChange={handleSubletChange}
               >
-                <option value ="" disabled hidden>
-                Select One
-                </option>
-                  <option value="yes">Yes</option>
-                  <option value="no">No</option>
+                {formData.sublet === "" ? (
+                  <option value ="" disabled hidden>
+                    Select One
+                  </option>
+                ) : (
+                  <option value = {formData.sublet} key={formData.sublet}>
+                    {formData.sublet}
+                  </option>
+                )}
+                {['Yes', 'No'].map((subletOption) => (
+                  subletOption !== formData.sublet ? (
+                    <option value = {subletOption} key={subletOption}>
+                      {subletOption}
+                    </option>
+                  ) : null
+              ))}
               </select>
             </div>
-            
-        <button type="submit" className={css.searchButton}>
-          Search
+        {useSearch && (
+          <button type="submit" className={css.searchButton}>
+            Search
+          </button>
+        )}
+        <button type="button" onClick={resetForm} className={css.resetButton}>
+            Reset
         </button>
     </form>
     <p className={css.formDetails}>Select your search filters above. Filters may be left blank.</p>

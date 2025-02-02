@@ -50,7 +50,7 @@ const Navbar = () => {
                             <Link to="/" className={css.homeLink}>Home</Link>
                         </p>
                         <p className={isActive("/postings") ? css.activeLink : ""}>
-                            <Link to= "/welcomeToPostings" className={css.postingsLink}>Search Postings</Link>
+                            <Link to= "/postings" className={css.postingsLink}>Search Postings</Link>
                         </p>
                         <p className={isActive("/create-posting") ? css.activeLink : ""}>
                             <Link to= "/create-posting" className={css.postingsLink}>Create Posting</Link>

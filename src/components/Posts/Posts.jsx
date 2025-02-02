@@ -8,6 +8,7 @@ import OnCampusSearchForm from '../Homepage/onCampusSearchForm.jsx';
 import OffCampusSearchForm from '../Homepage/offCampusSearchForm.jsx';
 import { useLocation, useNavigate } from "react-router-dom";
 import css from "./styles/Posts.module.css";
+import AllPosts from './AllPosts.jsx';
 
 
 //NOTE: if the context changes frequently, it can trigger unecessary re-renders across the components subscribing to it.
@@ -24,6 +25,19 @@ const Posts = () => {
     console.log("postings: ", postings)
     console.log("filteredPostings: ", filteredPostings);
   }
+
+  const isFormEmpty = () => {
+    for (const key in formData) {
+      console.log("key", key)
+      console.log("form[key]", formData[key])
+      if (formData[key] !== 0 && formData[key] !== "") {
+        return false;
+      }
+    }
+    return true;
+  }
+
+  console.log("isFormEmpty", isFormEmpty());
 
   /*PostingsContext.jsx updates the Postings context whenever the url path changes so we will be using 
   all the latest postings when this page is navigated to */
@@ -48,14 +62,14 @@ const Posts = () => {
     if (listingLocation === "oncampus") {
       filtered = postings.filter(
         (posting) => 
-          posting.aimInteger == formData["housing-aim"] &&
-          posting.curNumSeek == formData["number-of-people-in-search-group"] 
+          posting.aimInteger == formData["housingAim"] &&
+          posting.curNumSeek == formData["numberPeopleInGroup"] 
       );
     } else if (listingLocation == "offcampus") {
       filtered = postings.filter(
         (posting) => 
-          posting.aimInteger == formData["housing-aim"] &&
-          posting.curNumSeek == formData["number-of-people-in-search-group"] 
+          posting.aimInteger == formData["housingAim"] &&
+          posting.curNumSeek == formData["numberPeopleInGroup"] 
       );
 
     } else {
@@ -92,7 +106,11 @@ const Posts = () => {
           }
         </div>
       </div>
-      <FilteredPosts filteredPostings={filteredPostings} listingLocation={listingLocation} />
+      {isFormEmpty() ? (
+        <AllPosts></AllPosts>
+      ) : (
+        <FilteredPosts filteredPostings={filteredPostings} listingLocation={listingLocation} />
+      )}
     </section>
   );
 

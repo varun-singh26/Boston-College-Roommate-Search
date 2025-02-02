@@ -4,10 +4,13 @@ export const SearchContext = createContext();
 
 const SearchProvider = ({ children }) => {
     const [formData, setFormData] = useState({
-        "class-year": 0,
-        "housing-aim": 0,
-        "number-of-people-in-search-group": 0,
-        "preferred-dorm": ""
+        "classYear": "",
+        "housingAim": 0,
+        "numberPeopleInGroup": 0,
+        "preferredDorm": "",
+        "gender": "",
+        // "preferredStreet": "",
+        "sublet": ""
     });
 
     const [listingLocation, setListingLocation] = useState("");

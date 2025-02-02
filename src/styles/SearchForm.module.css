@@ -116,3 +116,25 @@
     color: #333;
 }
 
+.resetButton {
+    flex: 1 1 100%;
+    padding: 0.7rem;
+    background-color: #f9f9f9; /* Light grey to match the form background */
+    color: #333; /* Dark text color to match other button text */
+    font-size: 1rem;
+    font-weight: bold;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s, box-shadow 0.3s ease, transform 0.3s ease;
+}
+
+.resetButton:hover {
+    color: white; /* White text on hover */
+    transform: translateY(-1px);
+    box-shadow: 0px 3px 7px rgba(0, 0, 0, 0.2);
+}
+
+.resetButton:focus {
+    outline: none;
+    box-shadow: 0 0 5px rgba(205, 159, 88, 0.7); /* Subtle focus outline matching the border color */
+}
