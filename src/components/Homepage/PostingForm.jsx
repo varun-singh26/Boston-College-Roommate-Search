@@ -2,9 +2,9 @@ import React, { useContext, useState, useEffect } from 'react';
 import { IsEditingPostContext } from '../Post/contexts/IsEditingPostContext';
 import { AuthContext } from "../../context/authContext/index";
 import {db} from "../../config/firestore";
-import {collection, addDoc, updateDoc, doc, arrayUnion, getDoc} from "firebase/firestore";
+import {collection, addDoc, setDoc, updateDoc, doc, arrayUnion, getDoc} from "firebase/firestore";
 import { Link } from 'react-router-dom';
-import { uploadFile } from "../../config/storageUpload.js";
+import { uploadFiles } from "../../config/storageUpload.js";
 import css from "../../styles/Homepage/Form.module.css"
 
 //unless provided by parent component, id prop is null and onClose prop is null
@@ -41,7 +41,8 @@ const PostingForm = ({id = null, onClose = null}) => {
     adminPhoneNumber: '',
     adminInstagramHandle: '',
     adminEmail: '',
-    adminuid: ''
+    adminuid: '',
+    imageUrls: []
   });
 
   //additional state variables
@@ -96,7 +97,9 @@ const PostingForm = ({id = null, onClose = null}) => {
         endDate: firestoreDateToString(postingDoc.data()?.rentPeriod?.end),
 
         sublet: postingDoc.data()?.sublet ?? "",
-        numSeek: postingDoc.data()?.curNumSeek
+        numSeek: postingDoc.data()?.curNumSeek,
+
+        imageUrls: postingDoc.data()?.imageUrls ?? [] //retrieve post image URLs, if any
       }));
 
       //update residents with existing information
@@ -238,17 +241,16 @@ const PostingForm = ({id = null, onClose = null}) => {
 
     return true;
   };
+  
 
-
-  const uploadFiles = async (files) => {
-    for (let i = 0; i < files.length; i++) {
-        await uploadFile(files[i]); // Ensure async behavior
-    }
+  // Creates Array from uploaded FileList, and sets Files
+  const handleFileChange = (e) => {
+    const newFiles = Array.from(e.target.files);
+    setFiles(newFiles); // Ensure that we only store new file objects, not URLs
+  
   };
 
   // Handle form submission to cloud firestore:
-  //if id != null, DON'T want to CREATE a new Document in cloud firestore. Instead just want to update an existing document.
-  //if id == null, DO want to CREATE a new Document in cloud firestore.
   const handleSubmit = async(e) => {
     e.preventDefault();
 
@@ -293,78 +295,61 @@ const PostingForm = ({id = null, onClose = null}) => {
         uid: postingFormData.adminuid
     }
 
-    // Upload images to firebase storage
+    //ChatGPT suggestion:
+    // ** Use passed ID, or Generate Posting ID for New Listings**
+    let postingId = id ? id : doc(collection(db, "postings")).id;
+
     console.log("Uploading files:", files);
-    await uploadFiles(files);
+    const uploadedImageUrls = await uploadFiles(files, postingId); //Upload ony new files to storage
 
-    //TODO: 
+    // **Merge existing image URLs with the new ones**
+    const updatedImageUrls = [...postingFormData.imageUrls, ...uploadedImageUrls];
 
-    //If id != null, update the fields of the existing posting doc:
-    if (id != null) {
-      try {
-        //using existing postingRefState
-        await updateDoc(postingRefState, {
-          address: location === "offcampus" ? postingFormData.address : null,
-          adminContact: adminContactInfo, 
-          aimInteger: residents.length + parseInt(postingFormData.numSeek, 10),
-          curGroupSize: residents.length,
-          curNumSeek: parseInt(postingFormData.numSeek, 10),
-          dorm: location === "oncampus" ? postingFormData.dorm : null,
-          listingLocation: location,
-          members: members,
-          monthlyRent: postingFormData.rent || 0,
-          rentPeriod: location === "offcampus" ? period : null,
-          utilities: postingFormData.utilities
-        });
-        console.log("Reference in postings collection with the following ID has been updated: ", postingRefState.id);
-        console.log("Document in postings collection with the following ID has been updated: ", postingDocState.id);
-      } catch (error) {
-        console.error("Error updating document: ", error);
-        alert(`Failed to update the posting with ID: ${postingDocState.id}. Pleae try again.`);
-      }
-      finally { //always setIsEditing to false after document update (to close PostingForm component in MyProfile.jsx)
-        setIsEditingPost(false);
-      }
+    // **Store Data in Firestore**
+    const postingData = {
+      address: location === "offcampus" ? postingFormData.address : null,
+      adminContact: adminContactInfo,
+      aimInteger: residents.length + parseInt(postingFormData.numSeek, 10),
+      curGroupSize: residents.length,
+      curNumSeek: parseInt(postingFormData.numSeek, 10),
+      dorm: location === "oncampus" ? postingFormData.dorm : null,
+      listingLocation: location,
+      members: members,
+      monthlyRent: postingFormData.rent || null,
+      rentPeriod: location === "offcampus" ? period : null,
+      utilities: postingFormData.utilities,
+      imageUrls: updatedImageUrls, // Store both new & existing image URLs in Firestore
     };
-    
-    //If id == null, create a new posting doc:
-    if (id == null) {
 
-      try { 
-        //creating a new reference to the "postings" collection
-        const postingDocRef = await addDoc(collection(db, "postings"), {
-            address: location === "offcampus" ? postingFormData.address : null,
-            adminContact: adminContactInfo,
-            aimInteger: residents.length + parseInt(postingFormData.numSeek, 10),
-            curGroupSize: residents.length,
-            curNumSeek: parseInt(postingFormData.numSeek, 10),
-            dorm: location === "oncampus" ? postingFormData.dorm : null,
-            listingLocation: location,
-            members: members,
-            monthlyRent: postingFormData.rent || 0,
-            rentPeriod: location === "offcampus" ? period : null,
-            utilities: postingFormData.utilities
+    try {
+      if (id) {
+        setIsEditingPost(true);
+        // **Update Existing Posting**
+        await updateDoc(postingRefState, postingData);
+        console.log("Updated posting:", postingRefState.id);
+      } else {
+        // **Create New Posting**
+        const postingDocRef = doc(db, "postings", postingId);
+        await setDoc(postingDocRef, postingData);
+        console.log("Created new posting with ID:", postingDocRef.id);
+
+        // **Update User's Administered Postings**
+        await updateDoc(userRef, {
+          administeredPostings: arrayUnion(postingId)
         });
-        console.log("Document written with ID: ", postingDocRef.id);
+        console.log(`Added posting to user's (uid: ${userRef.id}) administered postings`);
 
-        //Also want to update the administeredPostings field of the corresponding user doc in the "users" collection
-        try {
-          await updateDoc(userRef, {
-            administeredPostings: arrayUnion(postingDocRef.id) //a firestore method that adds a value to an array field. If value already exists in array, Firestore ensures its not added again.
-          });
-          console.log("posting", postingDocRef);
-          console.log("Added to administeredPostings array of user", userRef);
-        } catch (err) {
-          console.error("Error updating administeredPostings field of corresponding user (group admin) doc");
-          //As of now, the posting will still occur even if the administeredPostings field of corresponding user (group admin) doc isn't updated
-        }
-      } catch (error) {
-          console.error("Error adding document: ", error);
-          alert("Failed to submit the posting. Please try again.");
       }
+    } catch (error) {
+      console.error("Error saving posting:", error);
+      alert("Failed to save posting. Please try again.");
     }
-  };
+    finally {
+      setIsEditingPost(false);  //Indicates that post modification has completed (to close PostingForm component in MyProfile.jsx)
+    }
 
+  }
+    
   return (
     <div className={css.container}>
       <header className={css.headerTextContainer}>
@@ -671,7 +656,7 @@ const PostingForm = ({id = null, onClose = null}) => {
             {/*Need to integrate image uploades using Firebase Storage */}
             <div className={css.formGroup}>
               <label htmlFor="upload-images">Upload Images:</label>
-              <input type="file" id="upload-images" multiple onChange={(e) => setFiles(e.target.files)}/>
+              <input type="file" id="upload-images" multiple onChange={handleFileChange}/>
             </div>
           </div>
           <button type="submit" className={css.submitButton}>Submit</button>
