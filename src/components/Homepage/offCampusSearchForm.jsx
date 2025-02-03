@@ -273,14 +273,19 @@ const OffCampusSearchForm = () => {
               ))}
               </select>
             </div>
-        {useSearch && (
-          <button type="submit" className={css.searchButton}>
-            Search
+
+        <div className={css.finalButtons}>
+
+          {useSearch && (
+            <button type="submit" className={css.searchButton}>
+              Search
+            </button>
+          )}
+          <button type="button" onClick={resetForm} className={css.resetButton}>
+              Reset
           </button>
-        )}
-        <button type="button" onClick={resetForm} className={css.resetButton}>
-            Reset
-        </button>
+
+        </div>
     </form>
     <p className={css.formDetails}>Select your search filters above. Filters may be left blank.</p>
     </div>

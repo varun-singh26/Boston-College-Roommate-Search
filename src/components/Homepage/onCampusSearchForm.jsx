@@ -278,7 +278,8 @@ const OnCampusSearchForm = () => {
                 ))}
             </select>
         </div>
-
+        
+        <div className={css.finalButtons}>
         {useSearch && (
           <button type="submit" className={css.searchButton}>
             Search
@@ -287,6 +288,7 @@ const OnCampusSearchForm = () => {
         <button type="button" onClick={resetForm} className={css.resetButton}>
           Reset
         </button>
+        </div>
     </form>
     <p className={css.formDetails}>Select your search filters above. Filters may be left blank.</p>
     </div>
