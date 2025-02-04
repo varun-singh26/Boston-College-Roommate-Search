@@ -9,31 +9,6 @@ function createFileRef(name, folder = "images") {
     return ref(storage, `${folder}/${name}`); // Allows folder customization
 }
 
-// Function to upload a file
-/*
-function uploadFile(file, folder = "images") {
-    if (!auth.currentUser) {
-        console.error("Upload failed: User is not authenticated.");
-        return null;
-    }
-    if (!file) {
-        console.error("No file provided!");
-        return null;
-    }
-
-    console.log("Uploading file:", file.name);
-    const fileRef = createFileRef(file.name, folder); // Stores in the specified folder
-
-    return uploadBytes(fileRef, file)
-        .then((snapshot) => {
-            console.log("Uploaded successfully:", snapshot);
-            return snapshot;
-        })
-        .catch((error) => {
-            console.error("Upload failed:", error);
-            return null;
-        });
-}*/
 
 // CHAT GPT suggestion
 const uploadFiles = async (files, postingId) => {
