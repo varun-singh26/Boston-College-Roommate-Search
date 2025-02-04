@@ -118,6 +118,7 @@ const PostingForm = ({id = null, onClose = null}) => {
   //New posting creation
   useEffect(() => {
     if (currentUser) {
+      //Auto-fill admin fields of posting form with user information (if user is signed in)
       if (id == null) {
         setPostingFormData((prev) => ({  
           ...prev, 
@@ -290,6 +291,7 @@ const PostingForm = ({id = null, onClose = null}) => {
         name: postingFormData.adminName,
         email: postingFormData.adminEmail,
         academicYear: postingFormData.adminAcademicYear,
+        gender: residents[0].gender,
         instagramHandle: postingFormData.adminInstagramHandle,
         phoneNumber: postingFormData.adminPhoneNumber,
         uid: postingFormData.adminuid
@@ -473,6 +475,7 @@ const PostingForm = ({id = null, onClose = null}) => {
                   <div className={css.requiredInput}>
                     <input
                       type="text"
+                      id="name"
                       value={resident.name}
                       placeholder="Full Name"
                       aria-label={`Name of Resident ${index + 1}`}
@@ -484,6 +487,7 @@ const PostingForm = ({id = null, onClose = null}) => {
 
                   <div className={css.requiredInput}>
                     <select
+                      id="academicYear"
                       value={resident.academicYear}
                       aria-label={`Academic year of Resident ${index + 1}`}
                       onChange={(e) => handleResidentChange(index + 1, 'academicYear', e.target.value)}
@@ -502,6 +506,7 @@ const PostingForm = ({id = null, onClose = null}) => {
 
                   <div className={`${css.requiredInput} ${css.requiredGenderInput}`}>
                     <select
+                      id="gender"
                       value={resident.gender}
                       aria-label={`Gender of Resident ${index + 1}`}
                       onChange={(e) => {
@@ -523,6 +528,7 @@ const PostingForm = ({id = null, onClose = null}) => {
                     {resident.gender === 'other' && (
                       <input
                         type="text"
+                        id="customGender"
                         value={resident.customGender || ''}
                         placeholder="Specify Gender"
                         onChange={(e) => handleResidentChange(index + 1, 'customGender', e.target.value)}
@@ -534,6 +540,7 @@ const PostingForm = ({id = null, onClose = null}) => {
                   <div className={css.requiredInput}>
                     <input
                       type="text"
+                      id="email"
                       value={resident.email || ''}
                       placeholder="BC Email"
                       aria-label={`Email of Resident ${index + 1}`}
@@ -544,6 +551,7 @@ const PostingForm = ({id = null, onClose = null}) => {
                   </div>
                   <input
                     type="text"
+                    id="instagramHandle"
                     value={resident.instagramHandle}
                     placeholder="Instagram Handle"
                     aria-label={`Instagram Handle of Resident ${index + 1}`}

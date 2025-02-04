@@ -29,15 +29,15 @@ const FilteredPosts = ({ filteredPostings }) => {
             isMatch = false;
         }
 
-        if (formData.preferredDorm && formData.preferredDorm !== post.dorm) {
+        if (formData.preferredDorm && (formData.preferredDorm).trim().toLowerCase() !== (post.dorm?.trim().toLowerCase() || "")) {
             isMatch = false;
         }
 
-        if (formData.gender && formData.gender !== post.gender) {
+        if (formData.gender && (formData.gender).trim().toLowerCase() !== (post.adminContact?.gender?.trim().toLowerCase() || "")) {
             isMatch = false;
         }
 
-        if (formData.classYear && formData.classYear !== post.classYear) {
+        if (formData.classYear && (formData.classYear).trim().toLowerCase() !== (post.adminContact?.academicYear?.trim().toLowerCase() || "")) {
             isMatch = false;
         }
 
@@ -60,6 +60,19 @@ const FilteredPosts = ({ filteredPostings }) => {
           ) : (
             <p>No posts match your criteria. Reset to see all posts matching your listing preference.</p>
           )}
+          {/*{filteredPostings.length > 0 ? (
+            filteredPostings.map((post) => (
+                <div key={post.id}>
+                    {post.listingLocation === "oncampus" ? (
+                        <OnCampusPost post={post} onShowMoreClick={handleShowMore} />
+                    ) : (
+                        <OffCampusPost post={post} onShowMoreClick={handleShowMore} />
+                    )}
+                </div>
+            ))
+          ) : (
+            <p>No posts match your criteria. Reset to see all posts matching your listing preference.</p>
+          )} */}
         </div>
     );
 };
