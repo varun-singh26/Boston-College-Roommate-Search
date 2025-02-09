@@ -4,6 +4,7 @@ import { useLocation } from "react-router-dom";
 //Not having full page reloads means that css and javascript don't have to be rerendered when a Link is clicked
 import { Link } from "react-router-dom";
 import { useAuth } from "../context/authContext";
+import image from "../images/logos/heightsHousingHorizontalSmall.jpg"
 import css from "../styles/Navbar.module.css";
 
 const Navbar = () => {
@@ -39,12 +40,13 @@ const Navbar = () => {
         <header>
             <div id="nav" className={css.navContainer}>
                 <nav className= {css.container}>
-                    <h2 className= {css.bcrsHeader}>
-                        <Link to="/">
-                            <span className= {css.goldLogo}>BC</span>
-                            <span className= {css.whiteLogo}>RS</span>
+                    <div className={css.logoContainer}>
+                        <Link to="/" className={css.logoLink}>
+                            <img src={image} alt="Heights Housing Logo" className={css.logo}/>
+                            {/* <span className= {css.goldLogo}>BC</span>
+                            <span className= {css.whiteLogo}>RS</span> */}
                         </Link>
-                    </h2>
+                    </div>
                     <div className={css.links}>
                         <p className={isActive("/") ? css.activeLink : ""}>
                             <Link to="/" className={css.homeLink}>Home</Link>
