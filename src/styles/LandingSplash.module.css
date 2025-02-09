@@ -1,4 +1,17 @@
 .container {
     display: flex;
     flex-direction: column;
+    margin-top: 7%;
+}
+
+@media (max-width: 500px) {
+    .container {
+        margin-top: 10%;
+    }
+}
+
+@media (max-width: 380px) {
+    .container {
+        margin-top: 15%;
+    }
 }

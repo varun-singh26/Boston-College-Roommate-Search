@@ -5,9 +5,11 @@ import css from "../../styles/Homepage/Form.module.css"
 const createPostingLandingSplash = () => {
 
     return (
-        <div className={css.customPagePostingFormContainer}>
-            <PostingForm />
-        </div>
+        <main className={css.customPostContainer}>
+            <div className={css.customPagePostingFormContainer}>
+                <PostingForm />
+            </div>
+        </main>
     );
 
 };

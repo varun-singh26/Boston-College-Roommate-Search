@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { doPasswordReset } from "../../config/auth";
+import css from "./styles/Form.module.css";
 
 const ForgotPassword = () => {
     const [email, setEmail] = useState("");
@@ -17,7 +18,7 @@ const ForgotPassword = () => {
 
 
     return (
-        <div>
+        <div className = {css.formHolder}>
             <h1> Reset Password</h1>
             <input
               type="email"

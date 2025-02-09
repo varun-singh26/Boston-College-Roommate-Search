@@ -99,15 +99,15 @@ const MyProfile = () => {
                        //anytime isEditingPost changes from true to false (a post has been modified), anytime isDeletingPost changes from T to F (a post has been deleted),
                        //or anytime isChangingBookmarkStatus changes from T to F (a bookmark has been added or removed)
 
-    const handleChangePassword = async () => {
-        try {
-            await doPasswordChange(newPassword);
-            setMessage("Password changed successfully.");
-        } catch (err) {
-            setMessage("Failed to change password. Please try again.");
-            console.error(err);
-        }
-    };
+    // const handleChangePassword = async () => {
+    //     try {
+    //         await doPasswordChange(newPassword);
+    //         setMessage("Password changed successfully.");
+    //     } catch (err) {
+    //         setMessage("Failed to change password. Please try again.");
+    //         console.error(err);
+    //     }
+    // };
 
     const handleSendVerification = async () => {
         try {
@@ -190,7 +190,7 @@ const MyProfile = () => {
                                 <button onClick={handleSendVerification}> Send Verification Email</button>
                             </section>
                         )}
-                        <section className={css.changePassword}>
+                        {/* <section className={css.changePassword}>
                             <h2>Need to change your password?</h2>
                             <input 
                                 type="password"
@@ -199,7 +199,7 @@ const MyProfile = () => {
                                 onChange={(e) => setNewPassword(e.target.value)}
                             />
                             <button onClick={handleChangePassword}>Change Password</button>
-                        </section>
+                        </section> */}
                         <SignOut />
                     </>
                 ) : (

@@ -7,7 +7,7 @@ const Title = () => {
     return (
         <div className={css.backdropContainer}>
             <img id="backdropImageTop" className={css.backdropImage} src={Stairs} alt="BC Million Dollar Stairs" />
-            <p className={css.overlayText}>Welcome to BCRS!</p>
+            <p className={css.overlayText}>Welcome to Heights Housing!</p>
         </div>
     );
 };

@@ -4,7 +4,15 @@
     justify-content:center;
     height: auto;
     background-color: #f9f9f9;
+    margin-top: 5%;
 }
+
+@media (max-width: 100px) {
+    .contactLandingSplashBlock {
+        margin-top: 10%;
+    }
+}
+
 .formContainer {
     display: flex;
     flex-direction: column;

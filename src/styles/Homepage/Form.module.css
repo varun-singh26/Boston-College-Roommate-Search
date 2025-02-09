@@ -1,3 +1,39 @@
+
+.customPostContainer {
+  background-color: #f9f9f9;
+  margin-top: 7%;
+}
+
+@media (max-width: 1250px) {
+  .customPostContainer {
+    margin-top: 10%;
+  }
+}
+
+@media (max-width: 1000px) {
+  .customPostContainer {
+    margin-top: 13%;
+  }
+}
+
+@media (max-width: 650px) {
+  .customPostContainer {
+    margin-top: 15%;
+  }
+}
+
+@media (max-width: 500px) {
+  .customPostContainer {
+    margin-top: 20%;
+  }
+}
+
+@media (max-width: 370px) {
+  .customPostContainer {
+    margin-top: 25%;
+  }
+}
+
 .customPagePostingFormContainer {
   background-color: #f9f9f9;
 }
@@ -10,6 +46,7 @@
     background-color: #f9f9f9;
     font-family: 'Arial', sans-serif;
   }
+
   .formHolder {
     width: 90%;
     padding: 2rem;

@@ -21,11 +21,53 @@
         z-index: -20;
       }
 
+@media (max-width: 800px) {
+    .backdropImage {
+        max-height: 80%;
+    }
+}
+
 .overlayText {
     position: absolute;
-    font-size: 10rem;
+    font-size: 7rem;
     color: white;
     font-weight: bold;
+}
+
+@media (min-width: 2500px) {
+    .overlayText {
+        font-size: 10rem;
+    }
+}
+
+@media (max-width: 1555px) {
+    .overlayText {
+        font-size: 5rem;
+    }
+}
+
+@media (max-width: 1100px) {
+    .overlayText {
+        font-size: 3rem;
+    }
+}
+
+@media (max-width: 670px) {
+    .overlayText {
+        font-size: 2rem;
+    }
+}
+
+@media (max-width: 450px) {
+    .overlayText {
+        font-size: 1.5rem;
+    }
+}
+
+@media (max-width: 340px) {
+    .overlayText {
+        font-size: 1.25rem;
+    }
 }
 
 

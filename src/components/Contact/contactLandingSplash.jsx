@@ -6,9 +6,9 @@ const contactLandingSplash = () => {
 
     return (
 
-        <div className={css.contactLandingSplashBlock}>
+        <main className={css.contactLandingSplashBlock}>
             <ContactContent />
-        </div>
+        </main>
     );
 
 };

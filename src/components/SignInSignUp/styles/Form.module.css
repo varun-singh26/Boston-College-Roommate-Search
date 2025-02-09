@@ -2,11 +2,47 @@
 
 .formHolder {
     width: 80%;
-    margin: 1rem auto;
+    margin: 10% auto 5% auto;
     padding: 2rem;
     background-color: white;
     border-radius: 20px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+@media (max-width: 1450px) {
+    .formHolder {
+        margin-top: 14%;
+    }
+}
+
+@media (max-width: 1000px) {
+    .formHolder {
+        margin-top: 18%;
+    }
+}
+
+@media (max-width: 760px) {
+    .formHolder {
+        margin-top: 22%;
+    }
+}
+
+@media (max-width: 600px) {
+    .formHolder {
+        margin-top: 26%;
+    }
+}
+
+@media (max-width: 540px) {
+    .formHolder {
+        margin-top: 30%;
+    }
+}
+
+@media (max-width: 400px) {
+    .formHolder {
+        margin-top: 40%;
+    }
 }
 
 h2 {

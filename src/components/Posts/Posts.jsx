@@ -87,7 +87,7 @@ const Posts = () => {
                                              //Is it necessary to keep listingLocation in the array?
 
   return (
-    <section>
+    <main className = {css.postsPageContainer}>
       <div className ={css.searchContainer}>
         <div className={css.buttonContainer}>
           <button onClick={handleOnCampusClick} className={css.button}>
@@ -111,7 +111,7 @@ const Posts = () => {
       ) : (
         <FilteredPosts filteredPostings={filteredPostings} listingLocation={listingLocation} />
       )}
-    </section>
+    </main>
   );
 
 };
