@@ -33,5 +33,5 @@ const auth = getAuth(app);
 
 // Initialize reference to storage provider
 
-export {app, db, auth};
+export {app, db, auth, storage};
 

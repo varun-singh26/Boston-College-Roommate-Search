@@ -1,8 +1,10 @@
 import React, { useState, useEffect, useContext } from 'react';
+import { deletePostingAndImages } from '../../helperFunctions/myProfile/deletePostingAndImages.js';
 import { IsEditingPostContext } from './contexts/IsEditingPostContext';
 import { useAuth } from '../../context/authContext/index';
-import { db } from '../../config/firestore';
+import { db, storage } from '../../config/firestore';
 import {collection, updateDoc, deleteDoc, getDoc, getDocs, doc, arrayUnion, arrayRemove, writeBatch} from "firebase/firestore";
+import { ref, listAll, deleteObject} from 'firebase/storage';
 import css from "./styles/BottomPost.module.css";
 
 const BottomOffCampus = ({ members, curNumSeek, address, totalGroupSize, id, listingLocation, onShowMoreClick }) => {
@@ -114,71 +116,42 @@ const BottomOffCampus = ({ members, curNumSeek, address, totalGroupSize, id, lis
 
 
 
-
+    /**
+    * Wrapper function for deleting a post.
+    * Handles UI state updates and confirmation before deleting.
+    * @param {string} id - The ID of the posting to delete. //TODO: What does this code do?
+    */
     const handleDelete = async(id) => {
 
+      if (!id) return; //posting ID must not be null for deletion to occur
+
       setIsDeletingPost(true); //Deletion process has started
-  
+      setErrorMessage(""); //Clear any previous error messages
       console.log(`Attempting to delete post with ID: ${id}`);
-  
-      //Clear any previous error messages
-      setErrorMessage("");
-  
-      //Confirm before deleting
+
+      // Confirm deletion before proceeding
       const confirmDelete = window.confirm("Are you sure you want to delete this post? This action cannot be undone.");
-      if (!confirmDelete) return;
+      if (!confirmDelete) {
+        setIsDeletingPost(false); //Deletion process has ended
+        return;
+      }
   
       if (!currentUser || !userRefState) {
         setErrorMessage("You must be signed in to delete a post."); //also returns if userRef is null
+        setIsDeletingPost(false);
         return;
       }
   
       try {
-        // Delete the post from Firestore
-        await deleteDoc(doc(db, "postings", id));
-        console.log(`Successfully deleted post with ID: ${id}`);
-  
-        try {
-          // Remove the post ID from the current user's administered postings
-          await updateDoc(userRefState, {                
-            administeredPostings: arrayRemove(id)
-          });
-          console.log(`Removed post ID ${id} from the user's administered postings.`);
-        } catch (updateError) {
-          console.error("Error removing post ID from user's administered postings:", updateError);
-          setErrorMessage("Post deleted, but an error occurred while updating the administered postings of your account.");
-        }
-
-        //Fetch all users to check if they bookmarked this post
-        const usersRef = collection(db, "users"); //Gets a reference to the users collection in Firestore
-        const usersSnapShot = await getDocs(usersRef); //Fetches all documents (users) in the users collection and stores them in 
-                                                       //userSnapshot
-
-        //Iterate through all users and remove the deleted post from their bookmarks (if it's there)
-        const batch = writeBatch(db); //Create a batch operation to update multiple documents at once
-                                      //Batches are used to perform multiple Firestore updates in a single transaction
-        
-        usersSnapShot.forEach((userDoc) => {
-          const userData = userDoc.data();
-          if(userData.bookmarkedPostings?.includes(id)) {
-            const userRef = doc(db, "users", userDoc.id);
-            batch.update(userRef, { //schedules an update for this user's document as part of the batch
-              bookmarkedPostings: arrayRemove(id),
-            });
-            console.log(`Queued removal of post (id: ${id}) from user's (uid: ${userDoc.id}) bookmarks.`);
-          }
-        });
-        // Commit all updates at once
-        await batch.commit(); //Much faster and more efficient than calling updateDoc() multiple times
-        console.log(`Successfully removed post (id: ${id}) from all affected users' bookmarkedPostings.`);
-
-      } catch (deleteError) {
-        console.error("Error deleting post:", deleteError);
+        await deletePostingAndImages(id, currentUser.uid);
+        console.log(`✅ Successfully deleted post ${id} and all associated data.`);
+      } catch (error) {
+        console.error("❌ Error deleting post:", error);
         setErrorMessage("Failed to delete post. Please try again.");
-      }
-      finally {
+      } finally {
         setIsDeletingPost(false); //Deletion process has ended
       }
+
     };
 
   return (
