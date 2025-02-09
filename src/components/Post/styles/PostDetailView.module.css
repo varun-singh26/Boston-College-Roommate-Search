@@ -9,10 +9,40 @@
     background-color: #ffffff;
     border-radius: 12px;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-    margin: 30px auto;
     overflow: hidden;
     box-sizing: border-box;
 }
+
+@media (min-width: 1300px) {
+    .detailView {
+        margin: 10% auto 5% auto;
+    }
+}
+
+@media (max-width: 1000px) {
+    .detailView {
+        margin: 15% auto 5% auto;
+    }
+}
+
+@media (max-width: 768px) {
+    .detailView {
+        margin: 20% auto 5% auto;
+    }
+}
+
+@media (max-width: 550px) {
+    .detailView {
+        margin: 30% auto 5% auto;
+    }
+}
+
+@media (max-width: 400px) {
+    .detailView {
+        margin: 40% auto 5% auto;
+    }
+}
+
 
 .infoAndImage {
     display: flex;
@@ -247,7 +277,6 @@
         grid-template-rows: auto auto auto; /* Adjust for three total rows */
         gap: 20px;
         max-width: 1200px;
-        margin: 40px auto;
         align-items: start;
     }
 
