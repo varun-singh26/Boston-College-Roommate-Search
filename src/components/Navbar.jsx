@@ -4,7 +4,7 @@ import { useLocation } from "react-router-dom";
 //Not having full page reloads means that css and javascript don't have to be rerendered when a Link is clicked
 import { Link } from "react-router-dom";
 import { useAuth } from "../context/authContext";
-import image from "../images/logos/heightsHousingVertical.jpg"
+import image from "../images/logos/heightsHousingVerticalMinimal.jpg"
 import css from "../styles/Navbar.module.css";
 
 const Navbar = () => {
