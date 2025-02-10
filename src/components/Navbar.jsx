@@ -4,7 +4,9 @@ import { useLocation } from "react-router-dom";
 //Not having full page reloads means that css and javascript don't have to be rerendered when a Link is clicked
 import { Link } from "react-router-dom";
 import { useAuth } from "../context/authContext";
-import image from "../images/logos/heightsHousingVerticalMinimal.jpg"
+import image1 from "../images/logos/heightsHousingVerticalMinimal.jpg"
+import image2 from "../images/logos/heightsHousingHorizontalSmall.jpg"
+import image3 from "../images/logos/heightsHousingVertical.jpg"
 import css from "../styles/Navbar.module.css";
 
 const Navbar = () => {
@@ -13,6 +15,8 @@ const Navbar = () => {
   const { userLoggedIn } = useAuth(); //render certain components based on if userLoggedIn is true
 
   const isActive = (path) => location.pathname === path;
+
+  const [hover, setHover] = useState(false);
 
   useEffect(() => {
     const navbar = document.getElementById("nav");
@@ -40,11 +44,15 @@ const Navbar = () => {
         <header>
             <div id="nav" className={css.navContainer}>
                 <nav className= {css.container}>
-                    <div className={css.logoContainer}>
+                    <div className={css.logoContainer}
+                    onMouseEnter={() => setHover(true)} // Change image on hover
+                    onMouseLeave={() => setHover(false)} // Revert image when mouse leaves
+                     >
                         <Link to="/" className={css.logoLink}>
-                            <img src={image} alt="Heights Housing Logo" className={css.logo}/>
-                            {/* <span className= {css.goldLogo}>BC</span>
-                            <span className= {css.whiteLogo}>RS</span> */}
+                            <img src={hover ? image3 : image1} // Switch images dynamically
+                            alt="Heights Housing Logo" 
+                            className={css.logo}
+                            />
                         </Link>
                     </div>
                     <div className={css.links}>

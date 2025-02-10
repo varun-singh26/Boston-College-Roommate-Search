@@ -21,6 +21,7 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
+    height: 100%;
     padding: 0.5rem 3rem;
 }
 
@@ -28,13 +29,16 @@
 
 .logoContainer {
     display: flex;
+    flex-direction: column;
+    justify-content: center;
     align-items: center;
+    height: 100%;
 }
 
-.logoContainer:hover {
+/* .logoContainer:hover {
     cursor: pointer;
     border: 1px solid #DCCAA0;
-}
+} */
 
 .logoLink {
     text-decoration: none;
@@ -46,10 +50,13 @@
     padding: 0;
     margin-bottom: 5%;
     margin-top: 3%;
+    transition: opacity 0.3s ease, transform 0.2s ease;
 }
 
 .logo:hover {
     cursor: pointer;
+    opacity: 0.8; /* Slight fade effect */
+    transform: scale(1.05); /* Slight zoom effect */
 }
 
 /* Navigation Links */
