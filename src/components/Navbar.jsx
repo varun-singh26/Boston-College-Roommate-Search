@@ -18,6 +18,11 @@ const Navbar = () => {
 
   const [hover, setHover] = useState(false);
 
+  // Toggle image manually on touch (for mobile users)
+  const handleTouch = () => {
+    setHover((prev) => !prev); // Toggle the hover state on touch
+  };
+
   useEffect(() => {
     const navbar = document.getElementById("nav");
     let lastScrollY = window.scrollY;
@@ -36,7 +41,18 @@ const Navbar = () => {
     window.addEventListener("scroll", handleScroll);
 
     // Cleanup the event listener when the component unmounts
+    // Need to Check tap outside
     return () => window.removeEventListener("scroll", handleScroll);
+
+    const handleTouchOutside = (event) => {
+        if (!event.target.closest(`.${css.logoContainer}`)) {
+          setHover(false); // Reset the hover state when tapping outside
+        }
+      };
+    
+      document.addEventListener("touchstart", handleTouchOutside);
+      return () => document.removeEventListener("touchstart", handleTouchOutside);
+
   }, []); // Empty dependency array ensures this runs only on mount and unmount
 
 
@@ -47,6 +63,7 @@ const Navbar = () => {
                     <div className={css.logoContainer}
                     onMouseEnter={() => setHover(true)} // Change image on hover
                     onMouseLeave={() => setHover(false)} // Revert image when mouse leaves
+                    onTouchStart={handleTouch} // Mobile touch support
                      >
                         <Link to="/" className={css.logoLink}>
                             <img src={hover ? image3 : image1} // Switch images dynamically
