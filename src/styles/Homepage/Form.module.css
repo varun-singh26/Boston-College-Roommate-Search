@@ -76,6 +76,7 @@
   }
 
   .subletGroup:hover {
+    cursor: pointer;
     transform: translateY(-2px);
     box-shadow: 0px 7px 12px rgba(0, 0, 0, 0.2);
   }
@@ -97,6 +98,7 @@
   }
 
   .subletCheckbox:hover {
+    cursor: pointer;
     box-shadow: none;
   }
 
@@ -139,6 +141,7 @@
   }
 
   .warningLink:hover {
+    cursor: pointer;
     text-decoration: underline;
     color: #987540;
   }
@@ -176,6 +179,7 @@
   }
 
   .formGroup3:hover {
+    cursor: pointer;
     transform: translateY(-2px);
     box-shadow: 0px 7px 12px rgba(0, 0, 0, 0.2);
   }
@@ -252,6 +256,7 @@
   }
 
   form input:hover {
+    cursor: pointer;
     transform: translateY(-1px);
     box-shadow: 0 3px 7px rgba(0, 0, 0, 0.2);
   }
@@ -271,6 +276,7 @@
   }
 
   form select:hover {
+    cursor: pointer;
     transform: translateY(-1px);
     box-shadow: 0 3px 7px rgba(0, 0, 0, 0.2);
   }
@@ -302,6 +308,7 @@
   }
 
   .formLocationSelector select:hover {
+    cursor: pointer;
     transform: translateY(-1px);
     box-shadow: 0 3px 7px rgba(0, 0, 0, 0.2);
   }
@@ -317,6 +324,7 @@
   }
 
 .residentsContainer:hover {
+    cursor: pointer;
     transform: translateY(-2px);
     box-shadow: 0 7px 12px rgba(0, 0, 0, 0.2);
 }
@@ -342,6 +350,7 @@
     }
     
     .residentRow:hover, .residentRowAdmin:hover {
+      cursor: pointer;
       transform: translateY(-2px);
       box-shadow: 0 7px 12px rgba(0, 0, 0, 0.2);
     }
@@ -389,12 +398,14 @@
   }
   
   .addButton:hover {
+    cursor: pointer;
     background-color: #b5894e;
     transform: translateY(-1px);
     box-shadow: 0 3px 7px rgba(0, 0, 0, 0.2);
   }
 
   .removeButton:hover {
+    cursor: pointer;
     background-color: #b5894e;
     transform: translateY(-1px);
     box-shadow: 0 3px 7px rgba(0, 0, 0, 0.2);
@@ -414,6 +425,7 @@
   }
   
   .submitButton:hover {
+    cursor: pointer;
     background-color: #b5894e;
     transform: translateY(-1px);
     box-shadow: 0px 3px 7px rgba(0, 0, 0, 0.2)

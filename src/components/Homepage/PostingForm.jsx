@@ -1,7 +1,7 @@
 import React, { useContext, useState, useEffect } from 'react';
-import { IsEditingPostContext } from '../Post/contexts/IsEditingPostContext';
+import { IsEditingPostContext } from '../Post/contexts/IsEditingPostContext.jsx';
 import { AuthContext } from "../../context/authContext/index";
-import {db} from "../../config/firestore";
+import {db} from "../../config/firestore.jsx";
 import {collection, addDoc, setDoc, updateDoc, doc, arrayUnion, getDoc} from "firebase/firestore";
 import { Link } from 'react-router-dom';
 import { uploadFiles } from "../../config/storageUpload.js";

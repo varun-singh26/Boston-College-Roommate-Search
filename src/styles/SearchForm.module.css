@@ -107,6 +107,7 @@
 }
 
 .fieldGroup select:hover {
+    cursor: pointer;
     transform: translateY(-1px);
     box-shadow: 0px 3px 7px rgba(0, 0, 0, 0.2);
 }
