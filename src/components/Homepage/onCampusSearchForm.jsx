@@ -291,7 +291,9 @@ const OnCampusSearchForm = () => {
         </div>
     </form>
     <p className={css.formDetails}>Select your search filters above. Filters may be left blank.</p>
+    
     </div>
+
 
   );
 };

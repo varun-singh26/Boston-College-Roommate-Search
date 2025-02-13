@@ -5,6 +5,7 @@ import Backdrop from "./backdrop.jsx";
 import css from "../../styles/Splash.module.css";
 
 const Splash = () => {
+
   // Search context variables
   const { setListingLocation } = useContext(SearchContext);
 
