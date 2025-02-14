@@ -51,6 +51,8 @@ const PostingForm = ({id = null, onClose = null}) => {
   //state for posting document
   const [postingDocState, setPostingDocState] = useState(null);
 
+  console.log("id of post being edited: ", id );
+
 
   //If id provided, fill in posting form data with values from existing posting (post modification) 
   //If id isn't provided, Check if a user is signed in. If so extract username, email, userID and add to the posting form data (post creation)
@@ -351,18 +353,27 @@ const PostingForm = ({id = null, onClose = null}) => {
     }
 
   }
+
+  const handleCancel = () => {
+    // If cancel button is clicked, the PostingForm component isn't rendered anymore in the 
+    // corresponding component
+    setIsEditingPost(false);
+  }
     
   return (
     <div className={css.container}>
-      <header className={css.headerTextContainer}>
+      {/* Only render the posting from header if we're on the homepage */}
+      {!id && <header className={css.headerTextContainer}>
         <h2 className={css.headerText}> Can't find the right housing group using our search?</h2>  
         <h2> Make your own <span className={css.keyword}>Posting</span> and have potential roommates find you: </h2>
-      </header>
+      </header>}
       {!currentUser &&
         <h2 className={css.warning}>Make sure to <Link to="/signIn" className={css.warningLink}>sign-in</Link> before completing the form to save your posting.</h2>
       }  
       <div className={css.formHolder}>
         <form className={css.postForm} onSubmit={handleSubmit}>
+          {/* Only render cancel button if not on home page*/}
+          {id != null && <button className="cancel" onClick={handleCancel}>Cancel</button>}
           <div className={`${css.formGroup} ${css.formLocationSelector}`}>
             <label htmlFor="location">Location:</label>
             <select id="location" value={location} onChange={(e) => setLocation(e.target.value)}>

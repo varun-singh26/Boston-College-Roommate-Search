@@ -99,15 +99,6 @@ const MyProfile = () => {
                        //anytime isEditingPost changes from true to false (a post has been modified), anytime isDeletingPost changes from T to F (a post has been deleted),
                        //or anytime isChangingBookmarkStatus changes from T to F (a bookmark has been added or removed)
 
-    // const handleChangePassword = async () => {
-    //     try {
-    //         await doPasswordChange(newPassword);
-    //         setMessage("Password changed successfully.");
-    //     } catch (err) {
-    //         setMessage("Failed to change password. Please try again.");
-    //         console.error(err);
-    //     }
-    // };
 
     const handleSendVerification = async () => {
         try {
@@ -140,10 +131,9 @@ const MyProfile = () => {
                         Hello {currentUser.displayName ? currentUser.displayName : currentUser.email}, you are signed in.
                         </p>
                         <div className={css.postingsContainer}>
-                            <section className={css.administered}>
-                            {isEditingPost ? <PostingForm id = {IDEditingPost} /> : //Need to pass PostingForm ID, to fetch posting information.
-                                                                                    //TODO: Create X (exit) button on PostingForm, and on close of PostingForm set isEditingPost to false
+                            {isEditingPost ? <PostingForm id = {IDEditingPost} /> :
                                 <>
+                                    <section className={css.administered}>
                                         <h2>Your administered postings:</h2>
                                         <div className={css.postings}>
                                             {administeredPostings.slice(0, postsToShow).map((post) => (
@@ -161,28 +151,28 @@ const MyProfile = () => {
                                                 </button>
                                             )}
                                         </div>
-                                </>   
-                            }
-                            </section>
-                            <section className={css.bookmarked}>
-                                <h2>Your bookmarked postings:</h2>
-                                <div className={css.postings}>
-                                    {bookmarkedPostings.slice(0, postsToShow).map((post) => (
-                                        <div key={post.id}>
-                                            {post.listingLocation === "oncampus" ? (
-                                                <OnCampusPost post={post} onShowMoreClick={handleShowMore} />
-                                            ) : (
-                                                <OffCampusPost post={post} onShowMoreClick={handleShowMore} />
+                                    </section>
+                                    <section className={css.bookmarked}>
+                                        <h2>Your bookmarked postings:</h2>
+                                        <div className={css.postings}>
+                                            {bookmarkedPostings.slice(0, postsToShow).map((post) => (
+                                                <div key={post.id}>
+                                                    {post.listingLocation === "oncampus" ? (
+                                                        <OnCampusPost post={post} onShowMoreClick={handleShowMore} />
+                                                    ) : (
+                                                        <OffCampusPost post={post} onShowMoreClick={handleShowMore} />
+                                                    )}
+                                                </div>
+                                            ))}
+                                            {postsToShow < bookmarkedPostings.length && (
+                                                <button className={css.showMore} onClick={handleShowMorePosts}>
+                                                    SHOW MORE POSTINGS...
+                                                </button>
                                             )}
                                         </div>
-                                    ))}
-                                    {postsToShow < bookmarkedPostings.length && (
-                                        <button className={css.showMore} onClick={handleShowMorePosts}>
-                                            SHOW MORE POSTINGS...
-                                        </button>
-                                    )}
-                                </div>
-                            </section>
+                                    </section>
+                                </>
+                            }
                         </div>
                         {!currentUser.emailVerified && (
                             <section className={css.emailVerification}>
@@ -190,16 +180,6 @@ const MyProfile = () => {
                                 <button onClick={handleSendVerification}> Send Verification Email</button>
                             </section>
                         )}
-                        {/* <section className={css.changePassword}>
-                            <h2>Need to change your password?</h2>
-                            <input 
-                                type="password"
-                                placeholder="Enter new password"
-                                value={newPassword}
-                                onChange={(e) => setNewPassword(e.target.value)}
-                            />
-                            <button onClick={handleChangePassword}>Change Password</button>
-                        </section> */}
                         <SignOut />
                     </>
                 ) : (
