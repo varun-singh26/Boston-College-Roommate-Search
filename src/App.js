@@ -1,7 +1,9 @@
 import React from "react";
-import { BrowserRouter as Router, Routes, Route, useLocation } from "react-router-dom"
-import FilteredPostingsProvider from "./context/FilteredPostingsContext.jsx";
+import { BrowserRouter as Router, Routes, Route, useLocation } from "react-router-dom";
 import PostingsProvider from "./context/PostingsContext.jsx";
+import SearchProvider from "./context/searchContext.jsx";
+import FilteredPostingsProvider from "./context/FilteredPostingsContext.jsx";
+import IsEditingPostingsProvider from "./components/Post/contexts/IsEditingPostContext.jsx";
 import Navbar from './components/Navbar.jsx';
 import LandingSplash from "./components/Homepage/LandingSplash.jsx";
 import Posts from "./components/Posts/Posts.jsx"
@@ -11,12 +13,11 @@ import SignIn from "./components/SignInSignUp/SignIn.jsx";
 import SignUp from "./components/SignInSignUp/SignUp.jsx";
 import MyProfile from "./components/myProfile.jsx";
 import ForgotPassword from "./components/SignInSignUp/ForgotPassword.jsx";
-import Footer from "./components/Footer.jsx";
 import Creation from "./components/CreatePosting/createPostingLandingSplash.jsx";
 import Purpose from "./components/Purpose/purposeLandingSplash.jsx";
 import Contact from "./components/Contact/contactLandingSplash.jsx";
+import Footer from "./components/Footer.jsx";
 import css from './App.css';
-
 
 //Web App LAYOUT so far:
 
@@ -29,7 +30,7 @@ import css from './App.css';
 
 
 
-function RoutesWrapper({ data }) {
+function RoutesWrapper() {
   const location = useLocation();
   const queryParams = new URLSearchParams(location.search);
   const page = queryParams.get("page");
@@ -140,17 +141,19 @@ function RoutesWrapper({ data }) {
   );
 }
 
-function App({data}) {
+function App() {
   return (
-    <Router>
-      <PostingsProvider > {/*PostingsProvider needs to be within a <Router> component due to its use of the useLocation() hook */}
-        <FilteredPostingsProvider >
-          <Navbar />
-          <RoutesWrapper data={data} />
-          <Footer />
-        </FilteredPostingsProvider>
+    <IsEditingPostingsProvider> {/* Postings Provider has to be inside this. TODO: incorporate this into auth context)*/}
+      <PostingsProvider > {/* 🏠 Manage postings at a high level. PostingsProvider needs to be within a <Router> component due to its use of the useLocation() hook */}
+        <SearchProvider>
+          <FilteredPostingsProvider>
+            <Navbar />
+            <RoutesWrapper/>
+            <Footer />
+          </FilteredPostingsProvider>
+        </SearchProvider>
       </PostingsProvider >
-    </Router>
+    </IsEditingPostingsProvider>
   );
 }
 

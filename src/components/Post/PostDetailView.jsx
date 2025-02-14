@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { db } from '../../config/firestore.jsx';
 import { doc, getDoc } from "firebase/firestore";
 import { useLocation } from 'react-router-dom';
+import BackButton from '../Navigation/BackButton.jsx';
 import css from "./styles/PostDetailView.module.css"
 
 const PostDetailView = () => {
@@ -44,94 +45,26 @@ const PostDetailView = () => {
 
  if (posting.listingLocation === "oncampus") {
     return (
-        <div className={css.detailView}>
-          <div className={css.infoAndImage}>
-            <div className={css.info}>
-              <div className={css.location}>
-                <img src="../../assets/postings/location.png" alt="Location" />
-                <span>{posting.dorm}</span>
-              </div>
-            
-              <div className={css.numPeople}>
-                <img src="../../assets/postings/group.png" alt="Group" />
-                <span>{posting.aimInteger} Total</span>
-              </div>
-            
-              <div className={css.numPeople}>
-                <img src="../../assets/postings/bullseye.png" alt="Target" />
-                <span>Seeking {posting.curNumSeek} More</span>
-              </div>
-            </div>
-
-            {/* image carousel */}
-            <div className={css.imageCarousel}>
-              {hasMultipleImages && (
-                <button className={css.carouselButton} onClick={handlePrevImage}>&#10094;</button>
-              )} {/* &#10094 = HTML entity for left-pointing angle bracket*/}
-              <img className={css.postingImage} src={images[currentImageIndex]} alt={`Listing ${currentImageIndex + 1}`} />
-              {hasMultipleImages && (
-                <button className={css.carouselButton} onClick={handleNextImage}>&#10095;</button>
-              )} {/* &#10094 = HTML entity for right-pointing angle bracket*/}
-            </div>
+        <main className={css.container}>
+          <div className={css.backButton}>
+            <BackButton />
           </div>
-
-          <div className={css.admin}>
-            <span>Contact Group Admin:</span>
-            <div className={css.adminContact}>
-                <img src="../../assets/postings/email.png" alt="Email" />
-                <span>{posting.adminContact.email}</span>
-                {posting.adminContact.phoneNumber && <span> {posting.adminContact.phoneNumber} </span>}
-                {posting.adminContact.instagramHandle && <span> {posting.adminContact.instagramHandle} </span>}
-            </div>
-            <div className={css.adminContact}>
-              <img src="../../assets/postings/instagram.png" alt="Instagram" />
-              <span>{posting.adminContact.instagramHandle}</span>
-            </div>
-            <div className={css.adminContact}>
-              <img src="../../assets/postings/phone.png" alt="Phone" />
-              <span>{posting.adminContact.phoneNumber}</span>
-            </div>
-          </div>
-          <div className={css.members}>
-            <span>Current Group Members ({posting.aimInteger - posting.curNumSeek}):</span>
-            {posting.members.map((member, index) => (
-              <div className={css.member} key={index}>
-                <span>{member.name}</span>
-                <span>{member.academicYear}</span>
-                <div className={css.adminContact}>
-                    <img src="../../assets/postings/email.png" alt="Email"></img>
-                    <span>{member.email}</span>
-                </div>
-                <div className={css.adminContact}>
-                  <img src="../../assets/postings/instagram.png" alt="Instagram" />
-                  {member.instagramHandle}
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      );
-      
-  } else {
-      return (
           <div className={css.detailView}>
             <div className={css.infoAndImage}>
               <div className={css.info}>
-                  <div className={css.location}>
-                      <img src="../../assets/postings/location.png" alt="Location" />
-                      <span>{posting.address}</span>
-                  </div>
-                <div className={css.numPeople}>
-                    <img src="../../assets/postings/group.png" alt="Group" />
-                    <span>{posting.aimInteger} Total</span>
+                <div className={css.location}>
+                  <img src="../../assets/postings/location.png" alt="Location" />
+                  <span>{posting.dorm}</span>
                 </div>
+              
                 <div className={css.numPeople}>
-                    <img src="../../assets/postings/bullseye.png" alt="Target"></img>
-                    <span>Seeking {posting.curNumSeek} More</span>
+                  <img src="../../assets/postings/group.png" alt="Group" />
+                  <span>{posting.aimInteger} Total</span>
                 </div>
+              
                 <div className={css.numPeople}>
-                    <img src="../../assets/postings/dollar.png" alt="Target"></img>
-                    <span>{posting.montlyRent}</span>
+                  <img src="../../assets/postings/bullseye.png" alt="Target" />
+                  <span>Seeking {posting.curNumSeek} More</span>
                 </div>
               </div>
 
@@ -139,11 +72,11 @@ const PostDetailView = () => {
               <div className={css.imageCarousel}>
                 {hasMultipleImages && (
                   <button className={css.carouselButton} onClick={handlePrevImage}>&#10094;</button>
-                )}
+                )} {/* &#10094 = HTML entity for left-pointing angle bracket*/}
                 <img className={css.postingImage} src={images[currentImageIndex]} alt={`Listing ${currentImageIndex + 1}`} />
                 {hasMultipleImages && (
                   <button className={css.carouselButton} onClick={handleNextImage}>&#10095;</button>
-                )}
+                )} {/* &#10094 = HTML entity for right-pointing angle bracket*/}
               </div>
             </div>
 
@@ -152,6 +85,8 @@ const PostDetailView = () => {
               <div className={css.adminContact}>
                   <img src="../../assets/postings/email.png" alt="Email" />
                   <span>{posting.adminContact.email}</span>
+                  {posting.adminContact.phoneNumber && <span> {posting.adminContact.phoneNumber} </span>}
+                  {posting.adminContact.instagramHandle && <span> {posting.adminContact.instagramHandle} </span>}
               </div>
               <div className={css.adminContact}>
                 <img src="../../assets/postings/instagram.png" alt="Instagram" />
@@ -168,11 +103,11 @@ const PostDetailView = () => {
                 <div className={css.member} key={index}>
                   <span>{member.name}</span>
                   <span>{member.academicYear}</span>
-                  <div className={css.memberEmail}>
+                  <div className={css.adminContact}>
                       <img src="../../assets/postings/email.png" alt="Email"></img>
                       <span>{member.email}</span>
                   </div>
-                  <div className={css.memberIG}>
+                  <div className={css.adminContact}>
                     <img src="../../assets/postings/instagram.png" alt="Instagram" />
                     {member.instagramHandle}
                   </div>
@@ -180,6 +115,79 @@ const PostDetailView = () => {
               ))}
             </div>
           </div>
+        </main>
+      );  
+  } else {
+      return (
+          <>
+            <div className={css.detailView}>
+              <div className={css.infoAndImage}>
+                <div className={css.info}>
+                    <div className={css.location}>
+                        <img src="../../assets/postings/location.png" alt="Location" />
+                        <span>{posting.address}</span>
+                    </div>
+                  <div className={css.numPeople}>
+                      <img src="../../assets/postings/group.png" alt="Group" />
+                      <span>{posting.aimInteger} Total</span>
+                  </div>
+                  <div className={css.numPeople}>
+                      <img src="../../assets/postings/bullseye.png" alt="Target"></img>
+                      <span>Seeking {posting.curNumSeek} More</span>
+                  </div>
+                  <div className={css.numPeople}>
+                      <img src="../../assets/postings/dollar.png" alt="Target"></img>
+                      <span>{posting.montlyRent}</span>
+                  </div>
+                </div>
+
+                {/* image carousel */}
+                <div className={css.imageCarousel}>
+                  {hasMultipleImages && (
+                    <button className={css.carouselButton} onClick={handlePrevImage}>&#10094;</button>
+                  )}
+                  <img className={css.postingImage} src={images[currentImageIndex]} alt={`Listing ${currentImageIndex + 1}`} />
+                  {hasMultipleImages && (
+                    <button className={css.carouselButton} onClick={handleNextImage}>&#10095;</button>
+                  )}
+                </div>
+              </div>
+
+              <div className={css.admin}>
+                <span>Contact Group Admin:</span>
+                <div className={css.adminContact}>
+                    <img src="../../assets/postings/email.png" alt="Email" />
+                    <span>{posting.adminContact.email}</span>
+                </div>
+                <div className={css.adminContact}>
+                  <img src="../../assets/postings/instagram.png" alt="Instagram" />
+                  <span>{posting.adminContact.instagramHandle}</span>
+                </div>
+                <div className={css.adminContact}>
+                  <img src="../../assets/postings/phone.png" alt="Phone" />
+                  <span>{posting.adminContact.phoneNumber}</span>
+                </div>
+              </div>
+              <div className={css.members}>
+                <span>Current Group Members ({posting.aimInteger - posting.curNumSeek}):</span>
+                {posting.members.map((member, index) => (
+                  <div className={css.member} key={index}>
+                    <span>{member.name}</span>
+                    <span>{member.academicYear}</span>
+                    <div className={css.memberEmail}>
+                        <img src="../../assets/postings/email.png" alt="Email"></img>
+                        <span>{member.email}</span>
+                    </div>
+                    <div className={css.memberIG}>
+                      <img src="../../assets/postings/instagram.png" alt="Instagram" />
+                      {member.instagramHandle}
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+            <BackButton />
+          </>
         );
     }
 };

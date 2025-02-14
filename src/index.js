@@ -1,10 +1,10 @@
 import React from 'react';
+import { BrowserRouter as Router, Routes, Route, useLocation } from "react-router-dom"
 import ReactDOM from 'react-dom/client';
 import './index.css';
-import SearchProvider from './context/searchContext.jsx';
 import AuthProvider from './context/authContext/index.jsx';
-import ResetTriggerProvider from './context/resetTriggerContext.jsx';
-import IsEditingPostingsProvider from './components/Post/contexts/IsEditingPostContext.jsx';
+import NavigationProvider from './context/Navigation/NavigationContext.jsx';
+import ResetTriggerProvider, { ResetTriggerContext } from './context/resetTriggerContext.jsx';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 
@@ -13,15 +13,15 @@ import reportWebVitals from './reportWebVitals';
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
-    <SearchProvider>
-      <AuthProvider>
-        <ResetTriggerProvider>
-          <IsEditingPostingsProvider>
+    <Router> 
+      <AuthProvider> {/* 🔐 Wraps everything that needs authentication  */}
+        <NavigationProvider> {/* 🌍 Tracks page transitions */}
+          <ResetTriggerProvider>
             <App />
-          </IsEditingPostingsProvider>
-        </ResetTriggerProvider>
+          </ResetTriggerProvider>
+        </NavigationProvider>
       </AuthProvider>
-    </SearchProvider>
+    </Router>
   </React.StrictMode>
 );
 

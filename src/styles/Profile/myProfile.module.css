@@ -9,6 +9,10 @@
     gap: 1.5rem;
 }
 
+.backButton {
+    align-items: flex-start;
+}
+
 .title {
     font-weight: bold;
     text-align: center;

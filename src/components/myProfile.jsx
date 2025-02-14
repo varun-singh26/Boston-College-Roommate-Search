@@ -10,6 +10,7 @@ import OnCampusPost from "./Post/OnCampusPost";
 import OffCampusPost from "./Post/OffCampusPost";
 import SignOut from "./SignInSignUp/SignOut";
 import css from "../styles/Profile/myProfile.module.css"
+import BackButton from "./Navigation/BackButton";
 
 
 
@@ -126,6 +127,9 @@ const MyProfile = () => {
             {
                 currentUser ? (
                     <>
+                        <div className={css.backButton}>
+                            <BackButton />
+                        </div>
                         <h1 className={css.title}> My Profile</h1>
                         <p>
                         Hello {currentUser.displayName ? currentUser.displayName : currentUser.email}, you are signed in.
