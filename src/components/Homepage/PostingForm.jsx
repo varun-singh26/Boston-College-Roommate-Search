@@ -6,6 +6,7 @@ import {collection, addDoc, setDoc, updateDoc, doc, arrayUnion, getDoc} from "fi
 import { Link } from 'react-router-dom';
 import { uploadFiles } from "../../config/storageUpload.js";
 import css from "../../styles/Homepage/Form.module.css"
+import Swal from 'sweetalert2'; //library for alert messages
 
 //unless provided by parent component, id prop is null and onClose prop is null
 const PostingForm = ({id = null, onClose = null}) => {
@@ -236,12 +237,16 @@ const PostingForm = ({id = null, onClose = null}) => {
     }
 
 
-
+    
     if (errors.length > 0) {
-        alert(errors.join("\n"));
-        return false
+      Swal.fire({
+        icon: "error",
+        title: "Submission Failed",
+        html: errors.join("<br>"),
+        confirmButtonText: "OK",
+      });
+      return false;
     }
-
     return true;
   };
   
@@ -259,9 +264,15 @@ const PostingForm = ({id = null, onClose = null}) => {
 
     setErrorMessage(""); //clear previous error message, if any
 
-    //if user isn't signed in, set the error message and stop executing the handleSubmit function
+    //if user isn't signed in, use SweetAlert to display error message. Stop executing the handleSubmit function
     if (!userLoggedIn) {
-      setErrorMessage("You must be have an account to submit a posting for others to view and reach out to. Sign-in or create a new account with us");
+      Swal.fire({
+        icon: "error",
+        title: "Not Signed In",
+        text: "You must be signed in to submit a posting.",
+        confirmButtonText: "OK",
+      });
+      //setErrorMessage("You must be have an account to submit a posting for others to view and reach out to. Sign-in or create a new account with us");
       return; //This just exits from the handleSubmit function but not from the PostingForm component
     }
 
@@ -326,11 +337,31 @@ const PostingForm = ({id = null, onClose = null}) => {
     };
 
     try {
+      // Show Loading Alert while Firestore operation executes
+      Swal.fire({
+        title: "Uploading..",
+        text: "Please wait while we save your posting information.",
+        allowOutsideClick: false,
+        didOpen: () => {
+          Swal.showLoading(); // Showing loading animation
+        },
+      });
+
       if (id) {
-        setIsEditingPost(true);
+        setIsEditingPost(true); //not functionally necessary, but sets the state variable to true
+
         // **Update Existing Posting**
         await updateDoc(postingRefState, postingData);
         console.log("Updated posting:", postingRefState.id);
+
+        // ✅ Update SweetAlert to Success After Completion
+        Swal.fire({
+          icon: "success",
+          title: "Posting Updated!",
+          text: "Your posting has been successfully updated and can be viewed or edited in your profile page.",
+          confirmButtonColor: "#501315", //Maroon button color
+          confirmButtonText: "OK"
+        })
       } else {
         // **Create New Posting**
         const postingDocRef = doc(db, "postings", postingId);
@@ -343,13 +374,30 @@ const PostingForm = ({id = null, onClose = null}) => {
         });
         console.log(`Added posting to user's (uid: ${userRef.id}) administered postings`);
 
+        // ✅ Update SweetAlert to Success After Completion
+        Swal.fire({
+          icon: "success",
+          title: "Posting Submitted!",
+          text: "Your posting has been successfully submitted and can be viewed or edited in your profile page.",
+          confirmButtonColor: "#501315", //Maroon button color
+          confirmButtonText: "OK"
+        });
       }
+
     } catch (error) {
       console.error("Error saving posting:", error);
-      alert("Failed to save posting. Please try again.");
+
+      // ❌ Update SweetAlert to Error Message
+      Swal.fire({
+        icon: "error",
+        title: "Submission Failed",
+        text: "An error occurred while uploading your posting information. Please try again.",
+        confirmButtonColor: "#501315", //Maroon button color
+        confirmButtonText: "OK",
+      });
     }
-    finally {
-      setIsEditingPost(false);  //Indicates that post modification has completed (to close PostingForm component in MyProfile.jsx)
+    finally { //runs immediately after try block finishes (success or error), even while the alert is visible.
+      setIsEditingPost(false);  //Indicates that post modification has completed (to close PostingForm component in MyProfile page or Postings page)
     }
 
   }
@@ -674,7 +722,7 @@ const PostingForm = ({id = null, onClose = null}) => {
             )}
             {/*Need to integrate image uploades using Firebase Storage */}
             <div className={css.formGroup}>
-              <label htmlFor="upload-images">Upload Images:</label>
+              <label htmlFor="upload-images">Upload Images: (We suggest uploading an image of your group so people can get to know you!)</label>
               <input type="file" id="upload-images" multiple onChange={handleFileChange}/>
             </div>
           </div>
