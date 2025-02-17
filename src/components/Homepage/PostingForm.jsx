@@ -641,7 +641,7 @@ const PostingForm = ({id = null, onClose = null}) => {
             {location === 'offcampus' ? (
               <>
                 <div className={css.formGroup}>
-                  <label htmlFor="address">Street Address:</label>
+                  <label htmlFor="address">Street Address:<span className={css.required}></span></label>
                   <input
                     type="text"
                     id="address"
@@ -652,7 +652,7 @@ const PostingForm = ({id = null, onClose = null}) => {
                 </div>
 
                 <div className={css.formGroup}>
-                  <label htmlFor="rent">Monthly Rent:</label>
+                  <label htmlFor="rent">Monthly Rent:<span className={css.required}></span></label>
                   <input
                     type="number"
                     id="rent"
@@ -662,7 +662,7 @@ const PostingForm = ({id = null, onClose = null}) => {
                   />
                 </div>
                 <div className={css.formGroup}>
-                  <label htmlFor="utilities">Utilities:</label>
+                  <label htmlFor="utilities">Utilities:<span className={css.required}></span></label>
                   <select
                     id="utilities"
                     value={postingFormData.utilities}
