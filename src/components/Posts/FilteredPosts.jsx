@@ -73,19 +73,6 @@ const FilteredPosts = ({ filteredPostings }) => {
                 <p>No posts match your criteria. Reset to see all posts matching your listing preference.</p>
             )
           }
-          {/*{filteredPosts.length > 0 ? (
-            filteredPosts.map((post) => (
-                <div key={post.id}>
-                    {post.listingLocation === "oncampus" ? (
-                        <OnCampusPost post={post} onShowMoreClick={handleShowMore} />
-                    ) : (
-                        <OffCampusPost post={post} onShowMoreClick={handleShowMore} />
-                    )}
-                </div>
-            ))
-          ) : (
-            <p>No posts match your criteria. Reset to see all posts matching your listing preference.</p>
-          )}*/}
         </div>
     );
 };
