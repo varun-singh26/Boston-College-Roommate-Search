@@ -34,7 +34,8 @@ const PostingForm = ({id = null, onClose = null}) => {
     dorm: '',
     address: '',
     rent: '',
-    utilities: 'included',
+    rentType: '',
+    utilities: '',
     startDate: '',
     endDate: '',
     adminName: '',
@@ -94,7 +95,8 @@ const PostingForm = ({id = null, onClose = null}) => {
         address: postingDoc.data()?.address ?? "",
         dorm: postingDoc.data()?.dorm ?? "",
         rent: postingDoc.data()?.monthlyRent ?? 0,
-        utilities: postingDoc.data()?.utilities ?? "included",
+        rentType: postingDoc.data()?.rentType ?? "",
+        utilities: postingDoc.data()?.utilities ?? "",
 
         startDate: firestoreDateToString(postingDoc.data()?.rentPeriod?.start), //Convert object to ISO string
         endDate: firestoreDateToString(postingDoc.data()?.rentPeriod?.end),
@@ -224,16 +226,20 @@ const PostingForm = ({id = null, onClose = null}) => {
         errors.push("Please specify the number of roomates you're looking to attract to your posting (must be at least one)");
     }
 
-    if (location === "offcampus" && (!postingFormData.address || !postingFormData.rent || !postingFormData.startDate || !postingFormData.endDate)) {
-        errors.push("Please fill all off-campus fields!");
+    if (location === "offcampus" && (!postingFormData.startDate || !postingFormData.endDate)) {
+        errors.push("Please specify the start and end dates for the rental/sublet!");
     }
 
     if (location === "oncampus" && !postingFormData.dorm) {
-        errors.push("Please select a dorm!");
+        errors.push("Please select a target dorm!");
     }
 
     if (!postingFormData.adminEmail && !postingFormData.adminPhoneNumber) {
-        errors.push("Please provide either admin phone number or email (or both)");
+        errors.push("Please provide either admin phone number or email (or both)!");
+    }
+
+    if (postingFormData.rent && !postingFormData.rentType) {
+        errors.push("Please specify whether the rent indicated is the total group or per person rent!");
     }
 
 
@@ -407,7 +413,26 @@ const PostingForm = ({id = null, onClose = null}) => {
     // corresponding component
     setIsEditingPost(false);
   }
-    
+
+  if (document.getElementById("rent") != null) {
+   document.getElementById("rent").addEventListener("blur", function() {
+    if (this.value.trim() !== "") {
+      this.value = this.value.replace(/\D/g, "");
+      this.value = `$${this.value}`;
+    }
+  });
+    document.getElementById("rent").addEventListener("focus", function() {
+      if (this.value.trim() !== "" && this.value.startsWith("$")) {
+        this.value = this.value.slice(1);
+      }
+    });
+  };
+
+  const utilities = document.getElementById("utilities");
+  if (utilities && utilities.value === "Select One") {
+      utilities.value = "";
+  }
+  
   return (
     <div className={css.container}>
       {/* Only render the posting from header if we're on the homepage */}
@@ -651,16 +676,28 @@ const PostingForm = ({id = null, onClose = null}) => {
                   />
                 </div>
 
-                <div className={css.formGroup}>
+                <div className={`${css.formGroup} ${css.rentGroup}`}>
                   <label htmlFor="rent">Monthly Rent:<span className={css.required}></span></label>
+                  <div className={css.rentInputGroup}>
                   <input
-                    type="number"
+                    type="text"
                     id="rent"
                     value={postingFormData.rent}
                     onChange={(e) => setPostingFormData({ ...postingFormData, rent: e.target.value })}
                     placeholder="e.g. 1500"
                   />
+                    <select
+                      id="rentType"
+                      value={postingFormData.rentType}
+                      onChange={(e) => setPostingFormData({ ...postingFormData, rentType: e.target.value })}
+                    >
+                      <option value="" disabled hidden>Select One</option>
+                      <option value="total">Total</option>
+                      <option value="per_person">Per Person</option>
+                  </select>
+                  </div>
                 </div>
+
                 <div className={css.formGroup}>
                   <label htmlFor="utilities">Utilities:<span className={css.required}></span></label>
                   <select
@@ -668,7 +705,7 @@ const PostingForm = ({id = null, onClose = null}) => {
                     value={postingFormData.utilities}
                     onChange={(e) => setPostingFormData({ ...postingFormData, utilities: e.target.value })}
                   >
-                    <option value="" disabled hidden>Select One</option>
+                    <option value="">Select One</option>
                     <option value="included">Included</option>
                     <option value="not-included">Not Included</option>
                   </select>
@@ -721,8 +758,15 @@ const PostingForm = ({id = null, onClose = null}) => {
               </div>
             )}
             {/*Need to integrate image uploades using Firebase Storage */}
-            <div className={css.formGroup}>
-              <label htmlFor="upload-images">Upload Images: (We suggest uploading an image of your group so people can get to know you!)</label>
+            <div className={`${css.formGroup} ${css.uploadGroup}`}>
+              <div className={css.uploadLabelContainer}>
+              <label htmlFor="upload-images" className={css.uploadLabel}>
+                Upload Images: 
+              </label>
+              <label htmlFor="upload-images" className={css.uploadSubLabel}>
+                Upload a group image, or something that represents your group!
+              </label>
+              </div>
               <input type="file" id="upload-images" multiple onChange={handleFileChange}/>
             </div>
           </div>
