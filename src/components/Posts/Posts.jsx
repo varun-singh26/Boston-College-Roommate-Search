@@ -9,7 +9,6 @@ import OffCampusSearchForm from '../Homepage/offCampusSearchForm.jsx';
 import { useLocation, useNavigate } from "react-router-dom";
 import css from "./styles/Posts.module.css";
 import AllPosts from './AllPosts.jsx';
-import BackButton from '../Navigation/BackButton.jsx';
 
 
 //NOTE: if the context changes frequently, it can trigger unecessary re-renders across the components subscribing to it.
@@ -89,7 +88,6 @@ const Posts = () => {
 
   return (
     <main className = {css.postsPageContainer}>
-      <BackButton />
       <div className ={css.searchContainer}>
         <div className={css.buttonContainer}>
           <button onClick={handleOnCampusClick} className={css.button}>
