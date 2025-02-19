@@ -55,7 +55,7 @@ const OnCampusSearchForm = () => {
   const handleFormChange = (e) => {
     const { id, value } = e.target;
     console.log(e.target);
-    const updatedValue = isNaN(value) ? value : Number(value); // Convert numerical responses to numbers
+    const updatedValue = (id === "preferredDorm") ? value : (isNaN(value) ? value : Number(value));
     console.log("updatedValue:",updatedValue);
     setFormData((prevFormData) => ({
       ...prevFormData,
