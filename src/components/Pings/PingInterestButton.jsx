@@ -2,6 +2,7 @@ import React, { useContext, useState } from "react";
 import { AuthContext } from "../../context/authContext";
 import { db } from "../../config/firestore";
 import { collection, addDoc, serverTimestamp } from "firebase/firestore";
+import Swal from "sweetalert2";
 
 
 
@@ -21,15 +22,39 @@ const PingInterestButton = ({postID, admin}) => {
 
         if (!currentUser) {
             alert("Please log in to ping interest");
+            Swal.fire({
+                icon: "error",
+                title: "Please log in.",
+                text: "You must be logged in to ping interest to another group.",
+                confirmButtonColor: "#501315",
+                confirmButtonText: "OK",
+              });
             return;
         }
 
         if (currentUser.uid === admin.uid) {
             alert("You can't ping interest on your own post");
+            Swal.fire({
+                icon: "error",
+                title: "Can't ping interest.",
+                text: "You can't ping interest for your own post",
+                confirmButtonColor: "#501315",
+                confirmButtonText: "OK",
+              });
             return;
         }
 
         try {
+            // Show loading alert
+            Swal.fire({
+                title: "Sending Ping...",
+                text: "Please wait while we notify the posting administrator of your interest.",
+                allowOutsideClick: false,
+                didOpen: () => {
+                    Swal.showLoading();
+                },
+            });
+
             await addDoc(collection(db, "pings"), {
                 postID,
                 "searcherID": currentUser.uid,
@@ -40,11 +65,26 @@ const PingInterestButton = ({postID, admin}) => {
                 "status": "pending", // Intitial status
             });
 
-            alert("Your interest has been noted. The admin will contact you shortly.");
+            // Show success alert
+            Swal.fire({
+                icon: "success",
+                title: "Ping Sent to Post Administrator!",
+                text: `The administrator of this posting has been notified of your group's interest via email.`,
+                confirmButtonColor: "#501315",
+                confirmButtonText: "OK",
+              });
+
             setShowForm(false);
         } catch (error) {
             console.error("Error sending interest:", error);
-            alert("An error occurred. Please try again later.");
+            // Show error alert
+            Swal.fire({
+                icon: "error",
+                title: "Unable to send Ping to Post Administrator",
+                text: "An error occurred while trying to notify the administrator of this post of your group's interest. Please try again.",
+                confirmButtonColor: "#501315",
+                confirmButtonText: "OK",
+            });
         }
     };
 
