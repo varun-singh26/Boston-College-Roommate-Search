@@ -126,7 +126,7 @@ const OffCampusSearchForm = () => {
 
         <div className={css.fieldGroup}>
           <label className={css.label} htmlFor="numberPeopleInGroup">
-            Current Group Size:
+            Your Current Group Size:
           </label>
           <select
             name="Number of people in your group"

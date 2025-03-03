@@ -1,17 +1,38 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useContext } from 'react';
+import { AuthContext } from '../../context/authContext';
 import { db } from '../../config/firestore.jsx';
 import { doc, getDoc } from "firebase/firestore";
 import { useLocation } from 'react-router-dom';
 import BackButton from '../Navigation/BackButton.jsx';
+import updateStatus from './helperFunctions/updateStatus.js';
+import fetchPingsNumber from './helperFunctions/fetchPingsNumber.js';
+import PingInterestButton from '../Pings/PingInterestButton.jsx';
 import css from "./styles/PostDetailView.module.css"
+
+
+
 
 const PostDetailView = () => {
   const [posting, setPosting] = useState(null);
+  const [adminDetails, setAdminDetails] = useState(null);
   const [currentImageIndex, setCurrentImageIndex] = useState(0); // Track current image in carousel
+
+  // For changing/displaying status of posting
+  const [currentStatus, setCurrentStatus] = useState("");
+  const {currentUser} = useContext(AuthContext);  
+
+  // Get the id of the posting from the URL
   const location = useLocation();
   const queryParams = new URLSearchParams(location.search);
   const id = queryParams.get('id');
 
+  // For displaying the number of groups interested in this posting
+  const [pingsCount, setPingsCount] = useState(0);
+
+  console.log("posting:", posting);
+  console.log("adminDetails:", adminDetails);
+
+  // When component first mounts, fetch the posting details and the number of pings for this post
   useEffect(() => {
     const getPosting = async () => {
       const docRef = doc(db, "postings", id);
@@ -22,11 +43,34 @@ const PostDetailView = () => {
       }
     };
 
+    const callFetchPingsNumber = async () => {
+      const count = await fetchPingsNumber(id);
+      setPingsCount(count);
+    };
+
     if (id) {
       getPosting();
+      callFetchPingsNumber();
     }
-  }, [id]);
+  }, [id]); // Dependency array ensures that posting details and ping number are refetched if id changes
 
+
+  // Fetch admin details only after `posting` is set
+  useEffect(() => {
+    const getAdminDetails = async (uid) => {
+      const userRef = doc(db, "users", uid);
+      const userSnap = await getDoc(userRef);
+      if (userSnap.exists()) {
+        setAdminDetails(userSnap.data());
+      }
+    };
+
+    if (posting?.adminContact?.uid) {
+      getAdminDetails(posting.adminContact.uid);
+    }
+  }, [posting]); // This effect only runs when `posting` is updated
+
+  
   console.log(posting)
 
   if (!posting) return <div>Loading...</div>;
@@ -51,6 +95,40 @@ const PostDetailView = () => {
           </div>
           <div className={css.detailView}>
             <div className={css.infoAndImage}>
+
+              {/* Show the total number of groups interested in this posting */}
+              <div className='pingCount'>
+                <p> {pingsCount} other groups have expressed interest in this posting</p>
+              </div>
+
+              {/* Show either the dropdown (if admin) or just the status display */}
+                <div className="statusContainer">
+                  {currentUser && currentUser.uid === posting.adminContact?.uid ? (
+                    // If user is admin, show dropdown
+                    <>
+                      <h3>Set Posting Status:</h3>
+                      <select
+                        id="statusSelect"
+                        value={currentStatus}
+                        onChange={(e) => updateStatus(e.target.value, currentStatus, setCurrentStatus, posting.id)} // Update status on change
+                        className="statusDropdown"
+                      >
+                        <option value="Unfulfilled">Unfulfilled</option>
+                        <option value="Likely Fulfilled">Likely Fulfilled</option>
+                        <option value="Fulfilled">Fulfilled</option>
+                      </select>
+                    </>
+                  ) : (
+                    // Otherwise, just show the status text
+                    <>
+                      <h3>Posting Status:</h3>
+                      <h3>{currentStatus ? currentStatus : posting.status}</h3> {/* Since we intialize currentStatus as "", we need to start by displaying the status field from the posting*/}
+                                                                                {/* Once a value is selected for currentStatus (ie. currentStatus isn't null, we can display that value instead (although it will be the same 
+                                                                                  as the status field of the posting.)) */}
+                    </>
+                  )}
+                </div>
+
               <div className={css.info}>
                 <div className={css.location}>
                   <img src="../../assets/postings/location.png" alt="Location" />
@@ -96,6 +174,7 @@ const PostDetailView = () => {
                 <img src="../../assets/postings/phone.png" alt="Phone" />
                 <span>{posting.adminContact.phoneNumber}</span>
               </div>
+              <PingInterestButton postID={posting.id} admin={adminDetails} />
             </div>
             <div className={css.members}>
               <span>Current Group Members ({posting.aimInteger - posting.curNumSeek}):</span>
@@ -167,6 +246,7 @@ const PostDetailView = () => {
                   <img src="../../assets/postings/phone.png" alt="Phone" />
                   <span>{posting.adminContact.phoneNumber}</span>
                 </div>
+                <PingInterestButton postID={posting.id} admin={adminDetails} />
               </div>
               <div className={css.members}>
                 <span>Current Group Members ({posting.aimInteger - posting.curNumSeek}):</span>

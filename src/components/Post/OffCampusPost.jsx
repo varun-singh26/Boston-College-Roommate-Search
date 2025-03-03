@@ -8,7 +8,11 @@ const OffCampusPost = ({ post, onShowMoreClick}) => {
 
     return (
       <div className={css.post}>
-        {/* <Top img={post.img} />TODO: Add image field to documents. Using local data for oncampus buildings*/}
+        <TopPost 
+          status={post.status || ""} // Defaults to empty string if undefined
+          postID={post.id}
+          adminID={post.adminContact?.uid}
+        />
         <BottomOffCampus
           members={post.members}
           curNumSeek={post.curNumSeek}

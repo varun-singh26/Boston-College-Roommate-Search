@@ -6,7 +6,12 @@ import css from "./styles/Post.module.css"
 const OnCampusPost = ({post, onShowMoreClick}) => {
     return (
         <div className={css.post}>
-            <Top building={post.dorm} />
+            <Top 
+                building={post.dorm}
+                status={post.status || ""} // Defaults to empty string if undefined
+                postID={post.id}
+                adminID={post.adminContact?.uid}
+            />
             <BottomOnCampus
                 members={post.members}
                 curNumSeek={post.curNumSeek}

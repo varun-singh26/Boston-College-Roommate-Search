@@ -26,7 +26,11 @@ const FilteredPosts = ({ filteredPostings }) => {
 
     // Apply filtering logic based on form data
     const filteredPosts = filteredPostings.filter((post) => {
+        //print statements for debugging
+        //console.log("checking the following post:", post);
+
         // First filter based on listingLocation (oncampus or offcampus)
+
         if (post.listingLocation !== listingLocation) return false;
 
         // Now filter based on formData (e.g., housingAim, numberPeopleInGroup)

@@ -44,6 +44,7 @@ const PostingForm = ({id = null, onClose = null}) => {
     adminInstagramHandle: '',
     adminEmail: '',
     adminuid: '',
+    status: 'Unfulfilled',
     imageUrls: []
   });
 
@@ -103,6 +104,8 @@ const PostingForm = ({id = null, onClose = null}) => {
 
         sublet: postingDoc.data()?.sublet ?? "",
         numSeek: postingDoc.data()?.curNumSeek,
+
+        status: postingDoc.data()?.status ?? "Unfulfilled",
 
         imageUrls: postingDoc.data()?.imageUrls ?? [] //retrieve post image URLs, if any
       }));
@@ -339,6 +342,7 @@ const PostingForm = ({id = null, onClose = null}) => {
       monthlyRent: postingFormData.rent || null,
       rentPeriod: location === "offcampus" ? period : null,
       utilities: postingFormData.utilities,
+      status: postingFormData.status,
       imageUrls: updatedImageUrls, // Store both new & existing image URLs in Firestore
     };
 
