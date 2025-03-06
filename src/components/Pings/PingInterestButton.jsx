@@ -1,7 +1,7 @@
 import React, { useContext, useState } from "react";
 import { AuthContext } from "../../context/authContext";
 import { db } from "../../config/firestore";
-import { collection, addDoc, serverTimestamp } from "firebase/firestore";
+import { collection, doc, getDoc, addDoc, serverTimestamp } from "firebase/firestore";
 import Swal from "sweetalert2";
 
 
@@ -20,8 +20,14 @@ const PingInterestButton = ({postID, admin}) => {
     const handlePing = async (e) => {
         e.preventDefault();
 
+        console.log("Post ID:", postID);
+        const postingRef = doc(db, "postings", postID); // Get reference to specific posting doc
+        const postingDoc = await getDoc(postingRef) // Get specific posting doc
+        const post = postingDoc.data() // Get data from posting doc
+        console.log("Fetched post data:", post); // Debugging statement
+
+
         if (!currentUser) {
-            alert("Please log in to ping interest");
             Swal.fire({
                 icon: "error",
                 title: "Please log in.",
@@ -33,7 +39,6 @@ const PingInterestButton = ({postID, admin}) => {
         }
 
         if (currentUser.uid === admin.uid) {
-            alert("You can't ping interest on your own post");
             Swal.fire({
                 icon: "error",
                 title: "Can't ping interest.",
@@ -43,6 +48,19 @@ const PingInterestButton = ({postID, admin}) => {
               });
             return;
         }
+
+        if (post.status === "Fulfilled") {
+            Swal.fire({
+                icon: "error",
+                title: "Post Fulfilled",
+                text: "This post has already been fulfilled",
+                confirmButtonColor: "#501315",
+                confirmButtonText: "OK",
+              });
+            return;
+        }
+
+        
 
         try {
             // Show loading alert
@@ -95,28 +113,28 @@ const PingInterestButton = ({postID, admin}) => {
                 <form onSubmit={handlePing}>
                     <input
                         type="text"
-                        value={postID}
-                        readOnly
-                    />
-                     <input
-                        type="text"
-                        value={currentUser?.uid || ""}
+                        value={`Post ID: ${postID}`}
                         readOnly
                     />
                     <input
                         type="text"
-                        value={admin?.uid || ""}
+                        value={`Post Admin ID: ${admin?.uid}` || ""}
+                        readOnly
+                    />
+                     <input
+                        type="text"
+                        value={`Your User ID: ${currentUser?.uid}` || ""}
                         readOnly
                     />
                     <input
                         type="email"
                         placeholder="Your Email"
-                        value = {currentUser?.email || ""}
+                        value = {`Your email: ${currentUser?.email}` || ""}
                         readOnly = {!!currentUser} //Explicit Boolean conversion of currentUser
                         required
                     />
                     <textarea
-                        placeholder="Message (optional)"
+                        placeholder="Message from you to the post admin (We recommend introducing yourself and your group, what you're looking for in terms of living situation, and dropping an email, phone number, or other contact info)"
                         value={message}
                         onChange={(e) => setMessage(e.target.value)}
                     />
