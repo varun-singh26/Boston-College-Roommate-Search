@@ -159,12 +159,10 @@ const PostDetailView = () => {
             </div>
 
             <div className={css.admin}>
-              <span>Contact Group Admin:</span>
+              <span>Contact Group Admin: <strong>{posting.adminContact.name}</strong></span>
               <div className={css.adminContact}>
                   <img src="../../assets/postings/email.png" alt="Email" />
                   <span>{posting.adminContact.email}</span>
-                  {posting.adminContact.phoneNumber && <span> {posting.adminContact.phoneNumber} </span>}
-                  {posting.adminContact.instagramHandle && <span> {posting.adminContact.instagramHandle} </span>}
               </div>
               <div className={css.adminContact}>
                 <img src="../../assets/postings/instagram.png" alt="Instagram" />

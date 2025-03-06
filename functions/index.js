@@ -85,18 +85,20 @@ exports.notifyListingAdmin = onDocumentCreated("pings/{pingId}", async (event) =
             to: adminEmail,
             subject: `Interest in Your Posting for ${posting.dorm || posting.address}, which is in need of ${posting.curNumSeek || "an unknown number of"} more people`,
             html: `
-                <p>Someone is interested in your listing.</p>
-                <p><strong>Contact:</strong> ${pingData.searcherEmail}</p>
+                <p>A group is interested in your listing.</p>
+                <p><strong>Name:</strong> ${pingData.name}</p>
                 <p><strong>Message:</strong> ${pingData.message || "No message"}</p>
+                <p><strong>Contact:</strong> ${pingData.searcherEmail}</p>
                 <p> Follow up with them and see if they fulfill your housing needs. </p>
-                <p> If they do, please mark this posting (posting ID: ${postingDoc.id}) as "Fulfilled" by clicking the <strong> "Fulfilled" </strong> link below.</p>
-                <p> If they don't please mark this posting mark as "Unfulfilled" by clicking the <strong> "Unfulfilled" </strong> link below, so that the group can continue their search.</p>
+                <p> If they do, please Accept their interest mark this posting (posting ID: ${postingDoc.id}) as "Fulfilled" by clicking the <strong> "Fulfilled" </strong> link below.</p>
+                <p> If they don't please Reject their interest mark this posting mark as "Unfulfilled" by clicking the <strong> "Unfulfilled" </strong> link below, so that the group can continue their search.</p>
                 <p> Currently your posting is marked as "Likely Fulfilled", so that other users are aware that this posting may become fullfilled should you agree to live with the interest party that sent this ping.</p>
-                <p> If you are considering this interested party and need time to reach out, leave the status of this posting as is ("Likely Fulfilled"). </p>
+                <p> <strong> If you are considering this interested party and need time to reach out, leave the status of this posting as is ("Likely Fulfilled"). </strong> </p>
 
                 <p> Update the status of your posting:</p>
-                <a href="${fulfillLink}" style="background-color: green; color: white; padding: 10px 15px; text-decoration: none; border-radius: 5px;">✅ Mark as Fulfilled</a>
-                <a href="${unfulfillLink}" style="background-color: red; color: white; padding: 10px 15px; text-decoration: none; margin-left: 10px; border-radius: 5px;">❌ Mark as Unfulfilled</a>
+                <a href="${fulfillLink}" style="background-color: green; color: white; padding: 10px 15px; text-decoration: none; border-radius: 5px;">✅ Accept and Mark Posting as Fulfilled (This will reject all other Pings you may have received for this Posting</a>
+                <a href="${unfulfillLink}" style="background-color: red; color: white; padding: 10px 15px; text-decoration: none; margin-left: 10px; border-radius: 5px;">❌ Reject and Mark Posting as Unfulfilled</a>
+                <a href="${unfulfillLink}" style="background-color: gray; color: white; padding: 10px 15px; text-decoration: none; margin-left: 10px; border-radius: 5px;"> Unsubscribe from notifications regarding ${pingData.name}'s interest in your post for ${posting.dorm || posting.address} </a>
                 <p>Thank you for using Heights Housing!</p>
             `,
         };
@@ -134,7 +136,7 @@ const ignoreOtherPingsAndNotifySearchers = async (postId) => {
         const otherPingsRef = db.collection("pings")
             .where("postID", "==", postId)
             .where("status", "==", "Pending")
-            .get();
+            .get(); // ???
 
         const otherPingsSnapshot = await otherPingsRef.get();
 
@@ -151,15 +153,28 @@ const ignoreOtherPingsAndNotifySearchers = async (postId) => {
         await batch.commit();
         console.log(`Marked ${otherPingsSnapshot.docs.length} other pings as 'Ignored'.`);
 
+        // Fetch corresponding posting
+        const postingRef = db.collection("postings").doc(postId);
+        const postingDoc = await postingRef.get();
+        let posting;
+        if (postingDoc.exists) {
+            posting = postingDoc.data();
+        } else {
+            posting = null
+        }
+
         // Send email to respective searcher of each ping
         await Promise.all(otherPingsSnapshot.docs.map(async (ping) => {
             const mailOptions = {
                 from: "vrjsingh04@gmail.com",
                 to: ping.data().searcherEmail,
                 subject: "Your Interest in a Posting was Not Accepted",
-                html: `<p>Unfortunately, the listing you expressed interest in has been fulfilled by another group.</p>
-                    <p>We recommend checking out other available listings on Heights Housing.</p>
-                    <p>Thank you for using Heights Housing!</p>`,
+                html: `<p> Hello ${ping.data().name}, </p>
+                    <p> Unfortunately, ${posting?.adminContact?.name}'s posting for ${posting?.dorm || posting?.address} looking for ${posting?.curNumSeek} additional people has been fulfilled by another group.</p>
+                    <p>We are sorry for this inconvenience and recommend checking out other available postings on Heights Housing.</p>
+                    <p>Thank you for using our platform and we hope to continue serving you.</p>
+                    <p> -Heights Housing Team</p>
+                    `,
             };
             return transporter.sendMail(mailOptions);
         }));
@@ -214,10 +229,10 @@ const notifySearcher = async (postId, pingId, status) => {
             mailOptions = {
                 from: "vrjsingh04@gmail.com",
                 to: searcherEmail,
-                subject: `ACCEPTED! Your Interest in ${posting.adminContact?.name}'s Posting for ${posting.dorm || posting.address} which was looking for ${posting.curNumSeek || "an unknown number of"} more people was Accepted!`,
+                subject: `ACCEPTED! Your Interest in <strong>${posting.adminContact?.name}'s</strong> Posting for <strong>${posting.dorm || posting.address}</strong> was Accepted!`,
                 html: `
-                    <p>Hi ${searcherEmail},</p>
-                    <p> This posting you expressed interest in has accepted your group's interest!</p>
+                    <p>Hello ${pingData.name},</p>
+                    <p> <strong>${posting.adminContact?.name}'s </strong> posting for <strong>${posting.dorm || posting.address}</strong> looking for <strong>${posting.curNumSeek || "an unknown number of"} additional roommates</strong> has accepted your group's interest!</p>
                     <p> We thank you for using our platform to connect with the administrator of this on-campus housing post and wish you a wonderful living experience for the next year.</p>
                     <p>Reach out to us if need anything else or have feedback through the Contact Form on the Heights Housing website </p>
                     <p> All the best</p>
@@ -228,11 +243,11 @@ const notifySearcher = async (postId, pingId, status) => {
             mailOptions = {
                 from: "vrjsingh04@gmail.com",
                 to: searcherEmail,
-                subject: `NOT ACCEPTED. Your Interest in ${posting.adminContact?.name}'s Posting for ${posting.dorm || posting.address} which was looking for ${posting.curNumSeek || "an unknown number of"} more people was Not Accepted`,
+                subject: `NOT ACCEPTED. Your Interest in <strong> ${posting.adminContact?.name}'s </strong> Posting for <strong>${posting.dorm || posting.address}</strong> was Not Accepted`,
                 html: `
                     <p>Hi ${searcherEmail},</p>
-                    <p>Unfortunately, this posting you expressed interest in was not able to accommodate you.</p>
-                    <p>We recommend checking out other available postings on Heights Housing and reaching out to different groups.</p>
+                    <p>Unfortunately, <strong> ${posting.adminContact?.name}'s </strong> Posting for <strong> ${posting.dorm || posting.address} </strong> looking for <strong> ${posting.curNumSeek || "an unknown number of"} additional roommates </strong> was not able to accommodate you.</p>
+                    <p>We are sorry for the inconvenience. We recommend checking out other available postings on Heights Housing and reaching out to additional groups.</p>
                     <p>We appreciate you for using Heights Housing and hope to continue serving you.</p>`
             };
         }
@@ -253,7 +268,7 @@ const notifySearcher = async (postId, pingId, status) => {
 
             {/*const info = await transporter.sendMail(mailOptions); */}
 
-            console.log(`Notification email sent to ${searcherEmail} for ${status === "Fulfilled" ? "Fulfilled" : "Ignored"} ping ${pingId}: ${info.response}`);
+            console.log(`Notification email sent to ${searcherEmail} for ${status === "Fulfilled" ? "Fulfilled" : "Ignored"} ping ${pingId} regarding ${posting.adminContact?.name}'s post for ${posting.dorm || posting.address}: ${info.response}`);
             return info.response;
         } catch (error) {
             console.error(`Error sending notification for ping ${pingId}:`, error);
@@ -324,6 +339,8 @@ exports.updatePostingStatus = onRequest(async (req, res) => {
             await notifySearcher(postId, pingId, status);
             await ignoreOtherPingsAndNotifySearchers(postId);
         }
+
+        {/* Admin's posting is marked as Unfulfilled and they'll receive follow-up emails regarding pending pings for this posting*/}
         if (status === "Unfulfilled") {
             await notifySearcher(postId, pingId, status);
         }
@@ -335,36 +352,37 @@ exports.updatePostingStatus = onRequest(async (req, res) => {
     }
 });
 
-// Function 3: followUpOnPendingPings
-// Goal:
-    //Track individual pings that have existed for more than 48 hours with a "Pending" status.
-    //Send a follow-up email to the listing admin, asking them to confirm or reject the specific ping.
-    //If an admin marks a listing as "Fulfilled", notify them that all other pings for that listing will be ignored.
-    //Update all other pings for the listing to "Ignored" once it's fulfilled.
-    //Send a notification email to each searcher whose ping was ignored.
 
+
+
+// Function 3: followUpOnPendingPings (Admin)
 // How followUpOnPendingPings implements the above goal:
-    // Runs every 24 hours.
-    // Finds all pings that have been "Pending" for over 48 hours.
-    // Sends a follow-up email to the listing admin for each specific ping.
-    // Updates updatePostingStatus to:
-    // Ignore all other pings for that listing when it’s marked "Fulfilled".
-    // Notify searchers if their pings were ignored.
+    // Runs every 2 hours.
+    // Finds all pings that have been "Pending" for over 2 hours.
+    //Send a follow-up email to the posting admin, asking them to confirm or reject the specific ping.
 
-exports.followUpOnPendingPings = onSchedule("every 24 hours", async () => {
+    //If an admin responds to a ping with "Fulfilled" via email: 
+        //Update that accepted ping to "Fulfilled" and Send a notification email confirming Fulfillment to the sender of that ping.
+        //notify the admin that all other pings for that posting will be ignored.
+        //Update all other pings for the posting to "Ignored" and email each searching party to confirm rejection.
+
+    //If an admin responds to a ping with "Unfulfilled" via email: 
+        //Update the rejected ping to "Unfulfilled" and send a notification email confirming Rejection to the sender of that ping.
+
+exports.followUpOnPendingPings = onSchedule("every 2 hours", async () => {
     try {
         console.log("Running scheduled follow-up on pending pings...");
 
-        const twoDaysAgo = admin.firestore.Timestamp.fromMillis(Date.now() - 48 * 60 * 60 * 1000);
+        const twoHoursAgo = admin.firestore.Timestamp.fromMillis(Date.now() - 2 * 60 * 60 * 1000);
 
         // Find pings that have been "Pending" for over 48 hours
         const pingsSnapshot = await db.collection("pings")
             .where("status", "==", "pending")
-            .where("timestamp", "<=", twoDaysAgo) // Pings older than 48 hours. TODO: Will the data type of timestamp field work with this implementation?
+            .where("timestamp", "<=", twoHoursAgo) // Pings older than 2 hours. TODO: Will the data type of timestamp field work with this implementation?
             .get();
 
         if (pingsSnapshot.empty) {
-            console.log("No pending pings older than 48 hours found.");
+            console.log("No pending pings older than 2 hours found.");
             return null;
         }
 
@@ -401,13 +419,14 @@ exports.followUpOnPendingPings = onSchedule("every 24 hours", async () => {
                 to: adminEmail,
                 subject: `Pending Interest in Your Listing for ${posting.dorm || posting.address}`,
                 html: `
-                    <p>You received an expression of interest from ${ping.searcherEmail} on ${ping.timestamp} for your listing <strong>${posting.dorm || posting.address}</strong>, but you haven't responded yet.</p>
+                    <p>You received an expression of interest from ${ping.searcherEmail} on ${ping.timestamp} for your posting for <strong>${posting.dorm || posting.address}</strong> looking for <strong>${posting.curNumSeek} additional roommates </strong>, but haven't responded yet.</p>
                     <p><strong>Message:</strong> ${ping.message || "No message provided"}</p>
                     <p> Currently your posting is marked as "Likely Fulfilled", so that other users are aware that this posting may become fullfilled should you agree to live with the interest party that sent this ping.</p>
                     <p> If you are considering this interested party and need time to reach out, take no action and leave the status of this posting as is ("Likely Fulfilled"). </p>
                     <p>If not, and you know you do or don't want to live with this group, please confirm the status of this inquiry:</p>
-                    <a href="${fulfillLink}" style="background-color: green; color: white; padding: 10px 15px; text-decoration: none; border-radius: 5px;">✅ Accept and Mark as Fulfilled</a>
-                    <a href="${unfulfillLink}" style="background-color: red; color: white; padding: 10px 15px; text-decoration: none; margin-left: 10px; border-radius: 5px;">❌ Reject and Mark as Unfulfilled</a>
+                    <a href="${fulfillLink}" style="background-color: green; color: white; padding: 10px 15px; text-decoration: none; border-radius: 5px;">✅ Accept and Mark Posting as Fulfilled (This will reject all other Pings you may have received for this Posting</a>
+                    <a href="${unfulfillLink}" style="background-color: red; color: white; padding: 10px 15px; text-decoration: none; margin-left: 10px; border-radius: 5px;">❌ Reject and Mark Posting as Unfulfilled</a>
+                    <a href="${unfulfillLink}" style="background-color: gray; color: white; padding: 10px 15px; text-decoration: none; margin-left: 10px; border-radius: 5px;"> Unsubscribe from notifications regarding ${ping.name}'s interest in your post for ${posting.dorm || posting.address}</a>
                     <p>Thank you for using Heights Housing!</p>
                 `,
             };
@@ -422,35 +441,35 @@ exports.followUpOnPendingPings = onSchedule("every 24 hours", async () => {
         return null;
 
     } catch (error) {
-        console.error("Error processing follow-up on pending pings which have existed for more than 48hrs and remain pending:", error);
+        console.error("Error processing follow-up on pending pings which have existed for more than 2hrs and remain pending:", error);
         return null;
     }
 });
 
 
-// ⌛️ Function 4: Function to Check for pending Pings (After 2 days)
-// If admin doesn't answer ping, searcher user that sent the ping that their interest hasn't been accepted or denied, so they are aware and can look at other posts.
-
-// Runs automatically every 24 hours to check for pings that have been pending for over 48 hours.
-// Notifies searchers that their ping has gone unanswered and suggests looking for other listings.
+// ⌛️ Function 4: checkPendingPings (Searcher) 
+// Runs automatically every 2 hours to check for pings that have been pending for over 2 hours.
+// Notifies searchers that their ping has gone unanswered (neither accepted or rejected) and suggests looking for other postings.
 
 
-exports.checkIgnoredPings = onSchedule("every 24 hours", async () => {
+exports.checkPendingPings = onSchedule("every 2 hours", async () => {
     try {
         console.log("Checking for pending pings...");
 
-        const twoDaysAgo = admin.firestore.Timestamp.fromMillis(Date.now() - 48 * 60 * 60 * 1000); //How does this function work?
+        const twoHoursAgo = admin.firestore.Timestamp.fromMillis(Date.now() - 2 * 60 * 60 * 1000); //How does this function work?
         const pingsRef = db.collection("pings");
 
         const snapshot = await pingsRef
         .where("status", "==", "pending") // Check only unresponded pings
-        .where("timestamp", "<=", twoDaysAgo) // Older than 48 hours. TODO: Will the data type of timestamp field work with this implementation?
+        .where("timestamp", "<=", twoHoursAgo) // Older than 2 hours. TODO: Will the data type of timestamp field work with this implementation?
         .get();
 
         if (snapshot.empty) {
             console.log("No pending pings found.");
             return null;
         }
+
+        //TODO: Fetch Post in this function and send email to searcher
         
         console.log(`Found ${snapshot.docs.length} pending pings.`);
 
@@ -458,19 +477,39 @@ exports.checkIgnoredPings = onSchedule("every 24 hours", async () => {
             const pingData = doc.data();
             const userEmail = pingData.searcherEmail;
 
+            // Fetch corresponding posting for each ping
+            const postingRef = db.collection("postings").doc(pingData.postID);
+            const postingDoc = await postingRef.get();
+            let posting;
+            if (postingDoc.exists) {
+                posting = postingDoc.data();
+            } else {
+                posting = null
+            }
+
+
             if (!userEmail) {
                 console.warn(`Skipping ping ${doc.id} - No user email found.`);
                 return null;
             }
+
+            // ✅ Construct withdraw interest link
+            const baseUrl = "https://us-central1-bcrs-e15d9.cloudfunctions.net/updatePostingStatus";
+            const unfulfillLink = `${baseUrl}?postId=${postingDoc.id}&pingId=${event.params.pingId}&status=Unfulfilled`;
 
             try {
                 const mailOptions = {
                     from: "vrjsingh04@gmail.com",
                     to: userEmail,
                     subject: "No Response from Listing Admin",
-                    text: `Hello ${userEmail},\n\nYour interest in the listing for ${pingData.postID} has not received a response within 48 hours. 
+                    text: `Hello ${userEmail},\n\nYour interest in ${posting?.adminContact?.name}'s posting for ${posting?.dorm || posting?.address} looking for ${posting?.curNumSeek} additional people has not received a response within 2 hours. 
                             We recommend checking other available listings to continue your search.\n\n
-                            Thank you for using Heights Housing!`
+                            Thank you for using Heights Housing!`,
+                    html: `
+                            <p>If you want to withdraw interest for this posting and not receive anymore notifications regarding it, click the link below</p>
+                            <a href="${unfulfillLink}" style="background-color: red; color: white; padding: 10px 15px; text-decoration: none; margin-left: 10px; border-radius: 5px;"> Withdraw interest from <strong> ${posting?.adminContact?.name}'s </strong> post for <strong> ${posting?.dorm || posting?.address} </strong> looking for <strong> ${posting?.curNumSeek} </strong> additional people </a>
+                          `
+                          
                 };
 
                 const info = await transporter.sendMail(mailOptions);

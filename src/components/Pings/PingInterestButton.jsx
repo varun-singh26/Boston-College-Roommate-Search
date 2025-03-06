@@ -3,6 +3,7 @@ import { AuthContext } from "../../context/authContext";
 import { db } from "../../config/firestore";
 import { collection, doc, getDoc, addDoc, serverTimestamp } from "firebase/firestore";
 import Swal from "sweetalert2";
+import css from "./PingInterestButton.module.css";
 
 
 
@@ -75,6 +76,7 @@ const PingInterestButton = ({postID, admin}) => {
 
             await addDoc(collection(db, "pings"), {
                 postID,
+                "name": currentUser.displayName,
                 "searcherID": currentUser.uid,
                 "searcherEmail": currentUser.email,
                 message,
@@ -134,7 +136,8 @@ const PingInterestButton = ({postID, admin}) => {
                         required
                     />
                     <textarea
-                        placeholder="Message from you to the post admin (We recommend introducing yourself and your group, what you're looking for in terms of living situation, and dropping an email, phone number, or other contact info)"
+                        className= {css.textarea}
+                        placeholder="Message from you to the post admin (We recommend introducing yourself and your group, what you're looking for in terms of living situation, and dropping an email, instagram, or other contact info)"
                         value={message}
                         onChange={(e) => setMessage(e.target.value)}
                     />
