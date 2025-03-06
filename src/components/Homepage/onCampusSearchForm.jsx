@@ -248,7 +248,7 @@ const OnCampusSearchForm = () => {
         </div>
 
         <div className={css.fieldGroup}>
-        <label className={css.label} htmlFor="classYear">Class Year:</label>
+        <label className={css.label} htmlFor="classYear">Class Year (Next Year):</label>
           <select name="year" 
             id="classYear" 
             className={css.select} 

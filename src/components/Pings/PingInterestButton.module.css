@@ -1,0 +1,9 @@
+.textarea {
+    width: 100%; /* Adjust as needed */
+    max-width: 600px; /* Optional: Set a max width */
+    min-height: 100px; /* Optional: Adjust height */
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 16px;
+}

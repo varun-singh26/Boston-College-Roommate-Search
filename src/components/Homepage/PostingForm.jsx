@@ -23,7 +23,7 @@ const PostingForm = ({id = null, onClose = null}) => {
   const debugMode = true;
 
   const [errorMessage, setErrorMessage] = useState("");
-  const [location, setLocation] = useState('offcampus');
+  const [location, setLocation] = useState('oncampus');
   const [files, setFiles] = useState([]);
   const [residents, setResidents] = useState([
     { name: '', academicYear: '', gender: '', customGender: '', instagramHandle: '', email: '', isAdmin: true},
@@ -79,7 +79,7 @@ const PostingForm = ({id = null, onClose = null}) => {
       // Update state with existing post information
       setPostingRefState(postingRef);
       setPostingDocState(postingDoc);
-      setLocation(postingDoc.data()?.listingLocation ?? "offcampus")
+      setLocation(postingDoc.data()?.listingLocation ?? "oncampus")
 
 
       //Don't want to CREATE a new Document in cloud firestore. Instead just want to update an existing document.
@@ -156,7 +156,7 @@ const PostingForm = ({id = null, onClose = null}) => {
     console.log("posting formdata: ", postingFormData);
     console.log("posting doc: ", postingDocState);
     console.log("residents: ", residents);
-    console.log("location (offcampus is default): ", location);
+    console.log("location (oncampus is default): ", location);
   }
 
   // Function to safely convert "YYYY-MM-DD" string to Firestore date object
@@ -493,7 +493,7 @@ const PostingForm = ({id = null, onClose = null}) => {
                         required
                       >
                         <option value="" disabled hidden>
-                          Current Year 
+                          Class Year (Next Year) 
                         </option>
                         <option value="freshman">Freshman</option>
                         <option value="sophomore">Sophomore</option>
@@ -546,13 +546,15 @@ const PostingForm = ({id = null, onClose = null}) => {
                       aria-label="Admin Instagram Handle"
                       onChange={(e) => setPostingFormData({...postingFormData, adminInstagramHandle: e.target.value} )}
                     />
+                    {/* Remove admin phone number field (For now)
                     <input
                       type="text"
                       id="admin-phone-number"
                       value={postingFormData.adminPhoneNumber}
                       onChange={(e) => setPostingFormData({ ...postingFormData, adminPhoneNumber: e.target.value })}
                       placeholder="Phone Number"
-                    />
+                    /> 
+                      */}
                   </div>
                 )}
               </>
@@ -582,7 +584,7 @@ const PostingForm = ({id = null, onClose = null}) => {
                       required
                     >
                       <option value="" disabled hidden>
-                        Current Year
+                        Class Year (Next Year)
                       </option>
                       <option value="freshman">Freshman</option>
                       <option value="sophomore">Sophomore</option>
@@ -768,7 +770,7 @@ const PostingForm = ({id = null, onClose = null}) => {
                 Upload Images: 
               </label>
               <label htmlFor="upload-images" className={css.uploadSubLabel}>
-                Upload a group image, or something that represents your group!
+                Upload a group image, or something that represents your group! (JPG or PNG only)
               </label>
               </div>
               <input type="file" id="upload-images" multiple onChange={handleFileChange}/>
