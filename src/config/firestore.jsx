@@ -31,6 +31,9 @@ const storage = getStorage(app);
 // Initialize Auth and get a reference to it
 const auth = getAuth(app);
 
+// Explicity setting domain to avoid COOP console errors
+auth.useDeviceLanguage();
+
 // Initialize reference to storage provider
 
 export {app, db, auth, storage};

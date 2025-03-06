@@ -1,0 +1,58 @@
+.signInPage {
+    display: flex;
+    flex-direction: column;
+    gap: 24px; /* More natural spacing */
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background-color: #501315;
+    padding: 20px; /* Adds some breathing room */
+}
+
+.logo {
+    width: 180px; /* Fixed size for better consistency */
+    height: auto;
+    margin-bottom: 16px;
+}
+
+.signInTitle {
+    font-size: 1.2rem; /* More readable on all screens */
+    font-weight: 500;
+    color: #ffffff;
+    text-align: center;
+    max-width: 80%;
+}
+
+/* Google Sign-in Button */
+.signInButton {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 280px; /* More compact */
+    padding: 12px 16px;
+    background-color: #ffffff;
+    border-radius: 10px; /* Rounded edges for a modern look */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    transition: transform 0.2s ease-in-out, background-color 0.2s ease-in-out;
+    border: none;
+}
+
+.signInButton:hover {
+    cursor: pointer;
+    transform: scale(1.05);
+    background-color: #f8f8f8;
+}
+
+/* Google Text */
+.googleText {
+    font-size: 1rem;
+    font-weight: 500;
+    color: #333;
+    margin-right: 10px;
+}
+
+/* Google Icon */
+.googleImg {
+    width: 70px; /* Adjusted for balance */
+    height: auto;
+}

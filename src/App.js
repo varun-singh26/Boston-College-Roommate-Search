@@ -1,10 +1,11 @@
 import React from "react";
-import { BrowserRouter as Router, Routes, Route, useLocation } from "react-router-dom";
+import { BrowserRouter as Router, Routes, Route, useLocation, Navigate } from "react-router-dom";
 import PostingsProvider from "./context/PostingsContext.jsx";
 import SearchProvider from "./context/searchContext.jsx";
 import FilteredPostingsProvider from "./context/FilteredPostingsContext.jsx";
 import IsEditingPostingsProvider from "./components/Post/contexts/IsEditingPostContext.jsx";
 import Navbar from './components/Navbar.jsx';
+import MainSignInPage from "./components/mainSignIn/mainSignInPage.jsx";
 import LandingSplash from "./components/Homepage/LandingSplash.jsx";
 import Posts from "./components/Posts/Posts.jsx"
 import WelcomeToPostingsPage from "./components/Posts/WelcomeToPostingsPage/WelcomeToPostingsPage.jsx";
@@ -17,6 +18,9 @@ import Creation from "./components/CreatePosting/createPostingLandingSplash.jsx"
 import Purpose from "./components/Purpose/purposeLandingSplash.jsx";
 import Contact from "./components/Contact/contactLandingSplash.jsx";
 import Footer from "./components/Footer.jsx";
+import ProtectedRoute from "./ProtectedRoute/ProtectedRoute.jsx";
+import { AuthProvider } from "./context/authContext/index.jsx"
+ 
 import css from './App.css';
 
 //Web App LAYOUT so far:
@@ -36,124 +40,143 @@ function RoutesWrapper() {
   const page = queryParams.get("page");
 
   return (
-    <Routes>
-        <Route 
-          path ="/" 
+      <Routes>
+        {/* Public route: Sign-in page */}
+        <Route
+          path="/signin-wall"
           element={
-            <>
-              <LandingSplash />
-            </>
-          } 
-        />
-        <Route
-          path ="/postings"
-          element = {
-            <>
-              <Posts />
-            </>
-          }
-        />
-        <Route
-          path ="/welcomeToPostings"
-          element = {
-            <>
-              <WelcomeToPostingsPage />
-            </>
-          }
-        />
-        <Route
-          path ="/detailView"
-          element = {
-            <>
-              <PostDetailView />
-            </>
-          }
-        />
-        <Route
-          path ="/signIn"
-          element = {
-            <>
-              <SignIn />
-            </>
-          }
-        />
-        <Route
-          path ="/signUp"
-          element = {
-            <>
-              <SignUp />
-            </>
-          }
-        />
-        <Route
-          path ="/about"
-          element = {
-            <>
-            </>
-          }
-        />
-        <Route
-          path ="/myProfile"
-          element = {
-            <>
-              <MyProfile />
-            </>
+            <MainSignInPage />
           }
         />
 
-        <Route 
-          path="/forgot-password"
-          element = {
-            <>
-              <ForgotPassword />
-            </>
-          }
-        />
+        {/* Protected route: Home page */}
+          <Route 
+            path ="/" 
+            element={
+              <ProtectedRoute>
+                <LandingSplash />
+              </ProtectedRoute>
+            } 
+          />
+          <Route
+            path ="/postings"
+            element = {
+              <ProtectedRoute>
+                <Posts />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path ="/welcomeToPostings"
+            element = {
+              <ProtectedRoute>
+                <WelcomeToPostingsPage />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path ="/detailView"
+            element = {
+              <ProtectedRoute>
+                <PostDetailView />
+              </ProtectedRoute>
+            }
+          />
+          {/* <Route
+            path ="/signIn"
+            element = {
+              <>
+                <SignIn />
+              </>
+            }
+          /> */}
+          {/* <Route
+            path ="/signUp"
+            element = {
+              <>
+                <SignUp />
+              </>
+            }
+          /> */}
+          <Route
+            path ="/about"
+            element = {
+              <>
+              </>
+            }
+          />
+          <Route
+            path ="/myProfile"
+            element = {
+              <ProtectedRoute>
+                <MyProfile />
+              </ProtectedRoute>
+            }
+          />
 
-        <Route
-          path ="/create-posting"
-          element = {
-            <>
-            <Creation />
-            </>
-          }
-        />
+          <Route 
+            path="/forgot-password"
+            element = {
+              <>
+                <ForgotPassword />
+              </>
+            }
+          />
 
-        <Route
-          path ="/our-purpose"
-          element = {
-            <>
-              <Purpose />
-            </>
-          }
-        />
+          <Route
+            path ="/create-posting"
+            element = {
+            <ProtectedRoute>
+              <Creation />
+            </ProtectedRoute>
+            }
+          />
 
-        <Route
-        path ="/contact-us"
-        element = {
-          <>
-            <Contact />
-          </>
-        }
-        />
-        
+          <Route
+            path ="/our-purpose"
+            element = {
+              <ProtectedRoute>
+                <Purpose />
+              </ProtectedRoute>
+            }
+          />
+
+          <Route
+          path ="/contact-us"
+          element = {
+            <ProtectedRoute>
+              <Contact />
+            </ProtectedRoute>
+          }
+          />
+
+           {/* Default: Redirect to sign-in */}
+           <Route path="*" element={<Navigate to="/signin-wall" />} />
+          
       </Routes>
   );
 }
 
 function App() {
+
+  const location = useLocation();
+  const hideNavbarRoutes = ["/signin-wall"];
+  const hideFooterRoutes = ["/signin-wall"];
+  
   return (
+  <AuthProvider> {/* Provides authentication state */}
     <IsEditingPostingsProvider> {/* Postings Provider has to be inside this. TODO: incorporate this into auth context)*/}
       <PostingsProvider > {/* 🏠 Manage postings at a high level. PostingsProvider needs to be within a <Router> component due to its use of the useLocation() hook */}
         <SearchProvider>
           <FilteredPostingsProvider>
-            <Navbar />
+            {!hideNavbarRoutes.includes(location.pathname) && <Navbar />}
             <RoutesWrapper/>
-            <Footer />
+            {!hideFooterRoutes.includes(location.pathname) && <Footer />}          
           </FilteredPostingsProvider>
         </SearchProvider>
       </PostingsProvider >
     </IsEditingPostingsProvider>
+  </AuthProvider>
   );
 }
 

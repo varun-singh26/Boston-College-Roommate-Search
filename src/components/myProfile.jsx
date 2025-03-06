@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useContext } from "react";
 import { useNavigate } from "react-router-dom";
-import { useAuth } from "../context/authContext/index"
+import { useAuth } from "../context/authContext/index.jsx";
 import { IsEditingPostContext } from "./Post/contexts/IsEditingPostContext";
 import { db } from "../config/firestore";
 import {getDoc, doc} from "firebase/firestore";
@@ -18,7 +18,7 @@ const MyProfile = () => {
 
     const { currentUser } = useAuth();
     const [ userRef, setUserRef ] = useState(null);
-    const [newPassword, setNewPassword] = useState("");
+    // const [newPassword, setNewPassword] = useState("");
     const [message, setMessage] = useState("");
 
     const [administeredPostings, setAdministeredPostings] = useState([]);

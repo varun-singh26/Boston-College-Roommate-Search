@@ -3,7 +3,7 @@ import { useLocation } from "react-router-dom";
 //We want to use Link for internal links of our web app to avoid full page reloads when they are clicked (to preserve any contexts)
 //Not having full page reloads means that css and javascript don't have to be rerendered when a Link is clicked
 import { Link } from "react-router-dom";
-import { useAuth } from "../context/authContext";
+import { useAuth } from "../context/authContext/index.jsx";
 import image1 from "../images/logos/heightsHousingVerticalMinimal.jpg"
 import image2 from "../images/logos/heightsHousingHorizontalSmall.jpg"
 import image3 from "../images/logos/heightsHousingVertical.jpg"
@@ -13,6 +13,8 @@ const Navbar = () => {
   const location = useLocation(); // Provides access to the current location object
 
   const { userLoggedIn } = useAuth(); //render certain components based on if userLoggedIn is true
+
+  console.log("Navbar - userLoggedIn: ", userLoggedIn);
 
   const isActive = (path) => location.pathname === path;
 
