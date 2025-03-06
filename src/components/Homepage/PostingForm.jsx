@@ -493,7 +493,7 @@ const PostingForm = ({id = null, onClose = null}) => {
                         required
                       >
                         <option value="" disabled hidden>
-                          Class Year (Next Year) 
+                          Rising...
                         </option>
                         <option value="freshman">Freshman</option>
                         <option value="sophomore">Sophomore</option>
@@ -584,7 +584,7 @@ const PostingForm = ({id = null, onClose = null}) => {
                       required
                     >
                       <option value="" disabled hidden>
-                        Class Year (Next Year)
+                        Rising...
                       </option>
                       <option value="freshman">Freshman</option>
                       <option value="sophomore">Sophomore</option>
