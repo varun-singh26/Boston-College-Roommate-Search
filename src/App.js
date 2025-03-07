@@ -20,6 +20,7 @@ import Contact from "./components/Contact/contactLandingSplash.jsx";
 import Footer from "./components/Footer.jsx";
 import ProtectedRoute from "./ProtectedRoute/ProtectedRoute.jsx";
 import { AuthProvider } from "./context/authContext/index.jsx"
+import Swal from 'sweetalert2';
  
 import css from './App.css';
 
@@ -38,6 +39,19 @@ function RoutesWrapper() {
   const location = useLocation();
   const queryParams = new URLSearchParams(location.search);
   const page = queryParams.get("page");
+
+  const isMobile = window.innerWidth < 426;
+
+  if (isMobile) {
+    Swal.fire({
+      title: 'Mobile Warning',
+      text: 'This website is not optimized for mobile devices. Please use a desktop or laptop for the best experience.',
+      icon: 'warning',
+      confirmButtonText: 'I wish to continue anyway'
+    })
+  }
+    
+
 
   return (
       <Routes>
