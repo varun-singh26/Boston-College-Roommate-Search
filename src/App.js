@@ -4,7 +4,7 @@ import PostingsProvider from "./context/PostingsContext.jsx";
 import SearchProvider from "./context/searchContext.jsx";
 import FilteredPostingsProvider from "./context/FilteredPostingsContext.jsx";
 import IsEditingPostingsProvider from "./components/Post/contexts/IsEditingPostContext.jsx";
-import Navbar from './components/Navbar.jsx';
+import Navbar from './components/NavBar/Navbar.jsx';
 import MainSignInPage from "./components/mainSignIn/mainSignInPage.jsx";
 import LandingSplash from "./components/Homepage/LandingSplash.jsx";
 import Posts from "./components/Posts/Posts.jsx"

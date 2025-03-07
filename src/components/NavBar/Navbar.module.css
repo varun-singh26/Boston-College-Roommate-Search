@@ -60,9 +60,47 @@
 }
 
 /* Navigation Links */
-.links {
+.navLinks {
     display: flex;
-    gap: 5rem;
+    gap: 7vw;
+}
+
+@media (max-width:1250px) {
+    .navLinks {
+        gap: 5vw;
+    }
+}
+
+@media (max-width:1220px) {
+    .navLinks {
+        gap: 3vw;
+    }
+}
+
+@media (max-width:949px) {
+    .navLinks {
+        gap: 1vw;
+    }
+}
+
+@media (max-width:885px) {
+    .navLinks {
+        gap: 0.5vw;
+    }
+}
+
+@media (max-width:885px) {
+    .navLinks {
+        gap: 0vw;
+    }
+}
+
+.bar {
+    width: 1px;
+    height: 1.5rem;
+    background: #FFFFFF;
+    margin: 0;
+    padding: 0;
 }
 
 .links p {
@@ -138,9 +176,92 @@
 
 
 /* Mobile Adjustments */
-@media screen and (max-width: 768px) {
+/* @media screen and (max-width: 768px) {
     .links {
         display: none;
     }
+} */
+
+.dropDownContainer {
+    display: flex;
+    flex-direction: horizontal;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
 }
 
+
+.logoContainerDropDown {
+    margin-left: 70px;
+}
+@media (max-width: 425px) {
+    .logoContainerDropDown {
+        margin-left: 10px;
+    }
+}
+
+.menuIcon {
+    width: 2.5rem;
+    height: auto;
+    cursor: pointer;
+    margin-top: 40px;
+}
+
+.dropDown {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    height: 7.5rem;
+    width: 178px;
+}
+@media (max-width: 425px) {
+    .dropDown {
+        align-items: flex-end;
+    }
+    .menuIcon {
+        margin-right: 10px;
+    }
+}
+
+.dropDown:hover {
+    cursor: pointer;
+}
+
+.dropDown:hover .dropDownContent {
+    display: block;
+}
+
+.dropDownContent:hover {
+    display:block;
+}
+
+.dropDown:focus .dropDownContent {
+    display: block;
+}
+
+.dropDownContent {
+    display: none;
+    position: absolute;
+    top: 7.5rem;
+    right: 0;
+    /* background: #231F20; */
+    background: rgb(69, 20, 21);
+    border-radius: 0 0 0.5rem 0.5rem;
+    box-shadow: 0px 5px 5px rgba(0, 0, 0, 0.25);
+    padding: 0.5rem 1rem;
+    z-index: 1000;
+}
+
+.linksDropDown {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+    margin: 10px 10px 10px 10px !important;
+}
+
+.profileLinkDropDown {
+    display: flex;
+    flex-direction: row;
+}
