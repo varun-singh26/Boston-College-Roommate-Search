@@ -38,13 +38,13 @@ export function AuthProvider({ children }) {
                                     setCurrentUser(user);
                                     setUserLoggedIn(true);
                                     
-                                    Swal.fire({
-                                        icon: 'success',
-                                        title: 'Welcome to Heights Housing!',
-                                        text: 'You are now signed in.',
-                                        showConfirmButton: false,
-                                        timer: 3000
-                                    });
+                                    // Swal.fire({
+                                    //     icon: 'success',
+                                    //     title: 'Welcome to Heights Housing!',
+                                    //     text: 'You are now signed in.',
+                                    //     showConfirmButton: false,
+                                    //     timer: 3000
+                                    // });
                                 }
                             } else {
                                 console.log("🚫 Invalid email domain, signing out...");
