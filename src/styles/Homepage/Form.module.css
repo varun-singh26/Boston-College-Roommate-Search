@@ -57,6 +57,15 @@
     margin-bottom: 10%;
   }
 
+  .requiredExplanation {
+    display: flex;
+    flex-direction: row;
+    gap: 0.5rem;
+    font-size: 1rem;
+    color: gray;
+    margin-top: 1rem;
+  }
+
   .subletGroup label {
     margin-right: 1rem;
     font-weight: normal !important;
@@ -234,8 +243,7 @@
     flex-direction: row;
     align-items: center;
     width: 100%; 
-    max-width: 100%;
-
+    max-width: 100% !important;
   }
 
   .requiredAdmin {
@@ -256,6 +264,10 @@
     color: #fc9700;
     padding-left: 0.5rem;
     font-size: 1.5rem;
+  }
+
+  .otherGender {
+    width: 130px;
   }
 
   .genderBlock {
@@ -348,7 +360,6 @@
 
   .residentRow {
     display: flex;
-    flex-direction: space-between;
     gap: 2rem;
     margin-top: 1rem;
   }
@@ -384,7 +395,8 @@
 
   .residentRowAdmin {
     display: flex;
-    flex-direction: space-between;
+    flex-direction: row;
+    justify-content: space-between;
     gap: 2rem;
     align-items: center;
     margin-top: 1rem;

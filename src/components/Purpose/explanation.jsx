@@ -2,6 +2,9 @@ import React, { useEffect, useState, useRef } from "react";
 import css from "../../styles/purpose.module.css";
 import { Link } from "react-router-dom";
 import Stairs from "../../images/backdropImages/MillionDollarStairs.jpeg";
+import Stayer from "../../images/backdropImages/Stayer_Fall.jpeg";
+import Turkey from "../../images/backdropImages/Turkey_OffCampus.jpeg";
+
 
 const Explanation = () => {
     const [scrollY, setScrollY] = useState(0);
@@ -96,8 +99,8 @@ const Explanation = () => {
                 <div className={css.onCampusImageBlock}>
                     <img
                         className={css.onCampusImage}
-                        src={Stairs}
-                        alt="BC Million Dollar Stairs"
+                        src={Stayer}
+                        alt="BC Stayer Hall in Fall"
                     />
                 </div>
             </div>
@@ -106,8 +109,8 @@ const Explanation = () => {
                 <div className={css.offCampusImageBlock}>
                     <img
                         className={css.offCampusImage}
-                        src={Stairs}
-                        alt="BC Million Dollar Stairs"
+                        src={Turkey}
+                        alt="BC Off-Campus Turkey"
                     />
                 </div>
 
@@ -136,26 +139,28 @@ const Explanation = () => {
                 </div>
             </div>
 
-            <div className={css.generalPurposeBlock}>
-                {[
-                    "BCRS was created by 3 BC students for BC students",
-                    "We hope to unite BC students with their ideal roommates and housing setups",
-                    "Thereby alleviating any stress associated with your housing journey",
-                    "Happy searching!"
-                ].map((text, index) => (
-                    <p
-                        key={index}
-                        ref={(el) => (pRefs.current[index] = el)}
-                        data-index={index}
-                        className={
-                            visibleParagraphs.includes(index)
-                                ? css.visibleParagraph
-                                : css.hiddenParagraph
-                        }
-                    >
-                        {text}
-                    </p>
-                ))}
+            <div className={css.generalPurposeBlockContainer}>
+                <div className={css.generalPurposeBlock}>
+                    {[
+                        "Heights Housing was created by 3 BC students for BC students",
+                        "We hope to unite BC students with their ideal roommates and housing setups",
+                        "Thereby alleviating any stress associated with your housing journey",
+                        "Happy searching!"
+                    ].map((text, index) => (
+                        <p
+                            key={index}
+                            ref={(el) => (pRefs.current[index] = el)}
+                            data-index={index}
+                            className={
+                                visibleParagraphs.includes(index)
+                                    ? css.visibleParagraph
+                                    : css.hiddenParagraph
+                            }
+                        >
+                            {text}
+                        </p>
+                    ))}
+                </div>
             </div>
         </>
     );

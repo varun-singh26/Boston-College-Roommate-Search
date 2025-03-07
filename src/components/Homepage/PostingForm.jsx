@@ -458,6 +458,11 @@ const PostingForm = ({id = null, onClose = null}) => {
               <option value="offcampus">Off-Campus</option>
             </select>
 
+            <div className={css.requiredExplanation}>
+              <div className={css.requiredAdmin}>*</div>
+              <div>- Indicates a required input field</div>
+            </div>
+
             {location === 'offcampus' && (
             <div className={css.subletGroup}>
                   <label>Are you hoping to find sublets/subtenants with this posting?</label>
@@ -485,7 +490,7 @@ const PostingForm = ({id = null, onClose = null}) => {
                       />
                       <div className={css.requiredAdmin}>*</div>
                     </div>
-                    <div className={css.requiredInputAdmin}>
+                    <div className={`${css.requiredInputAdmin} ${css.requiredAcademicYear}`}>
                       <select
                         value={postingFormData.adminAcademicYear}
                         aria-label="Admin Academic Year"
@@ -520,6 +525,7 @@ const PostingForm = ({id = null, onClose = null}) => {
                         <input
                           type="text"
                           value={residents[0].customGender}
+                          className={css.otherGender}
                           placeholder="Specify Gender"
                           onChange={(e) => handleResidentChange(0, 'customGender', e.target.value)}
                           required

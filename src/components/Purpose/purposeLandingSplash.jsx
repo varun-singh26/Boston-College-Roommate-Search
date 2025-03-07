@@ -7,11 +7,11 @@ const purposeLandingSplash = () => {
 
     return (
 
-        <main className={CSS.purposeLandingSplashBlock}>
-            <div className={CSS.titleBlock}>
+        <main className={css.purposeLandingSplashBlock}>
+            <div className={css.titleBlock}>
                 <Title />
             </div>
-            <div className={CSS.explanationBlock}>
+            <div className={css.explanationBlock}>
                 <Explanation />
             </div>
         </main>

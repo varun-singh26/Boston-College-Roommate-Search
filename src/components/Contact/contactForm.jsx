@@ -1,6 +1,7 @@
 import React, { useEffect, useState, useContext } from 'react';
 import { AuthContext } from '../../context/authContext';
 import emailjs from 'emailjs-com';
+import Swal from 'sweetalert2';
 import css from '../../styles/Contact/contactForm.module.css';
 
 const ContactForm = () => {
@@ -44,11 +45,20 @@ const ContactForm = () => {
         )
         .then((response) => {
             console.log('SUCCESS!', response.status, response.text);
-            alert("Message sent successfully!");
+            Swal.fire ({
+                title: 'Message Sent!',
+                icon: 'success',
+                timer: '3000',
+            });
         })
         .catch((err) => {
             console.error('FAILED...', err);
-            alert("Failed to send message.");
+            Swal.fire ({
+                title: 'Message Failed to Send!',
+                text: 'Please try again. If the message fails again, please reach out to team@heightshousing.com',
+                icon: 'error',
+                timer: '5000',
+            });
         });
 
         setFormData({ name: '', email: '', message: '' }); // Clear form after submission

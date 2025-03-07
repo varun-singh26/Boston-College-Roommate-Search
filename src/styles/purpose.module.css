@@ -165,16 +165,16 @@
 .onCampusImageBlock {
     display: flex;
     flex-direction: column;
-    width: auto;
-    max-width: 40%;
+    width: 70%;
+    height: auto;
     margin-right: 5rem;
 }
 
 .offCampusImageBlock {
     display: flex;
     flex-direction: column;
-    width: auto;
-    max-width: 40%;
+    width: 70%;
+    height: auto;
     margin-left: 5rem;
 }
 
@@ -185,13 +185,31 @@
     border-radius: 30px;
 }
 
-.generalPurposeBlock {
+.generalPurposeBlockContainer {
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
     width: 100%;
     margin-top: 10%;
+}
+
+.generalPurposeBlock {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 80%;
+    background-color: #fae6c4;
+    border-radius: 30px;
+    padding-top: 50px;
+    padding-bottom: 50px;
+    box-shadow: 3px 3px 10px rgba(0, 0, 0, 0.2);
+    transition: box-shadow 0.3 ease;
+}
+
+.generalPurposeBlock:hover {
+    box-shadow: 3px 3px 10px rgba(0, 0, 0, 0.3);
 }
 
 .generalPurposeBlock p {
@@ -220,5 +238,9 @@
 }
 
 .visibleParagraph:nth-child(5) {
+    margin-bottom: 10%;
+}
+
+.explanationBlock {
     margin-bottom: 10%;
 }
