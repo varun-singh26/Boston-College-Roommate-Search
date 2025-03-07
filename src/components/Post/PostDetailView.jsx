@@ -205,7 +205,10 @@ const PostDetailView = () => {
       );  
   } else {
       return (
-          <>
+        <main className={css.container}>
+          <div className={css.backButton}>
+            <BackButton />
+          </div>
             <div className={css.detailView}>
               <div className={css.infoAndImage}>
 
@@ -307,8 +310,7 @@ const PostDetailView = () => {
                 ))}
               </div>
             </div>
-            <BackButton />
-          </>
+          </main>
         );
     }
 };
