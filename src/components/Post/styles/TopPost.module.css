@@ -4,3 +4,27 @@
     display: flex;
     flex-direction: column;
 }
+
+
+.statusContainer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 20px;
+    /*margin-bottom: 10px;*/
+}
+
+
+.statusDropdown {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.statusDisplay {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    justify-content: space-between;
+}

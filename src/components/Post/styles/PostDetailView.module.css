@@ -65,6 +65,29 @@
     gap: 20px;
 }
 
+.statusContainer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 30%;
+    /*margin-bottom: 10px;*/
+}
+
+
+.statusDropdown {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.statusDisplay {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    justify-content: space-between;
+}
+
 .info {
     display: flex;
     justify-content: space-between;
@@ -106,23 +129,48 @@
 }
 
 /* Image Carousel Container */
-.imageCarousel {
-    position: relative;
+.carousel {
     display: flex;
+    flex-direction: row;
     justify-content: center;
-    align-items: center;
     width: 100%;
+    position: relative;
+    gap: 6%; 
+    /*overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    scroll-behavior: smooth;
+    padding: 20px 0; */
 }
 
-/* Image in Carousel */
+.carouselButton {
+    width: 2%;
+    height: 2%;
+    margin-top: 17.5%;
+    /* Center arrow in the middle of button: */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+    cursor: pointer;
+    border-radius: 25%;
+}
+
 .postingImage {
     width: 100%;
-    max-width: 500px;
-    height: auto;
+    max-width: 550px; /* Ensures consistent width */
+    height: 350px; /* Set a fixed height */
+    object-fit: cover; /* Ensures the image fills the space while maintaining aspect ratio */
     border-radius: 8px;
-    object-fit: cover;
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    /*box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease, box-shadow 0.3s ease; */
 }
+
+.postingImage:hover {
+    transform: scale(1.02);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+}
+
+
 /* Image directly below info */
 /*
 .imageListing {
@@ -137,37 +185,13 @@
 }
 */
 
-.postingImage:hover {
-    transform: scale(1.02);
-    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
-}
-
-/* Carousel Navigation Buttons */
-.carouselButton {
-    position: absolute;
-    top: 50%;
-    transform: translateY(-50%);
-    background-color: rgba(0, 0, 0, 0.5);
-    color: white;
-    border: none;
-    font-size: 24px;
-    padding: 10px;
-    cursor: pointer;
-    z-index: 10;
-    border-radius: 50%;
-}
-
-.carouselButton:hover {
-    background-color: rgba(0, 0, 0, 0.8);
-}
-
-.carouselButton:first-of-type {
+/*.carouselButton:first-of-type {
     left: 10px;
-}
+}*/
 
-.carouselButton:last-of-type {
+/*.carouselButton:last-of-type {
     right: 10px;
-}
+}*/
 
 /* Contact info section */
 .admin {

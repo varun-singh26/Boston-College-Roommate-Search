@@ -27,11 +27,11 @@ const Top = ({ building = "", status, postID, adminID }) => {
     <section className={css.top}>
 
     {/* Show either the dropdown (if admin) or just the status display */}
-    <div className="statusContainer">
+    <div className={css.statusContainer}>
       {currentUser && currentUser.uid === adminID ? (
         // If user is admin, show dropdown
-        <>
-          <h3>Set Posting Status:</h3>
+        <div className={css.statusDropdown}>
+          <h3>Set Status:</h3>
           <select
             id="statusSelect"
             value={currentStatus}
@@ -42,18 +42,19 @@ const Top = ({ building = "", status, postID, adminID }) => {
             <option value="Likely Fulfilled">Likely Fulfilled</option>
             <option value="Fulfilled">Fulfilled</option>
           </select>
-        </>
+        </div>
       ) : (
         // Otherwise, just show the status text
-        <>
-          <h3>Posting Status:</h3>
+        <div className={css.statusDisplay}>
+          <p>Posting Status:</p>
+
           <h3>{currentStatus}</h3>
-        </>
+        </div>
       )}
     </div>
 
     <div className='pingCount'>
-      <p> {pingsCount} other groups have expressed interest in this posting</p>
+      <p> <strong>{pingsCount}</strong> other groups have expressed interest in this posting</p>
     </div>
 
     {/* Always show Building Image */}

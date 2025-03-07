@@ -75,6 +75,8 @@ const PostDetailView = () => {
 
   if (!posting) return <div>Loading...</div>;
 
+  // TODO: If posting is oncampus, automatically make image of dorm the first image
+
   const images = posting.imageUrls || []; //List of image URLs
   const hasMultipleImages = images.length > 1;
 
@@ -98,14 +100,14 @@ const PostDetailView = () => {
 
               {/* Show the total number of groups interested in this posting */}
               <div className='pingCount'>
-                <p> {pingsCount} other groups have expressed interest in this posting</p>
+                <p> <strong>{pingsCount}</strong> other groups have expressed interest in this posting</p>
               </div>
 
               {/* Show either the dropdown (if admin) or just the status display */}
-                <div className="statusContainer">
+                <div className={css.statusContainer}>
                   {currentUser && currentUser.uid === posting.adminContact?.uid ? (
                     // If user is admin, show dropdown
-                    <>
+                    <div className={css.statusDropdown}>
                       <h3>Set Posting Status:</h3>
                       <select
                         id="statusSelect"
@@ -117,15 +119,15 @@ const PostDetailView = () => {
                         <option value="Likely Fulfilled">Likely Fulfilled</option>
                         <option value="Fulfilled">Fulfilled</option>
                       </select>
-                    </>
+                    </div>
                   ) : (
                     // Otherwise, just show the status text
-                    <>
+                    <div className={css.statusDisplay}>
                       <h3>Posting Status:</h3>
                       <h3>{currentStatus ? currentStatus : posting.status}</h3> {/* Since we intialize currentStatus as "", we need to start by displaying the status field from the posting*/}
                                                                                 {/* Once a value is selected for currentStatus (ie. currentStatus isn't null, we can display that value instead (although it will be the same 
                                                                                   as the status field of the posting.)) */}
-                    </>
+                    </div>
                   )}
                 </div>
 
@@ -146,15 +148,14 @@ const PostDetailView = () => {
                 </div>
               </div>
 
-              {/* image carousel */}
-              <div className={css.imageCarousel}>
+              <div className={css.carousel}>
                 {hasMultipleImages && (
                   <button className={css.carouselButton} onClick={handlePrevImage}>&#10094;</button>
-                )} {/* &#10094 = HTML entity for left-pointing angle bracket*/}
-                <img className={css.postingImage} src={images[currentImageIndex]} alt={`Listing ${currentImageIndex + 1}`} />
+                )}  
+                <img className={css.postingImage} src={images[currentImageIndex]} alt={`Listing ${currentImageIndex + 1}`} />                                                            
                 {hasMultipleImages && (
                   <button className={css.carouselButton} onClick={handleNextImage}>&#10095;</button>
-                )} {/* &#10094 = HTML entity for right-pointing angle bracket*/}
+                )} 
               </div>
             </div>
 
@@ -199,6 +200,40 @@ const PostDetailView = () => {
           <>
             <div className={css.detailView}>
               <div className={css.infoAndImage}>
+
+                {/* Show the total number of groups interested in this posting */}
+                <div className='pingCount'>
+                  <p> <strong>{pingsCount}</strong> other groups have expressed interest in this posting</p>
+                </div>
+
+                {/* Show either the dropdown (if admin) or just the status display */}
+                <div className={css.statusContainer}>
+                  {currentUser && currentUser.uid === posting.adminContact?.uid ? (
+                    // If user is admin, show dropdown
+                    <div className={css.statusDropdown}>
+                      <h3>Set Posting Status:</h3>
+                      <select
+                        id="statusSelect"
+                        value={currentStatus}
+                        onChange={(e) => updateStatus(e.target.value, currentStatus, setCurrentStatus, posting.id)} // Update status on change
+                        className="statusDropdown"
+                      >
+                        <option value="Unfulfilled">Unfulfilled</option>
+                        <option value="Likely Fulfilled">Likely Fulfilled</option>
+                        <option value="Fulfilled">Fulfilled</option>
+                      </select>
+                    </div>
+                  ) : (
+                    // Otherwise, just show the status text
+                    <div className={css.statusDisplay}>
+                      <h3>Posting Status:</h3>
+                      <h3>{currentStatus ? currentStatus : posting.status}</h3> {/* Since we intialize currentStatus as "", we need to start by displaying the status field from the posting*/}
+                                                                                {/* Once a value is selected for currentStatus (ie. currentStatus isn't null, we can display that value instead (although it will be the same 
+                                                                                  as the status field of the posting.)) */}
+                    </div>
+                  )}
+                </div>
+                
                 <div className={css.info}>
                     <div className={css.location}>
                         <img src="../../assets/postings/location.png" alt="Location" />
@@ -219,14 +254,14 @@ const PostDetailView = () => {
                 </div>
 
                 {/* image carousel */}
-                <div className={css.imageCarousel}>
+                <div className={css.carousel}>
                   {hasMultipleImages && (
                     <button className={css.carouselButton} onClick={handlePrevImage}>&#10094;</button>
-                  )}
-                  <img className={css.postingImage} src={images[currentImageIndex]} alt={`Listing ${currentImageIndex + 1}`} />
+                  )}  
+                  <img className={css.postingImage} src={images[currentImageIndex]} alt={`Listing ${currentImageIndex + 1}`} />                                                            
                   {hasMultipleImages && (
                     <button className={css.carouselButton} onClick={handleNextImage}>&#10095;</button>
-                  )}
+                  )} 
                 </div>
               </div>
 
