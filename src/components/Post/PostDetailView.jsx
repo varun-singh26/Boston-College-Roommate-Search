@@ -75,9 +75,17 @@ const PostDetailView = () => {
 
   if (!posting) return <div>Loading...</div>;
 
-  // TODO: If posting is oncampus, automatically make image of dorm the first image
-
+  
   const images = posting.imageUrls || []; //List of image URLs
+
+  // If posting is oncampus, automatically make image of dorm the first image
+  if (posting.listingLocation === "oncampus" && posting.dorm) {
+    const dormImage = `/assets/oncampus/${posting.dorm}.jpg`;
+    if (!images.includes(dormImage)) {
+      images.unshift(dormImage); // Prepend dorm image src if not already in the list
+    }
+  }
+
   const hasMultipleImages = images.length > 1;
 
   // Navigate through images in carousel
@@ -233,7 +241,7 @@ const PostDetailView = () => {
                     </div>
                   )}
                 </div>
-                
+
                 <div className={css.info}>
                     <div className={css.location}>
                         <img src="../../assets/postings/location.png" alt="Location" />
