@@ -9,7 +9,6 @@
 }
 
 .backButton {
-    padding-top: 10%;
     align-items: flex-start;
 }
 
@@ -17,7 +16,7 @@
 .detailView {
     width: 100%;
     max-width: 900px;
-    padding: 20px;
+    padding: 20px 20px 20px 20px;
     display: flex;
     flex-direction: column;
     gap: 20px;
@@ -26,36 +25,7 @@
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
     overflow: hidden;
     box-sizing: border-box;
-}
-
-@media (min-width: 1300px) {
-    .detailView {
-        margin: 10% auto 5% auto;
-    }
-}
-
-@media (max-width: 1000px) {
-    .detailView {
-        margin: 15% auto 5% auto;
-    }
-}
-
-@media (max-width: 768px) {
-    .detailView {
-        margin: 20% auto 5% auto;
-    }
-}
-
-@media (max-width: 550px) {
-    .detailView {
-        margin: 30% auto 5% auto;
-    }
-}
-
-@media (max-width: 400px) {
-    .detailView {
-        margin: 40% auto 5% auto;
-    }
+    margin: 3% auto 5% auto;
 }
 
 
