@@ -1,3 +1,12 @@
+* {
+    font-family: "Lexend", sans-serif;
+    font-weight: 200;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
 .container {
     width: 80%;
     margin: 10% auto;
@@ -14,7 +23,6 @@
 }
 
 .title {
-    font-weight: bold;
     text-align: center;
     margin-bottom: 1rem;
 }
@@ -23,33 +31,68 @@ p {
     text-align: center;
 }
 
-.postingsContainer {
-    display: flex;
-    flex-direction: row;
-    justify-content: space-around;
-
+strong {
+    font-weight: 500;
 }
 
-.postingsAdministered {
+.movement {
+    display: flex;
+    gap: 20px; /* Space between links */
+    justify-content: center; /* Centers links horizontally */
+    margin-top: 20px;
+}
+
+.movement a {
+    text-decoration: none;
+    background-color: #660000; /* Maroon background */
+    color: white;
+    font-weight: bold;
+    padding: 10px 20px;
+    border-radius: 5px; /* Rounded corners */
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.movement a:hover {
+    background-color: #501315; /* Darker maroon on hover */
+    transform: scale(1.05); /* Slight pop effect */
+}
+
+.postingsContainer {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+}
+
+.administered {
     display: flex;
     flex-direction: column;
     justify-content: center;
+    align-items: center;
     gap: 10px;
 }
 
-.postingsBookmarked {
+.postings {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+}
+
+.bookmarked {
     display: flex;
     flex-direction: column;
     justify-content: center;
+    align-items: center;
     gap: 10px;
 }
 
 .administered h2 {
     text-align: center;
+    font-weight: 200;
 }
 
 .bookmarked h2 {
     text-align: center;
+    font-weight: 200;
 }
 
 .showMore {
@@ -128,14 +171,34 @@ p {
 
 .signOut {
     display: flex;
-    flex-direction: column;
+    justify-content: center; /* Centers the button */
 }
 
 .signOut button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
     border: 1px solid #ccc;
-    background-color: #EA4335;
+    background-color: #800000; /* Maroon background */
     color: white;
     font-weight: bold;
     cursor: pointer;
-    transition: background-color 0.3s ease;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    padding: 10px 20px; /* Matches movement links */
+    border-radius: 5px; /* Rounded corners */
+}
+
+.signOut button:hover {
+    background-color: #660000; /* Darker maroon on hover */
+    transform: scale(1.05); /* Slight pop effect */
+    box-shadow: -3px -3px 9px #888888; /* Keeps original hover effect */
+}
+
+
+@media (max-width: 1048px) {
+    .postingsContainer {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-around;
+    }
 }

@@ -96,9 +96,9 @@ exports.notifyListingAdmin = onDocumentCreated("pings/{pingId}", async (event) =
                 <p> <strong> If you are considering this interested party and need time to reach out, leave the status of this posting as is ("Likely Fulfilled"). </strong> </p>
 
                 <p> Update the status of your posting:</p>
-                <a href="${fulfillLink}" style="background-color: green; color: white; padding: 10px 15px; text-decoration: none; border-radius: 5px;">✅ Accept and Mark Posting as Fulfilled (This will reject all other Pings you may have received for this Posting</a>
-                <a href="${unfulfillLink}" style="background-color: red; color: white; padding: 10px 15px; text-decoration: none; margin-left: 10px; border-radius: 5px;">❌ Reject and Mark Posting as Unfulfilled</a>
-                <a href="${unfulfillLink}" style="background-color: gray; color: white; padding: 10px 15px; text-decoration: none; margin-left: 10px; border-radius: 5px;"> Unsubscribe from notifications regarding ${pingData.name}'s interest in your post for ${posting.dorm || posting.address} </a>
+                <a href="${fulfillLink}" style="display: block; margin-bottom: 10px; background-color: green; color: white; padding: 10px 15px; text-decoration: none; border-radius: 5px;">✅ Accept and Mark Posting as Fulfilled</a>
+                <a href="${unfulfillLink}" style="display: block; margin-bottom: 10px; background-color: red; color: white; padding: 10px 15px; text-decoration: none; margin-left: 10px; border-radius: 5px;">❌ Reject and Mark Posting as Unfulfilled</a>
+                <a href="${unfulfillLink}" style="display: block; margin-bottom: 10px; background-color: gray; color: white; padding: 10px 15px; text-decoration: none; margin-left: 10px; border-radius: 5px;"> Unsubscribe from notifications regarding this ping</a>
                 <p>Thank you for using Heights Housing!</p>
             `,
         };
@@ -166,7 +166,7 @@ const ignoreOtherPingsAndNotifySearchers = async (postId) => {
         // Send email to respective searcher of each ping
         await Promise.all(otherPingsSnapshot.docs.map(async (ping) => {
             const mailOptions = {
-                from: "vrjsingh04@gmail.com",
+                from: '"Heights Housing" <vrjsingh04@gmail.com>',
                 to: ping.data().searcherEmail,
                 subject: "Your Interest in a Posting was Not Accepted",
                 html: `<p> Hello ${ping.data().name}, </p>
@@ -227,7 +227,7 @@ const notifySearcher = async (postId, pingId, status) => {
 
         if (status === "Fulfilled") {
             mailOptions = {
-                from: "vrjsingh04@gmail.com",
+                from: '"Heights Housing" <vrjsingh04@gmail.com>',
                 to: searcherEmail,
                 subject: `ACCEPTED! Your Interest in <strong>${posting.adminContact?.name}'s</strong> Posting for <strong>${posting.dorm || posting.address}</strong> was Accepted!`,
                 html: `
@@ -241,7 +241,7 @@ const notifySearcher = async (postId, pingId, status) => {
     
         } else if (status === "Unfulfilled") {
             mailOptions = {
-                from: "vrjsingh04@gmail.com",
+                from: '"Heights Housing" <vrjsingh04@gmail.com>',
                 to: searcherEmail,
                 subject: `NOT ACCEPTED. Your Interest in <strong> ${posting.adminContact?.name}'s </strong> Posting for <strong>${posting.dorm || posting.address}</strong> was Not Accepted`,
                 html: `
@@ -415,7 +415,7 @@ exports.followUpOnPendingPings = onSchedule("every 2 hours", async () => {
 
             // Send follow-up email
             const mailOptions = {
-                from: "vrjsingh04@gmail.com",
+                from: '"Heights Housing" <vrjsingh04@gmail.com>',
                 to: adminEmail,
                 subject: `Pending Interest in Your Listing for ${posting.dorm || posting.address}`,
                 html: `
@@ -424,9 +424,9 @@ exports.followUpOnPendingPings = onSchedule("every 2 hours", async () => {
                     <p> Currently your posting is marked as "Likely Fulfilled", so that other users are aware that this posting may become fullfilled should you agree to live with the interest party that sent this ping.</p>
                     <p> If you are considering this interested party and need time to reach out, take no action and leave the status of this posting as is ("Likely Fulfilled"). </p>
                     <p>If not, and you know you do or don't want to live with this group, please confirm the status of this inquiry:</p>
-                    <a href="${fulfillLink}" style="background-color: green; color: white; padding: 10px 15px; text-decoration: none; border-radius: 5px;">✅ Accept and Mark Posting as Fulfilled (This will reject all other Pings you may have received for this Posting</a>
-                    <a href="${unfulfillLink}" style="background-color: red; color: white; padding: 10px 15px; text-decoration: none; margin-left: 10px; border-radius: 5px;">❌ Reject and Mark Posting as Unfulfilled</a>
-                    <a href="${unfulfillLink}" style="background-color: gray; color: white; padding: 10px 15px; text-decoration: none; margin-left: 10px; border-radius: 5px;"> Unsubscribe from notifications regarding ${ping.name}'s interest in your post for ${posting.dorm || posting.address}</a>
+                    <a href="${fulfillLink}" style="display: block; margin-bottom: 10px; background-color: green; color: white; padding: 10px 15px; text-decoration: none; border-radius: 5px;">✅ Accept and Mark Posting as Fulfilled</a>
+                    <a href="${unfulfillLink}" style="display: block; margin-bottom: 10px; background-color: red; color: white; padding: 10px 15px; text-decoration: none; margin-left: 10px; border-radius: 5px;">❌ Reject and Mark Posting as Unfulfilled</a>
+                    <a href="${unfulfillLink}" style="display: block; margin-bottom: 10px; background-color: gray; color: white; padding: 10px 15px; text-decoration: none; margin-left: 10px; border-radius: 5px;"> Unsubscribe from notifications regarding this ping</a>
                     <p>Thank you for using Heights Housing!</p>
                 `,
             };
@@ -499,7 +499,7 @@ exports.checkPendingPings = onSchedule("every 2 hours", async () => {
 
             try {
                 const mailOptions = {
-                    from: "vrjsingh04@gmail.com",
+                    from: '"Heights Housing" <vrjsingh04@gmail.com>',
                     to: userEmail,
                     subject: "No Response from Listing Admin",
                     text: `Hello ${userEmail},\n\nYour interest in ${posting?.adminContact?.name}'s posting for ${posting?.dorm || posting?.address} looking for ${posting?.curNumSeek} additional people has not received a response within 2 hours. 

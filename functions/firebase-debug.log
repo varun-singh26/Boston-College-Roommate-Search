@@ -1,0 +1,38 @@
+[debug] [2025-03-08T09:15:47.467Z] ----------------------------------------------------------------------
+[debug] [2025-03-08T09:15:47.469Z] Command:       /Users/varun/.nvm/versions/node/v20.18.1/bin/node /Users/varun/.nvm/versions/node/v20.18.1/bin/firebase deploy --only functions
+[debug] [2025-03-08T09:15:47.469Z] CLI Version:   13.31.2
+[debug] [2025-03-08T09:15:47.469Z] Platform:      darwin
+[debug] [2025-03-08T09:15:47.470Z] Node Version:  v20.18.1
+[debug] [2025-03-08T09:15:47.470Z] Time:          Sat Mar 08 2025 01:15:47 GMT-0800 (Pacific Standard Time)
+[debug] [2025-03-08T09:15:47.470Z] ----------------------------------------------------------------------
+[debug] 
+[debug] [2025-03-08T09:15:47.578Z] Field "/functions" in "firebase.json" is possibly invalid: must be object
+[debug] [2025-03-08T09:15:47.578Z] Object "/functions/0" in "firebase.json" has unknown property: {"additionalProperty":"timeoutSeconds"}
+[debug] [2025-03-08T09:15:47.578Z] Field "/functions" in "firebase.json" is possibly invalid: must match a schema in anyOf
+[debug] [2025-03-08T09:15:47.582Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
+[debug] [2025-03-08T09:15:47.582Z] > authorizing via signed-in user (vrjsingh04@gmail.com)
+[debug] [2025-03-08T09:15:47.582Z] [iam] checking project bcrs-e15d9 for permissions ["cloudfunctions.functions.create","cloudfunctions.functions.delete","cloudfunctions.functions.get","cloudfunctions.functions.list","cloudfunctions.functions.update","cloudfunctions.operations.get","firebase.projects.get"]
+[debug] [2025-03-08T09:15:47.583Z] Checked if tokens are valid: true, expires at: 1741428600713
+[debug] [2025-03-08T09:15:47.583Z] Checked if tokens are valid: true, expires at: 1741428600713
+[debug] [2025-03-08T09:15:47.583Z] >>> [apiv2][query] POST https://cloudresourcemanager.googleapis.com/v1/projects/bcrs-e15d9:testIamPermissions [none]
+[debug] [2025-03-08T09:15:47.584Z] >>> [apiv2][(partial)header] POST https://cloudresourcemanager.googleapis.com/v1/projects/bcrs-e15d9:testIamPermissions x-goog-quota-user=projects/bcrs-e15d9
+[debug] [2025-03-08T09:15:47.584Z] >>> [apiv2][body] POST https://cloudresourcemanager.googleapis.com/v1/projects/bcrs-e15d9:testIamPermissions {"permissions":["cloudfunctions.functions.create","cloudfunctions.functions.delete","cloudfunctions.functions.get","cloudfunctions.functions.list","cloudfunctions.functions.update","cloudfunctions.operations.get","firebase.projects.get"]}
+[debug] [2025-03-08T09:15:47.878Z] <<< [apiv2][status] POST https://cloudresourcemanager.googleapis.com/v1/projects/bcrs-e15d9:testIamPermissions 200
+[debug] [2025-03-08T09:15:47.878Z] <<< [apiv2][body] POST https://cloudresourcemanager.googleapis.com/v1/projects/bcrs-e15d9:testIamPermissions {"permissions":["cloudfunctions.functions.create","cloudfunctions.functions.delete","cloudfunctions.functions.get","cloudfunctions.functions.list","cloudfunctions.functions.update","cloudfunctions.operations.get","firebase.projects.get"]}
+[debug] [2025-03-08T09:15:47.878Z] Checked if tokens are valid: true, expires at: 1741428600713
+[debug] [2025-03-08T09:15:47.878Z] Checked if tokens are valid: true, expires at: 1741428600713
+[debug] [2025-03-08T09:15:47.879Z] >>> [apiv2][query] POST https://iam.googleapis.com/v1/projects/bcrs-e15d9/serviceAccounts/bcrs-e15d9@appspot.gserviceaccount.com:testIamPermissions [none]
+[debug] [2025-03-08T09:15:47.879Z] >>> [apiv2][body] POST https://iam.googleapis.com/v1/projects/bcrs-e15d9/serviceAccounts/bcrs-e15d9@appspot.gserviceaccount.com:testIamPermissions {"permissions":["iam.serviceAccounts.actAs"]}
+[debug] [2025-03-08T09:15:48.232Z] <<< [apiv2][status] POST https://iam.googleapis.com/v1/projects/bcrs-e15d9/serviceAccounts/bcrs-e15d9@appspot.gserviceaccount.com:testIamPermissions 200
+[debug] [2025-03-08T09:15:48.232Z] <<< [apiv2][body] POST https://iam.googleapis.com/v1/projects/bcrs-e15d9/serviceAccounts/bcrs-e15d9@appspot.gserviceaccount.com:testIamPermissions {"permissions":["iam.serviceAccounts.actAs"]}
+[info] 
+[info] === Deploying to 'bcrs-e15d9'...
+[info] 
+[info] i  deploying functions 
+[info] Running command: npm --prefix "$RESOURCE_DIR" run lint
+[debug] [2025-03-08T09:15:53.548Z] Error: Timed out.
+    at Timeout._onTimeout (/Users/varun/.nvm/versions/node/v20.18.1/lib/node_modules/firebase-tools/lib/utils.js:269:49)
+    at listOnTimeout (node:internal/timers:581:17)
+    at process.processTimers (node:internal/timers:519:7)
+[error] 
+[error] Error: An unexpected error has occurred.

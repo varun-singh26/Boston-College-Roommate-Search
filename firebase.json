@@ -4,20 +4,6 @@
       "source": "functions",
       "timeoutSeconds": 300,
       "codebase": "default"
-    },
-    {
-      "source": "Desktop/BCRS",
-      "codebase": "domain_restrictor",
-      "ignore": [
-        "node_modules",
-        ".git",
-        "firebase-debug.log",
-        "firebase-debug.*.log",
-        "*.local"
-      ],
-      "predeploy": [
-        "npm --prefix \"$RESOURCE_DIR\" run lint"
-      ]
     }
   ],
   "hosting": {
