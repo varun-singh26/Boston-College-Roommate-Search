@@ -127,13 +127,17 @@ const MyProfile = () => {
                 currentUser ? (
                     <>
                         <h1 className={css.title}> My Profile</h1>
-                        <p>
-                        Hello {currentUser.displayName ? currentUser.displayName : currentUser.email}, you are signed in.
+                        <p className={css.title}>
+                        Hello <strong>{currentUser.displayName ? currentUser.displayName : currentUser.email}</strong>, you are signed in.
                         </p>
                         <div className={css.postingsContainer}>
                             {isEditingPost ? <PostingForm id = {IDEditingPost} /> :
                                 <>
-                                    <section className={css.administered}>
+                                    <div className={css.movement}>
+                                        <a href="#administered">My Administered Posts</a>
+                                        <a href="#bookmarked">My Bookmarked Posts</a>
+                                    </div>
+                                    <section className={css.administered} id="administered">
                                         <h2>Your administered postings:</h2>
                                         <div className={css.postings}>
                                             {administeredPostings.slice(0, postsToShow).map((post) => (
@@ -152,7 +156,7 @@ const MyProfile = () => {
                                             )}
                                         </div>
                                     </section>
-                                    <section className={css.bookmarked}>
+                                    <section className={css.bookmarked}  id="bookmarked">
                                         <h2>Your bookmarked postings:</h2>
                                         <div className={css.postings}>
                                             {bookmarkedPostings.slice(0, postsToShow).map((post) => (

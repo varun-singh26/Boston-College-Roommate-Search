@@ -183,12 +183,12 @@ const BottomOnCampus = ({ members, curNumSeek, dorm, totalGroupSize, id, listing
             <div className={css.bottomIMG}>
               <img 
                 onClick={() => handleModify(id)}
-                src="/assets/postings/modify.jpeg" 
+                src="/assets/postings/modify.png" 
                 alt="clipboard"
               />
               <img
                 onClick={() => handleDelete(id)}
-                src="/assets/postings/trashBin.jpeg"
+                src="/assets/postings/bin.png"
                 alt="trashBin"
               />
             </div>

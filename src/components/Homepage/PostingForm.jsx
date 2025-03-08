@@ -450,8 +450,8 @@ const PostingForm = ({id = null, onClose = null}) => {
       <div className={css.formHolder}>
         <form className={css.postForm} onSubmit={handleSubmit}>
           {/* Only render cancel button if not on home page*/}
-          {id != null && <button className="cancel" onClick={handleCancel}>Cancel</button>}
           <div className={`${css.formGroup} ${css.formLocationSelector}`}>
+            {id != null && <button className={css.cancel} onClick={handleCancel}><img src="assets/postings/left-arrow.png"></img></button>}
             <label htmlFor="location">Location:</label>
             <select id="location" value={location} onChange={(e) => setLocation(e.target.value)}>
               <option value="oncampus">On-Campus</option>
@@ -745,7 +745,7 @@ const PostingForm = ({id = null, onClose = null}) => {
                 </div>
               </>
             ) : (
-              <div className={css.formGroup}>
+              <div className={`${css.formGroup} ${css.preferredDorm}`}>
                 <label htmlFor="dorm">Preferred Dorm:</label>
                 <select
                   id="dorm"

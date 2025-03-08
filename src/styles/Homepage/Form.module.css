@@ -8,30 +8,55 @@
   .customPostContainer {
     margin-top: 10%;
   }
+
+  .preferredDorm {
+    margin-bottom: 0px;
+  }
+
 }
 
 @media (max-width: 1000px) {
   .customPostContainer {
     margin-top: 13%;
   }
+
+  .preferredDorm {
+    margin-bottom: 0px;
+  }
+
 }
 
 @media (max-width: 650px) {
   .customPostContainer {
     margin-top: 15%;
   }
+
+  .preferredDorm {
+    margin-bottom: 0px;
+  }
+
 }
 
 @media (max-width: 500px) {
   .customPostContainer {
     margin-top: 20%;
   }
+
+  .preferredDorm {
+    margin-bottom: 0px;
+  }
+
 }
 
 @media (max-width: 370px) {
   .customPostContainer {
     margin-top: 25%;
   }
+
+  .preferredDorm {
+    margin-bottom: 0px;
+  }
+
 }
 
 .customPagePostingFormContainer {
@@ -76,7 +101,6 @@
     justify-content: center;
     align-items: center;
     text-align: center;
-    margin-top: 7%;
     background-color: white;
     padding: 10px;
     border-radius: 10px;
@@ -125,7 +149,7 @@
     flex-direction: column;
     align-items: center;
     text-align: center;
-    margin-bottom: 7%;
+    margin-bottom: 32px;
   }
 
   .headerText{
@@ -155,6 +179,53 @@
     color: #987540;
   }
 
+  .cancel {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: white; /* Maroon background */
+    color: white;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    padding: 10px; /* Adjust padding for compact look */
+    border-radius: 50%; /* Keep circular */
+    width: 40px; /* Smaller size */
+    height: 40px; /* Smaller size */
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    overflow: hidden;
+    border: none; /* No border */
+}
+
+.cancel img {
+    width: 24px; /* Icon size */
+    height: 24px;
+    transition: transform 0.3s ease; /* Smooth scale on hover */
+}
+
+.cancel:hover {
+    background-color: white; /* Darker maroon on hover */
+    transform: scale(1); /* Slight scale up on hover */
+}
+
+.cancel:active {
+    transform: scale(0.98); /* Makes button "shrink" when pressed */
+}
+
+.cancel:hover img {
+    transform: rotate(360deg); /* Rotate icon when hovering */
+}
+
+.loco {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.loco img {
+  margin-bottom: 7px;
+}
   .postForm {
     display: grid;
     grid-template-columns: 1fr 1fr;
@@ -345,7 +416,7 @@
     display: flex;
     flex-direction: column;
     padding: 2rem;
-    margin-top: 1rem;
+    padding-top: .75rem;
     border-radius: 10px;
     box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
     transition: box-shadow 0.3s ease, transform 0.3s ease;
@@ -389,6 +460,10 @@
     .requiredInput, .requiredInputAdmin {
       width: auto;
       max-width: 300px;
+    }
+
+    .preferredDorm {
+      margin-bottom: 0px;
     }
 
   }
