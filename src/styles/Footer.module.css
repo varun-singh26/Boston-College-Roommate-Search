@@ -43,6 +43,24 @@
     margin: 5px 0;
 }
 
+.footerColumnParagraph a {
+    /* Make the link treatable as a box for transforms */
+    display: inline-block;
+
+      /* Add a smooth transition so it enlarges smoothly */
+    transition: transform 0.2s ease-in-out;
+
+    text-decoration: none;
+    cursor: pointer;
+    color: #DCCAA0;
+}
+
+.footerColumnParagraph a:hover {
+    /* Scale it up when hovered */
+    transform: scale(1.1);
+
+}
+
 .socialIconLinks {
     display: inline-block;
     margin-right: 10px;

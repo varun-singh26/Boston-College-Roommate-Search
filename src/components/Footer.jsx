@@ -6,13 +6,16 @@ const Footer = () => {
     <footer className={css.footer}>
       <div className= {css.footerQuote}>
         <p>
-          "The best thing about having a roommate is always having someone to blame when food goes missing." - Anonymous BC Senior
+          <strong>"The best thing about having a roommate is always having someone to blame when food goes missing."</strong>
+        </p>
+        <p>
+          - Anonymous BC Senior
         </p>
       </div>
       <div className={css.footerDetails}>
         <div className={css.footerColumn}>
           <h4 className ={css.footerColumnH4}>CONTACT DETAILS</h4>
-          <p className={css.footerColumnParagraph}><strong>E-mail:</strong> bcrs@gmail.com</p>
+          <p className={css.footerColumnParagraph}> <a href="mailto:team@heightshousing.com"> <strong> team@heightshousing.com </strong> </a></p>
           <div className="social-icons">
             <a href="#" className={css.socialIconLinks}>
               <img
@@ -25,17 +28,18 @@ const Footer = () => {
         </div>
         <div className={css.footerColumn}>
           <h4 className={css.footerColumnH4}>ADDITIONAL RESOURCES</h4>
-          <p className={css.footerColumnParagraph}>BC Housing Calendar</p>
-          <p className={css.footerColumnParagraph}>Resources</p>
+          <p className={css.footerColumnParagraph}><a href="https://www.bc.edu/bc-web/offices/studentaffairs/sites/residential-life/living-in-bc-housing/housing-assignments.html#room_selection_process_overview"> <strong>BC General Room Selection Timeline and Info </strong></a> </p>
+          <p className={css.footerColumnParagraph}><a href="https://www.bc.edu/bc-web/offices/studentaffairs/sites/residential-life/living-in-bc-housing/bc-residence-halls.html"> <strong>BC Residence Hall Information </strong></a> </p>
         </div>
         <div className={css.footerColumn}>
           <h4 className ={css.footerColumnH4}>OUR PARTNERS</h4>
-          <p className={css.footerColumnParagraph}>Division of Student Affairs</p>
-          <p className={css.footerColumnParagraph}>Office of Residential Life</p>
+          {/* Add partners once we acquire them*/}
+          <p className={css.footerColumnParagraph}></p>
+          <p className={css.footerColumnParagraph}></p>
         </div>
       </div>
       <div className={css.footerBottoom}>
-        <p>&copy; 2024 Boston College Roommate Search. All rights reserved.</p>
+        <p>&copy; 2025 Heights Housing. All rights reserved.</p>
       </div>
     </footer>
   );
