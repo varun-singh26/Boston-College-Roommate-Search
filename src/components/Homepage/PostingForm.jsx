@@ -633,7 +633,8 @@ const PostingForm = ({id = null, onClose = null}) => {
                     )}
                     <div className={css.required}>*</div>
                   </div>
-                  <div className={css.requiredInput}>
+                  {/* Email isn't a required input field for group members (but is for admin)*/}
+                  {/*<div className={css.requiredInput}> */}
                     <input
                       type="text"
                       id="email"
@@ -641,10 +642,10 @@ const PostingForm = ({id = null, onClose = null}) => {
                       placeholder="BC Email"
                       aria-label={`Email of Resident ${index + 1}`}
                       onChange={(e) => handleResidentChange(index + 1, 'email', e.target.value)}
-                      required
+                      /*required*/
                     />
-                    <div className={css.required}>*</div>
-                  </div>
+                    {/*<div className={css.required}>*</div> */}
+                  {/*</div> */}
                   <input
                     type="text"
                     id="instagramHandle"
