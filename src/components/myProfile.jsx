@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { useAuth } from "../context/authContext/index.jsx";
 import { IsEditingPostContext } from "./Post/contexts/IsEditingPostContext";
 import { db } from "../config/firestore";
-import {getDoc, doc} from "firebase/firestore";
+import { getDoc, doc } from "firebase/firestore";
 import { doPasswordChange, doSendEmailVerifiction } from "../config/auth";
 import PostingForm from "./Homepage/PostingForm";
 import OnCampusPost from "./Post/OnCampusPost";
@@ -17,12 +17,12 @@ import css from "../styles/Profile/myProfile.module.css"
 const MyProfile = () => {
 
     const { currentUser } = useAuth();
-    const [ userRef, setUserRef ] = useState(null);
+    const [userRef, setUserRef] = useState(null);
     // const [newPassword, setNewPassword] = useState("");
     const [message, setMessage] = useState("");
 
     const [administeredPostings, setAdministeredPostings] = useState([]);
-    const {isEditingPost, IDEditingPost, isDeletingPost,  isChangingBookmarkStatus} = useContext(IsEditingPostContext); //Destructure from IsEditingPostContext
+    const { isEditingPost, IDEditingPost, isDeletingPost, isChangingBookmarkStatus } = useContext(IsEditingPostContext); //Destructure from IsEditingPostContext
 
     const [bookmarkedPostings, setBookmarkedPostings] = useState([]);
     const [postsToShow, setPostsToShow] = useState(2); // State to control number of posts shown
@@ -64,7 +64,7 @@ const MyProfile = () => {
         }
 
         const fetchAdministeredAndBookmarkedPostings = async () => {
-            
+
             // This should always be the case
             if (currentUser) {
                 //make reference to user's doc
@@ -79,7 +79,7 @@ const MyProfile = () => {
 
                     //for debuggiing
                     console.log("administered postings IDs: ", administeredIDs);
-                    console.log("bookmarked postings IDs: ", bookmarkedIDs );
+                    console.log("bookmarked postings IDs: ", bookmarkedIDs);
 
                     // Call fetchPostingsFromIDs for each set of IDs
                     const administeredData = await fetchPostingsFromIDs(administeredIDs);
@@ -96,8 +96,8 @@ const MyProfile = () => {
 
         fetchAdministeredAndBookmarkedPostings()
     }, [currentUser, isEditingPost, isDeletingPost, isChangingBookmarkStatus]); //Want document data refetched and administeredPostings and bookmarkedPostings vars updated everytime currentUser changes,
-                       //anytime isEditingPost changes from true to false (a post has been modified), anytime isDeletingPost changes from T to F (a post has been deleted),
-                       //or anytime isChangingBookmarkStatus changes from T to F (a bookmark has been added or removed)
+    //anytime isEditingPost changes from true to false (a post has been modified), anytime isDeletingPost changes from T to F (a post has been deleted),
+    //or anytime isChangingBookmarkStatus changes from T to F (a bookmark has been added or removed)
 
 
     const handleSendVerification = async () => {
@@ -128,10 +128,10 @@ const MyProfile = () => {
                     <>
                         <h1 className={css.title}> My Profile</h1>
                         <p className={css.title}>
-                        Hello <strong>{currentUser.displayName ? currentUser.displayName : currentUser.email}</strong>, you are signed in.
+                            Hello <strong>{currentUser.displayName ? currentUser.displayName : currentUser.email}</strong>, you are signed in.
                         </p>
                         <div className={css.postingsContainer}>
-                            {isEditingPost ? <PostingForm id = {IDEditingPost} /> :
+                            {isEditingPost ? <PostingForm id={IDEditingPost} /> :
                                 <>
                                     <div className={css.movement}>
                                         <a href="#administered">My Administered Posts</a>
@@ -140,40 +140,53 @@ const MyProfile = () => {
                                     <section className={css.administered} id="administered">
                                         <h2>Your administered postings:</h2>
                                         <div className={css.postings}>
-                                            {administeredPostings.slice(0, postsToShow).map((post) => (
-                                                <div key={post.id}>
-                                                    {post.listingLocation === "oncampus" ? (
-                                                        <OnCampusPost post={post} onShowMoreClick={handleShowMore}/>
-                                                    ) : (
-                                                        <OffCampusPost post={post} onShowMoreClick={handleShowMore}/>
-                                                    )}
-                                                </div>
-                                            ))}
-                                            {postsToShow < administeredPostings.length && (
-                                                <button className={css.showMore} onClick={handleShowMorePosts}>
-                                                    SHOW MORE POSTINGS...
-                                                </button>
-                                            )}
-                                        </div>
+                                                {administeredPostings.length === 0 ? (
+                                                    <p><strong>You Have No Administered Posts.</strong></p>  // Message when no administered posts are available
+                                                ) : (
+                                                    <>
+                                                        {administeredPostings.slice(0, postsToShow).map((post) => (
+                                                            <div key={post.id}>
+                                                                {post.listingLocation === "oncampus" ? (
+                                                                    <OnCampusPost post={post} onShowMoreClick={handleShowMore} />
+                                                                ) : (
+                                                                    <OffCampusPost post={post} onShowMoreClick={handleShowMore} />
+                                                                )}
+                                                            </div>
+                                                        ))}
+                                                        {postsToShow < administeredPostings.length && (
+                                                            <button className={css.showMore} onClick={handleShowMorePosts}>
+                                                                SHOW MORE POSTINGS...
+                                                            </button>
+                                                        )}
+                                                    </>
+                                                )}
+                                            </div>
                                     </section>
-                                    <section className={css.bookmarked}  id="bookmarked">
+                                    <section className={css.bookmarked} id="bookmarked">
                                         <h2>Your bookmarked postings:</h2>
                                         <div className={css.postings}>
-                                            {bookmarkedPostings.slice(0, postsToShow).map((post) => (
-                                                <div key={post.id}>
-                                                    {post.listingLocation === "oncampus" ? (
-                                                        <OnCampusPost post={post} onShowMoreClick={handleShowMore} />
-                                                    ) : (
-                                                        <OffCampusPost post={post} onShowMoreClick={handleShowMore} />
+                                            {bookmarkedPostings.length === 0 ? (
+                                                <p><strong>You Have No Bookmarked Posts.</strong></p>  // Message when no bookmarked posts are available
+                                            ) : (
+                                                <>
+                                                    {bookmarkedPostings.slice(0, postsToShow).map((post) => (
+                                                        <div key={post.id}>
+                                                            {post.listingLocation === "oncampus" ? (
+                                                                <OnCampusPost post={post} onShowMoreClick={handleShowMore} />
+                                                            ) : (
+                                                                <OffCampusPost post={post} onShowMoreClick={handleShowMore} />
+                                                            )}
+                                                        </div>
+                                                    ))}
+                                                    {postsToShow < bookmarkedPostings.length && (
+                                                        <button className={css.showMore} onClick={handleShowMorePosts}>
+                                                            SHOW MORE POSTINGS...
+                                                        </button>
                                                     )}
-                                                </div>
-                                            ))}
-                                            {postsToShow < bookmarkedPostings.length && (
-                                                <button className={css.showMore} onClick={handleShowMorePosts}>
-                                                    SHOW MORE POSTINGS...
-                                                </button>
+                                                </>
                                             )}
                                         </div>
+
                                     </section>
                                 </>
                             }

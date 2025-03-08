@@ -39,7 +39,10 @@ strong {
     display: flex;
     gap: 20px; /* Space between links */
     justify-content: center; /* Centers links horizontally */
-    margin-top: 20px;
+}
+
+a {
+    text-decoration: none; 
 }
 
 .movement a {

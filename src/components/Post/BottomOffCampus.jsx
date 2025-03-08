@@ -162,7 +162,7 @@ const BottomOffCampus = ({ members, curNumSeek, address, totalGroupSize, id, lis
           {errorMessage && <p className={css.errorMessage}> {errorMessage} </p>}
           <img
             onClick={handleBookmarkClick}
-            className={bookmarked ? "bookmark" : "bookmarkWhite"}
+            className={bookmarked ? css.bookmark : css.bookmarkWhite}
             src={bookmarked ? "/assets/postings/bookmark.png" : "/assets/postings/bookmark-white.png"}
             alt={bookmarked ? "Bookmark" : "White Bookmark"}
           />
@@ -185,11 +185,13 @@ const BottomOffCampus = ({ members, curNumSeek, address, totalGroupSize, id, lis
           {currentUser != null && userAdministered!=null && userAdministered.includes(id) && 
             <div className={css.bottomIMG}>
               <img 
+                className={css.modify}
                 onClick={() => handleModify(id)}
                 src="/assets/postings/modify.png" 
                 alt="clipboard"
               />
               <img
+                className={css.modify}
                 onClick={() => handleDelete(id)}
                 src="/assets/postings/bin.png"
                 alt="trashBin"

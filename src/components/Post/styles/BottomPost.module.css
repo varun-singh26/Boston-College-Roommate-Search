@@ -49,6 +49,28 @@
     margin-right: 5px;
 }
 
+.modify {
+    transition: transform 0.3s ease, filter 0.3s ease; /* Smooth transition for hover effects */
+  }
+  
+  .modify:hover {
+    transform: scale(1.1); /* Slightly enlarge the image on hover */
+    filter: brightness(1.2); /* Increase brightness on hover */
+    cursor: pointer; /* Change cursor to indicate interactivity */
+  }
+  
+  .bookmark,
+  .bookmarkWhite {
+      transition: transform 0.3s ease, filter 0.3s ease;  /* Smooth transition for scaling and filter effects */
+  }
+  
+  .bookmark:hover,
+  .bookmarkWhite:hover {
+      transform: scale(1.1);  /* Slightly scale the image on hover */
+      filter: brightness(1.2);  /* Make the image slightly brighter on hover */
+  }
+  
+
 .showMore {
     display: flex;
     align-items: center;
