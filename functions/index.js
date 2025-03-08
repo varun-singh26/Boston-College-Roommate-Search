@@ -29,11 +29,24 @@ const db = admin.firestore();
 // 📨 Sets up Nodemailer to Send Emails
 // Creates an email sender (SMTP transport) using Gmail
 // DON'T use actual gmail password! Instead generate an app password for security
-const transporter = nodemailer.createTransport({
+{/*const transporter = nodemailer.createTransport({
     service: "gmail",
     auth: {
         user: "vrjsingh04@gmail.com", //The Gmail address that will send emails. Replace with email of Heights housing
         pass: "wjsgkalhzpixzixx"
+    }
+});*/}
+
+// 📨 Sets up Nodemailer to Send Emails
+// Creates an email sender (SMTP transport/Outgoing server) using our Hostinger Email
+// Password is the same as email password
+const transporter = nodemailer.createTransport({
+    host: "smtp.hostinger.com",
+    port: 465,
+    secure: true,
+    auth: {
+        user: "team@heightshousing.com", //Address that will send emails.
+        pass: "0nTh-He19hts@25"
     }
 });
 
@@ -81,7 +94,7 @@ exports.notifyListingAdmin = onDocumentCreated("pings/{pingId}", async (event) =
         // ✅ Create HTML email with clickable buttons
         //inludes the searcher's email and message
         const mailOptions = {
-            from: '"Heights Housing" <vrjsingh04@gmail.com>',
+            from: '"Heights Housing" <team@heightshousing.com>',
             to: adminEmail,
             subject: `Interest in Your Posting for ${posting.dorm || posting.address}, which is in need of ${posting.curNumSeek || "an unknown number of"} more people`,
             html: `
@@ -90,7 +103,7 @@ exports.notifyListingAdmin = onDocumentCreated("pings/{pingId}", async (event) =
                 <p><strong>Message:</strong> ${pingData.message || "No message"}</p>
                 <p><strong>Contact:</strong> ${pingData.searcherEmail}</p>
                 <p> Follow up with them and see if they fulfill your housing needs. </p>
-                <p> If they do, please Accept their interest mark this posting (posting ID: ${postingDoc.id}) as "Fulfilled" by clicking the <strong> "Fulfilled" </strong> link below.</p>
+                <p> If they do, please Accept their interest and mark this posting (posting ID: ${postingDoc.id}) as "Fulfilled" by clicking the <strong> "Fulfilled" </strong> link below.</p>
                 <p> If they don't please Reject their interest mark this posting mark as "Unfulfilled" by clicking the <strong> "Unfulfilled" </strong> link below, so that the group can continue their search.</p>
                 <p> Currently your posting is marked as "Likely Fulfilled", so that other users are aware that this posting may become fullfilled should you agree to live with the interest party that sent this ping.</p>
                 <p> <strong> If you are considering this interested party and need time to reach out, leave the status of this posting as is ("Likely Fulfilled"). </strong> </p>
@@ -166,7 +179,7 @@ const ignoreOtherPingsAndNotifySearchers = async (postId) => {
         // Send email to respective searcher of each ping
         await Promise.all(otherPingsSnapshot.docs.map(async (ping) => {
             const mailOptions = {
-                from: '"Heights Housing" <vrjsingh04@gmail.com>',
+                from: '"Heights Housing" <team@heightshousing.com>',
                 to: ping.data().searcherEmail,
                 subject: "Your Interest in a Posting was Not Accepted",
                 html: `<p> Hello ${ping.data().name}, </p>
@@ -227,9 +240,9 @@ const notifySearcher = async (postId, pingId, status) => {
 
         if (status === "Fulfilled") {
             mailOptions = {
-                from: '"Heights Housing" <vrjsingh04@gmail.com>',
+                from: '"Heights Housing" <team@heightshousing.com>',
                 to: searcherEmail,
-                subject: `ACCEPTED! Your Interest in <strong>${posting.adminContact?.name}'s</strong> Posting for <strong>${posting.dorm || posting.address}</strong> was Accepted!`,
+                subject: `ACCEPTED! Your Interest in ${posting.adminContact?.name}'s Posting for ${posting.dorm || posting.address} was Accepted!`,
                 html: `
                     <p>Hello ${pingData.name},</p>
                     <p> <strong>${posting.adminContact?.name}'s </strong> posting for <strong>${posting.dorm || posting.address}</strong> looking for <strong>${posting.curNumSeek || "an unknown number of"} additional roommates</strong> has accepted your group's interest!</p>
@@ -241,9 +254,9 @@ const notifySearcher = async (postId, pingId, status) => {
     
         } else if (status === "Unfulfilled") {
             mailOptions = {
-                from: '"Heights Housing" <vrjsingh04@gmail.com>',
+                from: '"Heights Housing" <team@heightshousing.com>',
                 to: searcherEmail,
-                subject: `NOT ACCEPTED. Your Interest in <strong> ${posting.adminContact?.name}'s </strong> Posting for <strong>${posting.dorm || posting.address}</strong> was Not Accepted`,
+                subject: `NOT ACCEPTED. Your Interest in ${posting.adminContact?.name}'s Posting for ${posting.dorm || posting.address} was Not Accepted`,
                 html: `
                     <p>Hi ${searcherEmail},</p>
                     <p>Unfortunately, <strong> ${posting.adminContact?.name}'s </strong> Posting for <strong> ${posting.dorm || posting.address} </strong> looking for <strong> ${posting.curNumSeek || "an unknown number of"} additional roommates </strong> was not able to accommodate you.</p>
@@ -415,7 +428,7 @@ exports.followUpOnPendingPings = onSchedule("every 2 hours", async () => {
 
             // Send follow-up email
             const mailOptions = {
-                from: '"Heights Housing" <vrjsingh04@gmail.com>',
+                from: '"Heights Housing" <team@heightshousing.com>',
                 to: adminEmail,
                 subject: `Pending Interest in Your Listing for ${posting.dorm || posting.address}`,
                 html: `
@@ -499,7 +512,7 @@ exports.checkPendingPings = onSchedule("every 2 hours", async () => {
 
             try {
                 const mailOptions = {
-                    from: '"Heights Housing" <vrjsingh04@gmail.com>',
+                    from: '"Heights Housing" <team@heightshousing.com>',
                     to: userEmail,
                     subject: "No Response from Listing Admin",
                     text: `Hello ${userEmail},\n\nYour interest in ${posting?.adminContact?.name}'s posting for ${posting?.dorm || posting?.address} looking for ${posting?.curNumSeek} additional people has not received a response within 2 hours. 
