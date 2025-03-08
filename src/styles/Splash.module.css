@@ -52,6 +52,7 @@
 
 .contentWrapper {
   display: grid;
+  justify-content: center;
   justify-items: left;
   width: 80% !important;
   grid-template-columns: 1fr;
