@@ -18,6 +18,8 @@ const PingInterestButton = ({postID, admin}) => {
     console.log("currentUser:", currentUser);
     console.log("admin of post:", admin);
 
+    const messageNameLabel = admin?.displayName.split(' ')[0] || "the Group Admin";
+
     const handlePing = async (e) => {
         e.preventDefault();
 
@@ -110,38 +112,53 @@ const PingInterestButton = ({postID, admin}) => {
 
     return (
         <div>
-            <button onClick={() => setShowForm(!showForm)}> Ping Interest</button>
+            <button className={css.pingButton} onClick={() => setShowForm(!showForm)}> Ping Interest</button>
             {showForm && (
                 <form onSubmit={handlePing}>
                     <input
                         type="text"
                         value={`Post ID: ${postID}`}
+                        className={css.hidden}
                         readOnly
                     />
                     <input
                         type="text"
                         value={`Post Admin ID: ${admin?.uid}` || ""}
+                        className={css.hidden}
                         readOnly
                     />
                      <input
                         type="text"
                         value={`Your User ID: ${currentUser?.uid}` || ""}
+                        className={css.hidden}
                         readOnly
                     />
                     <input
+                        type="text"
+                        value={`To: ${admin?.displayName}` || "Group Admin"}
+                        readOnly
+                    />
+
+                    <input
+                        type="text"
+                        value={`From: ${currentUser?.displayName}` || ""}
+                        readOnly
+                    />
+
+                    <input
                         type="email"
                         placeholder="Your Email"
-                        value = {`Your email: ${currentUser?.email}` || ""}
+                        value = {`Your Email: ${currentUser?.email}` || ""}
                         readOnly = {!!currentUser} //Explicit Boolean conversion of currentUser
                         required
                     />
                     <textarea
                         className= {css.textarea}
-                        placeholder="Message from you to the post admin (We recommend introducing yourself and your group, what you're looking for in terms of living situation, and dropping an email, instagram, or other contact info)"
+                        placeholder={`Type your message to ${messageNameLabel}...`}
                         value={message}
                         onChange={(e) => setMessage(e.target.value)}
                     />
-                    <button type="submit">Send Interest</button>
+                    <button type="submit" className={css.pingButton}>Send Interest</button>
                 </form>
             )}
         </div>

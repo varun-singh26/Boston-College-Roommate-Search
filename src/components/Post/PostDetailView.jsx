@@ -177,10 +177,10 @@ const PostDetailView = () => {
                 <img src="../../assets/postings/instagram.png" alt="Instagram" />
                 <span>{posting.adminContact.instagramHandle}</span>
               </div>
-              <div className={css.adminContact}>
+              {/* <div className={css.adminContact}>
                 <img src="../../assets/postings/phone.png" alt="Phone" />
                 <span>{posting.adminContact.phoneNumber}</span>
-              </div>
+              </div> */}
               <PingInterestButton postID={posting.id} admin={adminDetails} />
             </div>
             <div className={css.members}>
