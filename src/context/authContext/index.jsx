@@ -59,20 +59,47 @@ export function AuthProvider({ children }) {
                                             html: `
                                                 <div style="max-height: 300px; overflow-y: auto; text-align: left; padding: 10px; border: 1px solid #ccc;">
                                                     <p><strong>1. Introduction</strong></p>
-                                                    <p>By accessing this service, you agree to abide by these terms and conditions.</p>
-                                                    
-                                                    <p><strong>2. User Responsibilities</strong></p>
-                                                    <p>You must use this service responsibly and legally.</p>
-                                        
-                                                    <p><strong>3. Privacy Policy</strong></p>
-                                                    <p>Your personal data is protected under our privacy policy.</p>
-                                        
-                                                    <p><strong>4. Service Limitations</strong></p>
-                                                    <p>We reserve the right to modify or terminate the service at any time.</p>
-                                        
-                                                    <p><strong>5. Acceptance</strong></p>
-                                                    <p>Clicking "I Agree" means you accept these terms in full.</p>
+                                                    <p>Heights Housing is a platform designed to help individuals at Boston College find potential roommates. By using our website, you acknowledge and agree to the terms outlined in this Privacy & Liability Disclaimer.</p>
+
+                                                    <p><strong>2. Data Collection & Security</strong></p>
+                                                    <p>We collect limited personal information, including but not limited to:</p>
+                                                    <ul>
+                                                        <li>School email addresses</li>
+                                                        <li>Group members’ names</li>
+                                                        <li>Optional profile pictures</li>
+                                                        <li>Housing location/address</li>
+                                                    </ul>
+                                                    <p>This information is used solely for the purpose of connecting users and facilitating roommate matching. While we implement reasonable security measures to protect user data, we cannot guarantee absolute security, and users submit their information at their own risk.</p>
+
+                                                    <p><strong>3. User Responsibility</strong></p>
+                                                    <p>By using our platform, you agree that:</p>
+                                                    <ul>
+                                                        <li>You are responsible for the accuracy of the information you provide.</li>
+                                                        <li>You will not share false, misleading, or inappropriate content.</li>
+                                                        <li>You will exercise caution and discretion when interacting with potential roommates, including when deciding to meet in person.</li>
+                                                    </ul>
+
+                                                    <p><strong>4. No Background Checks</strong></p>
+                                                    <p>We do not conduct background checks, identity verification, or any form of screening on users. It is your sole responsibility to assess the compatibility and trustworthiness of potential roommates. However, only @bc.edu accounts are allowed to use the platform.</p>
+
+                                                    <p><strong>5. Limitation of Liability</strong></p>
+                                                    <p>By using our website, you acknowledge and agree that we are not liable for:</p>
+                                                    <ul>
+                                                        <li>Any disputes, conflicts, or damages arising from interactions between users.</li>
+                                                        <li>Any harm, injury, theft, or misconduct that may result from roommate arrangements made through our platform.</li>
+                                                        <li>Any unauthorized access to user data despite reasonable security measures.</li>
+                                                    </ul>
+
+                                                    <p><strong>6. Third-Party Links & Services</strong></p>
+                                                    <p>Our website may contain links to third-party websites or services. We are not responsible for their content, policies, or practices. Users should review the privacy policies of third-party sites before providing any information.</p>
+
+                                                    <p><strong>7. Changes to This Disclaimer</strong></p>
+                                                    <p>We reserve the right to modify this Privacy & Liability Disclaimer at any time. Continued use of our website constitutes acceptance of any updates.</p>
+
+                                                    <p><strong>8. Contact Information</strong></p>
+                                                    <p>For any questions or concerns regarding this policy, please contact us at <a href="mailto:team@heightshousing.com">team@heightshousing.com</a></p>
                                                 </div>
+
                                             `,
                                             width: 600, // Adjust modal width if needed
                                             showConfirmButton: true,
