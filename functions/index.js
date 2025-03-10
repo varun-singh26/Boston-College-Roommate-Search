@@ -103,15 +103,13 @@ exports.notifyListingAdmin = onDocumentCreated("pings/{pingId}", async (event) =
                 <p><strong>Message:</strong> ${pingData.message || "No message"}</p>
                 <p><strong>Contact:</strong> ${pingData.searcherEmail}</p>
                 <p> Follow up with them and see if they fulfill your housing needs. </p>
-                <p> If they do, please Accept their interest and mark this posting (posting ID: ${postingDoc.id}) as "Fulfilled" by clicking the <strong> "Fulfilled" </strong> link below.</p>
-                <p> If they don't please Reject their interest mark this posting mark as "Unfulfilled" by clicking the <strong> "Unfulfilled" </strong> link below, so that the group can continue their search.</p>
-                <p> Currently your posting is marked as "Likely Fulfilled", so that other users are aware that this posting may become fullfilled should you agree to live with the interest party that sent this ping.</p>
                 <p> <strong> If you are considering this interested party and need time to reach out, leave the status of this posting as is ("Likely Fulfilled"). </strong> </p>
 
                 <p> Update the status of your posting:</p>
-                <a href="${fulfillLink}" style="display: block; margin-bottom: 10px; background-color: green; color: white; padding: 10px 15px; text-decoration: none; border-radius: 5px;">✅ Accept and Mark Posting as Fulfilled</a>
-                <a href="${unfulfillLink}" style="display: block; margin-bottom: 10px; background-color: red; color: white; padding: 10px 15px; text-decoration: none; margin-left: 10px; border-radius: 5px;">❌ Reject and Mark Posting as Unfulfilled</a>
-                <a href="${unfulfillLink}" style="display: block; margin-bottom: 10px; background-color: gray; color: white; padding: 10px 15px; text-decoration: none; margin-left: 10px; border-radius: 5px;"> Unsubscribe from notifications regarding this ping</a>
+                <p> <a href="${fulfillLink}" style="margin-bottom: 10px; background-color: green; color: white; padding: 10px 15px; text-decoration: none; border-radius: 5px; font-size: 0.9rem;">✅ Accept and Mark Posting as Fulfilled</a></p>
+                <p> <a href="${unfulfillLink}" style="margin-bottom: 10px; background-color: red; color: white; padding: 10px 15px; text-decoration: none; border-radius: 5px; font-size: 0.9rem;">❌ Reject and Mark Posting as Unfulfilled</a></p>
+                <p> <a href="${unfulfillLink}" style="margin-bottom: 10px; background-color: gray; color: white; padding: 10px 15px; text-decoration: none; border-radius: 5px; font-size: 0.9rem;"> Unsubscribe from notifications regarding this ping</a></p>
+                
                 <p>Thank you for using Heights Housing!</p>
             `,
         };
@@ -437,9 +435,11 @@ exports.followUpOnPendingPings = onSchedule("every 2 hours", async () => {
                     <p> Currently your posting is marked as "Likely Fulfilled", so that other users are aware that this posting may become fullfilled should you agree to live with the interest party that sent this ping.</p>
                     <p> If you are considering this interested party and need time to reach out, take no action and leave the status of this posting as is ("Likely Fulfilled"). </p>
                     <p>If not, and you know you do or don't want to live with this group, please confirm the status of this inquiry:</p>
-                    <a href="${fulfillLink}" style="display: block; margin-bottom: 10px; background-color: green; color: white; padding: 10px 15px; text-decoration: none; border-radius: 5px;">✅ Accept and Mark Posting as Fulfilled</a>
-                    <a href="${unfulfillLink}" style="display: block; margin-bottom: 10px; background-color: red; color: white; padding: 10px 15px; text-decoration: none; margin-left: 10px; border-radius: 5px;">❌ Reject and Mark Posting as Unfulfilled</a>
-                    <a href="${unfulfillLink}" style="display: block; margin-bottom: 10px; background-color: gray; color: white; padding: 10px 15px; text-decoration: none; margin-left: 10px; border-radius: 5px;"> Unsubscribe from notifications regarding this ping</a>
+                    
+                    <p> <a href="${fulfillLink}" style="margin-bottom: 10px; background-color: green; color: white; padding: 10px 15px; text-decoration: none; border-radius: 5px; font-size: 0.9rem;">✅ Accept and Mark Posting as Fulfilled</a></p>
+                    <p> <a href="${unfulfillLink}" style="margin-bottom: 10px; background-color: red; color: white; padding: 10px 15px; text-decoration: none; border-radius: 5px; font-size: 0.9rem;">❌ Reject and Mark Posting as Unfulfilled</a></p>
+                    <p> <a href="${unfulfillLink}" style="margin-bottom: 10px; background-color: gray; color: white; padding: 10px 15px; text-decoration: none; border-radius: 5px; font-size: 0.9rem;"> Unsubscribe from notifications regarding this ping</a></p>
+                
                     <p>Thank you for using Heights Housing!</p>
                 `,
             };
