@@ -14,11 +14,21 @@ export default function InAppBrowserWarning() {
 
     useEffect(() => {
         setInApp(isLikelyInAppBrowser());
+        console.log("Testing if InAppBrowserWarning is rendering");
     }, []);
 
     if (!inApp) return null; // If not in an in-app browser, show nothing
 
     // If in an in-app browser, show a warning or fallback UI
+
+    const handleCopyLink = async () => {
+        try {
+            await navigator.clipboard.writeText('https://heightshousing.com');
+            alert('Link copied to clipboard!');
+        } catch (err) {
+            console.error('Failed to copy: ', err);
+        }
+    };
 
     return (
         <div style={{
@@ -37,21 +47,35 @@ export default function InAppBrowserWarning() {
             </p>
             <button
                 onClick={() => {
-                // Attempt to open in the user’s default browser
-                window.open('https://heightshousing.com', '_blank', 'noopener,noreferrer');
+                    // Attempt to open in the user’s default browser
+                    window.open('https://heightshousing.com', '_blank', 'noopener,noreferrer');
                 }}
                 style={{
                 backgroundColor: '#ccc',
                 padding: '0.5rem 1rem',
                 border: 'none',
                 cursor: 'pointer',
-                fontSize: '1rem'
+                fontSize: '1rem',
+                marginBottom: '0.5rem'
                 }}
             >
                 Open in your browser
             </button>
+            <br />
+            <button
+                onClick={handleCopyLink}
+                style={{
+                    backgroundColor: '#ccc',
+                    padding: '0.5rem 1rem',
+                    border: 'none',
+                    cursor: 'pointer',
+                    fontSize: '1rem'
+                }}
+            >
+                Copy Link
+            </button>
             <p style={{ marginTop: '1rem' }}>
-                If that doesn’t work, look for the “Open in Browser” option in your app’s menu.
+                If that still doesn’t work, copy the domain link above and paste it into your default browser.
             </p>
         </div>
     );
