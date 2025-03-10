@@ -53,10 +53,28 @@ export function AuthProvider({ children }) {
                                         createUserInFirestore(user);
                                         setCurrentUser(user);
                                         setUserLoggedIn(true);
-                                        const result = await Swal.fire ({
+                                        const result = await Swal.fire({
                                             icon: "info",
                                             title: "Terms & Conditions",
-                                            text: "By signing in, you agree to the Terms & Conditions.",
+                                            html: `
+                                                <div style="max-height: 300px; overflow-y: auto; text-align: left; padding: 10px; border: 1px solid #ccc;">
+                                                    <p><strong>1. Introduction</strong></p>
+                                                    <p>By accessing this service, you agree to abide by these terms and conditions.</p>
+                                                    
+                                                    <p><strong>2. User Responsibilities</strong></p>
+                                                    <p>You must use this service responsibly and legally.</p>
+                                        
+                                                    <p><strong>3. Privacy Policy</strong></p>
+                                                    <p>Your personal data is protected under our privacy policy.</p>
+                                        
+                                                    <p><strong>4. Service Limitations</strong></p>
+                                                    <p>We reserve the right to modify or terminate the service at any time.</p>
+                                        
+                                                    <p><strong>5. Acceptance</strong></p>
+                                                    <p>Clicking "I Agree" means you accept these terms in full.</p>
+                                                </div>
+                                            `,
+                                            width: 600, // Adjust modal width if needed
                                             showConfirmButton: true,
                                             confirmButtonText: "I Agree",
                                             confirmButtonColor: "#3085d6",
@@ -65,6 +83,7 @@ export function AuthProvider({ children }) {
                                             cancelButtonColor: "#d33",
                                             allowOutsideClick: false,
                                         });
+                                        
                                     
                                     if (result.isConfirmed) {
                                         console.log("User agreed to terms.");
