@@ -1,9 +1,9 @@
 import React, { useEffect, useState, useRef } from "react";
 import css from "../../styles/purpose.module.css";
 import { Link } from "react-router-dom";
-import Stairs from "../../images/backdropImages/MillionDollarStairs.jpeg";
-import Stayer from "../../images/backdropImages/Stayer_Fall.jpeg";
-import Turkey from "../../images/backdropImages/Turkey_OffCampus.jpeg";
+// import Stairs from "../../images/backdropImages/MillionDollarStairs.jpeg";
+// import Stayer from "../../images/backdropImages/Stayer_Fall.jpeg";
+// import Turkey from "../../images/backdropImages/Turkey_OffCampus.jpeg";
 
 
 const Explanation = () => {
@@ -99,7 +99,7 @@ const Explanation = () => {
                 <div className={css.onCampusImageBlock}>
                     <img
                         className={css.onCampusImage}
-                        src={Stayer}
+                        src="/images/backdropImages/Stayer_Fall.jpeg"
                         alt="BC Stayer Hall in Fall"
                     />
                 </div>
@@ -109,7 +109,7 @@ const Explanation = () => {
                 <div className={css.offCampusImageBlock}>
                     <img
                         className={css.offCampusImage}
-                        src={Turkey}
+                        src="/images/backdropImages/Turkey_OffCampus.jpeg"
                         alt="BC Off-Campus Turkey"
                     />
                 </div>

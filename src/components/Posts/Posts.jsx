@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useContext, useEffect } from 'react';
 import { SearchContext } from '../../context/searchContext.jsx';
 import { PostingsContext } from '../../context/PostingsContext.jsx';
 import { FilteredPostingsContext } from '../../context/FilteredPostingsContext.jsx';
@@ -15,7 +15,25 @@ const Posts = () => {
   const {formData, listingLocation} = useContext(SearchContext);
   const {postings } = useContext(PostingsContext);
   const {filteredPostings } = useContext(FilteredPostingsContext); 
-  const {handleOnCampusClick, handleOffCampusClick} = useHandleLocationClick();
+  // const {handleOnCampusClick, handleOffCampusClick} = useHandleLocationClick();
+  const [activeButton, setActiveButton] = React.useState("oncampus"); // Default to "oncampus"
+
+
+  const { setListingLocation } = useContext(SearchContext);
+
+  const handleOnCampusClick = () => {
+    setListingLocation("oncampus");
+    setActiveButton("oncampus"); // Mark "oncampus" as active
+  };
+  const handleOffCampusClick = () => {
+    setListingLocation("offcampus");
+    setActiveButton("offcampus"); // Mark "offcampus" as active
+  };
+
+    useEffect(() => {
+      // Set initial active button
+      setListingLocation("oncampus");
+    }, [setListingLocation]);
 
   const DEBUG_MODE = true;
   if (DEBUG_MODE) {
@@ -46,10 +64,10 @@ const Posts = () => {
     <main className = {css.postsPageContainer}>
       <div className ={css.searchContainer}>
         <div className={css.buttonContainer}>
-          <button onClick={handleOnCampusClick} className={css.button}>
+          <button onClick={handleOnCampusClick} className={`${css.button} ${listingLocation === "oncampus" ? css.active : ""}`}>
             <span className={css.buttonText}>On Campus</span>
           </button>
-          <button onClick={handleOffCampusClick} className={css.button}>
+          <button onClick={handleOffCampusClick} className={`${css.button} ${listingLocation === "offcampus" ? css.active : ""}`}>
             <span className={css.buttonText}>Off Campus</span>
           </button>
         </div>

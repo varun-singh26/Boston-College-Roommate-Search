@@ -4,9 +4,9 @@ import { useLocation } from "react-router-dom";
 //Not having full page reloads means that css and javascript don't have to be rerendered when a Link is clicked
 import { Link } from "react-router-dom";
 import { useAuth } from "../../context/authContext/index.jsx";
-import image1 from "../../images/logos/heightsHousingVerticalMinimal.jpg"
-import image2 from "../../images/logos/heightsHousingHorizontalSmall.jpg"
-import image3 from "../../images/logos/heightsHousingVertical.jpg"
+// import image1 from "../../images/logos/heightsHousingVerticalMinimal.jpg"
+// import image2 from "../../images/logos/heightsHousingHorizontalSmall.jpg"
+// import image3 from "../../images/logos/heightsHousingVertical.jpg"
 import menu from "./menu_icon.svg";
 import menuHover from "./menu_icon_hover.svg";
 import css from "./Navbar.module.css";
@@ -27,6 +27,10 @@ const Navbar = () => {
   const [isMobile, setIsMobile] = useState(() => window.innerWidth < 950); // Initialize correctly
 
   const [isDropDown, setIsDropDown] = useState(() => window.innerWidth < 886);
+
+  const image1 = "/images/logos/heightsHousingVerticalMinimal.jpg";
+  const image3 = "/images/logos/heightsHousingVertical.jpg";
+
 
   const isNotChrome = !/Chrome/.test(navigator.userAgent) || /Edg|OPR|Brave/.test(navigator.userAgent);
   const isMobileOrTablet = /Mobi|Android|iPhone|iPad|iPod/i.test(navigator.userAgent);

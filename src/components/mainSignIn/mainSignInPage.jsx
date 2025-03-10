@@ -2,8 +2,8 @@ import { useEffect } from "react";
 import { getAuth, GoogleAuthProvider, signInWithPopup } from "firebase/auth";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../context/authContext/index.jsx";
-import Google from "../../images/logos/google.svg.webp";
-import logo from "../../images/logos/heightsHousingVertical.jpg";
+// import Google from "../../images/logos/google.svg.webp";
+// import logo from "../../images/logos/heightsHousingVertical.jpg";
 import css from "./mainSignInPage.module.css";
 
 const MainSignInPage = () => {
@@ -30,10 +30,10 @@ const MainSignInPage = () => {
 
     return (
         <div className={css.signInPage}>
-            <img className={css.logo} src={logo} alt="Heights Housing Logo" />
+            <img className={css.logo} src="/images/logos/heightsHousingVertical.jpg" alt="Heights Housing Logo" />
             <h2 className={css.signInTitle}>Sign in with your Boston College email to continue</h2>
             <button onClick={handleGoogleSignIn} className={css.signInButton}>
-                <p className={css.googleText}>Sign in with</p> <img className={css.googleImg} src={Google} alt="Google" />
+                <p className={css.googleText}>Sign in with</p> <img className={css.googleImg} src="/images/logos/google.svg.webp" alt="Google" />
             </button>
         </div>
     );
