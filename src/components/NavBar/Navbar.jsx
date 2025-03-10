@@ -28,6 +28,9 @@ const Navbar = () => {
 
   const [isDropDown, setIsDropDown] = useState(() => window.innerWidth < 886);
 
+  const isNotChrome = !/Chrome/.test(navigator.userAgent) || /Edg|OPR|Brave/.test(navigator.userAgent);
+  const isMobileOrTablet = /Mobi|Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
+
   // Toggle image manually on touch (for mobile users)
   const handleTouch = () => {
     setHoverLogo((prev) => !prev); // Toggle the hover state on touch

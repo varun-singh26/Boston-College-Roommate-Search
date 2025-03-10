@@ -2,7 +2,7 @@ import React, { createContext, useContext, useState, useEffect } from "react";
 import { getAuth, onAuthStateChanged, setPersistence, browserLocalPersistence, deleteUser } from "firebase/auth";
 import { doSignOut } from "../../config/auth.jsx"; // ✅ Fixed Import Path
 import { createUserInFirestore } from "../../services/userService";
-import { doc, getDoc } from "firebase/firestore";
+import { doc, getDoc, setDoc, serverTimestamp } from "firebase/firestore";
 import { db } from "../../config/firestore";
 import Swal from "sweetalert2";
 
@@ -87,6 +87,13 @@ export function AuthProvider({ children }) {
                                     
                                     if (result.isConfirmed) {
                                         console.log("User agreed to terms.");
+                                        // const userRef = doc(db, "users", user.uid);
+                                        // await setDoc(userRef, { 
+                                        //     acceptedTerms: true, 
+                                        //     termsAcceptedAt: serverTimestamp(),
+                                        // });
+                                        // const updatedUser = await getDoc(userRef);
+                                        // console.log("User document updated:", updatedUser.data());
                                     } else if (result.dismiss === Swal.DismissReason.cancel) {
                                         console.log("❌ User disagreed to terms. Signing out...");
                                         const user = auth.currentUser;
