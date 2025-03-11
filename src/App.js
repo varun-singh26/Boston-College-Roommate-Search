@@ -40,9 +40,9 @@ function RoutesWrapper() {
   const queryParams = new URLSearchParams(location.search);
   const page = queryParams.get("page");
 
-  const isMobile = window.innerWidth < 426;
+  //const isMobile = window.innerWidth < 426;
 
-  if (isMobile) {
+  {/*if (isMobile) {
     Swal.fire({
       title: 'Mobile Warning',
       text: 'This website is not optimized for mobile devices. Please use a desktop or laptop for the best experience.',
@@ -60,7 +60,7 @@ function RoutesWrapper() {
         });
       }
     });
-  }
+  }*/}
   
     
 
