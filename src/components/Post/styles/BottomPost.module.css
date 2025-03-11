@@ -68,8 +68,17 @@
   .bookmarkWhite:hover {
       transform: scale(1.1);  /* Slightly scale the image on hover */
       filter: brightness(1.2);  /* Make the image slightly brighter on hover */
+      cursor: pointer;
   }
   
+
+  .lookingFor {
+    display: flex;
+    white-space: nowrap;
+    width: fit-content;
+    min-width: 0;
+    flex-shrink: 1;
+  }
 
 .showMore {
     display: flex;

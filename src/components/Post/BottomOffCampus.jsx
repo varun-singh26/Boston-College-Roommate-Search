@@ -166,7 +166,7 @@ const BottomOffCampus = ({ members, curNumSeek, address, totalGroupSize, id, lis
             src={bookmarked ? "/assets/postings/bookmark.png" : "/assets/postings/bookmark-white.png"}
             alt={bookmarked ? "Bookmark" : "White Bookmark"}
           />
-          <span>{totalGroupSize - curNumSeek} looking for {curNumSeek} more</span>
+          <span className={css.lookingFor}>{totalGroupSize - curNumSeek} looking for {curNumSeek} more</span>
         </div>
         <div className={css.bottomIMGcontainer}>
           <div className={css.bottomIMG}>

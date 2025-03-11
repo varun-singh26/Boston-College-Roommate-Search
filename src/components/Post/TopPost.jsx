@@ -54,7 +54,7 @@ const Top = ({ building = "", status, postID, adminID }) => {
     </div>
 
     <div className='pingCount'>
-      <p> <strong>{pingsCount}</strong> other groups have expressed interest in this posting</p>
+      <p> <strong>{pingsCount}</strong> {pingsCount === 1 ? "group" : "groups"} {pingsCount === 1 ? "has" : "have"} expressed interest in this posting</p> 
     </div>
 
     {/* Always show Building Image */}

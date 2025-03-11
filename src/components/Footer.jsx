@@ -14,15 +14,29 @@ const Footer = () => {
       <div className={css.footerDetails}>
         <div className={css.footerColumn}>
           <h4 className ={css.footerColumnH4}>CONTACT DETAILS</h4>
-          <p className={css.footerColumnParagraph}> <a href="mailto:team@heightshousing.com"> <strong> team@heightshousing.com </strong> </a></p>
-          <div className="social-icons">
-            <a href="#" className={css.socialIconLinks}>
-              <img
-                src="https://cdn.glitch.global/c7d70598-61bb-4c55-ac66-58662df41931/Instagram_logo_2016.svg.webp?v=1732317202177"
-                alt="Instagram"
-                className={css.socialIconImages}
-              />
+          <div className={css.contactContainer}>
+          <img
+            src="/images/logos/gmail_svg.svg"
+            alt="Gmail Logo"
+            className={css.socialIconImages}
+            />
+          <p className={css.footerColumnParagraph}> 
+            <a href="mailto:team@heightshousing.com" target="_blank" rel="noreferrer"> 
+              <strong> team@heightshousing.com </strong> 
             </a>
+          </p>
+          </div>
+          <div className={css.contactContainer}>
+          <img
+                    src="/images/logos/Instagram_logo_2016.svg.webp"
+                    alt="Instagram Logo"
+                    className={css.socialIconImages}
+                  />
+            <p className={css.footerColumnParagraph}>
+                <a href="https://www.instagram.com/heightshousing/" target="_blank" rel="noreferrer"> 
+                  <strong> @heightshousing </strong> 
+                </a>
+            </p>
           </div>
         </div>
         

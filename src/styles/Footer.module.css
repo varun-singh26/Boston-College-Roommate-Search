@@ -69,6 +69,14 @@
 .socialIconImages {
     width: 20px;
     height: 20px;
+    margin-right: 10px;
+}
+
+.contactContainer {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
 }
 
 .footerBottom {
