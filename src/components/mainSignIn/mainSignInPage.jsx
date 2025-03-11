@@ -14,7 +14,7 @@ import css from "./mainSignInPage.module.css";
 const MainSignInPage = () => {
     const { currentUser } = useAuth();
     const navigate = useNavigate();
-    const isMobile = window.innerWidth < 2000;
+    const isMobile = window.innerWidth < 426;
     //const [isInAppBrowser, setIsInAppBrowser] = useState(false);
     //const [userAgent, setUserAgent] = useState("");
 
