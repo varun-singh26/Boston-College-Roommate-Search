@@ -40,7 +40,7 @@ const Backdrop = () => {
     <div id="backdrop" className={css.backdrop}>
       <img className={css.backdropImage} src="/images/backdropImages/MillionDollarStairs.jpeg" alt="BC Million Dollar Stairs" />
       <img className={css.backdropImage} src="/images/backdropImages/Mods.jpeg" alt="BC Mods" />
-      <img className={css.backdropImage} src="/images/backdropImages/ModsXVandy.jpeg" alt="BC Vandy View from Mods" />
+      <img className={css.backdropImage} src="/images/backdropImages/ModsxVandy.jpeg" alt="BC Vandy View from Mods" />
       <img className={css.backdropImage} src="/images/backdropImages/Linden_Lane.jpeg" alt="BC Linden Lane" />
       <img className={css.backdropImage} src="/images/backdropImages/Gasson_Spring.jpeg" alt="BC Gasson Hall in Spring" />
       <img className={css.backdropImage} src="/images/backdropImages/Gasson_Quad.jpeg" alt="BC Gasson Quad" />

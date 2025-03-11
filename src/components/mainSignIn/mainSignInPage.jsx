@@ -48,11 +48,11 @@ const MainSignInPage = () => {
 
     return (
         <div className={css.signInPage}>
-            <img className={css.logo} src="/images/logos/heightsHousingVertical.jpg" alt="Heights Housing Logo" />
+            <img className={css.logo} src="/images/logos/heightsHousingVerticalTransparent.png" alt="Heights Housing Logo" />
             <h2 className={css.signInTitle}>Sign in with your Boston College email to continue</h2>
 
             {/* An easier and more efficient fix than detecting if the user is using an InAppBrowser. (They would have to nonetheless copy and paste the URL of heights housing into their browser*/}
-            <h3 className={css.signInTitle}> If using an In-App browser via a mobile device (Instagram, LinkedIn), click the three dots (ie. ...) in the upper right corner and select "Open in external browser". Then click "Sign in with Google"</h3>
+            {/* <h3 className={css.signInTitle}> If using an In-App browser via a mobile device (Instagram, LinkedIn), click the three dots (ie. ...) in the upper right corner and select "Open in external browser". Then click "Sign in with Google"</h3> */}
             
             {/* 1) Show the in-app browser warning if detected */}
             {/*isInAppBrowser && <InAppBrowserWarning />*/}
