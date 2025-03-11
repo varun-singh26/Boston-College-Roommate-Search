@@ -43,22 +43,25 @@ function RoutesWrapper() {
   const isMobile = window.innerWidth < 426;
 
   if (isMobile) {
-  const result = Swal.fire({
+    Swal.fire({
       title: 'Mobile Warning',
       text: 'This website is not optimized for mobile devices. Please use a desktop or laptop for the best experience.',
       icon: 'warning',
       confirmButtonText: 'I wish to continue anyway'
-    })
-    if (result.isConfirmed) {
-      console.log("User wishes to continue on mobile");
-      Swal.fire ({
-        title: 'In-App Browser Warning',
-        text: 'If using an In-App browser via a mobile device (e.g. Instagram or LinkedIn), please open this page in your default external browser (Safari, Chrome, etc.) to continue. You may press the "..." in the upper right and select ""Open in external browser".',
-        icon: 'warning',
-        confirmButtonText: 'I understand'
-    })
+    }).then((result) => {
+      if (result.isConfirmed) {
+        console.log("User wishes to continue on mobile");
+  
+        Swal.fire({
+          title: 'In-App Browser Warning',
+          text: 'If using an In-App browser via a mobile device (e.g. Instagram or LinkedIn), please open this page in your default external browser (Safari, Chrome, etc.). You may press the "..." in the upper right hand corner and select "Open in external browser". The sign-in function may not work otherwise.',
+          icon: 'warning',
+          confirmButtonText: 'I understand'
+        });
+      }
+    });
   }
-}
+  
     
 
 
