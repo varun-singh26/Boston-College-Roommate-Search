@@ -14,28 +14,48 @@ import css from "./mainSignInPage.module.css";
 const MainSignInPage = () => {
     const { currentUser } = useAuth();
     const navigate = useNavigate();
-    const isMobile = window.innerWidth < 426;
+    const isMobile = window.innerWidth < 2000;
     //const [isInAppBrowser, setIsInAppBrowser] = useState(false);
     //const [userAgent, setUserAgent] = useState("");
 
+    function isInstagramOrLinkedIn() {
+        const ua = navigator.userAgent;
+        if (/Instagram/i.test(ua)) return "Instagram";
+        if (/LinkedIn/i.test(ua)) return "LinkedIn";
+        return false;
+    }
 
     useEffect(() => {
-        if (currentUser) {
-            console.log("✅ User detected, navigating away...");
-            navigate("/"); // Redirect if already signed in
-        }
-        else {
-            if (isMobile) {
-                // Only show SweetAlert if the user is NOT logged in
+        const checkBrowser = async () => {
+            if (currentUser) {
+                console.log("✅ User detected, navigating away...");
+                navigate("/"); // Redirect if already signed in
+                return;
+            }
+
+            const inAppBrowser = isInstagramOrLinkedIn();
+            if (inAppBrowser) {
                 Swal.fire({
-                    title: 'In-App Browser Warning',
-                    text: 'If on a mobile device and using an In-App browser (via Instagram, LinkedIn, SnapChat, or TikTok), please open this page in your default external browser (Safari, Chrome, etc.). You may press the "..." in the upper right hand corner and select "Open in external browser". The sign-in function may not work otherwise.',
+                    title: `${inAppBrowser} In-App Browser Warning`,
+                    text: `If using an in-app browser via ${inAppBrowser}, please open this page in your default external browser (Safari, Chrome, etc.). The sign-in function may not work otherwise.`,
                     icon: 'warning',
                     confirmButtonText: 'I understand'
                 });
+                return;
             }
-        }
-    }, [currentUser, navigate]);
+
+            if (isMobile) {
+                Swal.fire({
+                    title: 'Mobile Warning',
+                    text: 'This website is not optimized for mobile devices. Please use a desktop or laptop for the best experience.',
+                    icon: 'warning',
+                    confirmButtonText: 'I wish to continue anyway'
+                });
+            }
+        };
+
+        checkBrowser();
+    }, [currentUser, navigate, isMobile]); // Ensure dependencies are included
 
     // Decided not to use this for now, but kept the code incase we want to in the future
     {/*useEffect(() => {
@@ -65,7 +85,7 @@ const MainSignInPage = () => {
             <h2 className={css.signInTitle}>Sign in with your Boston College email to continue</h2>
 
             {/* An easier and more efficient fix than detecting if the user is using an InAppBrowser. (They would have to nonetheless copy and paste the URL of heights housing into their browser*/}
-            <h3 className={css.signInTitle}> If using an In-App browser via a mobile device (Instagram, LinkedIn), click the three dots (ie. ...) in the upper right corner and select "Open in external browser". Then click "Sign in with Google"</h3>
+            {/* <h3 className={css.signInTitle}> If using an In-App browser via a mobile device (Instagram, LinkedIn), click the three dots (ie. ...) in the upper right corner and select "Open in external browser". Then click "Sign in with Google"</h3> */}
             
             {/* 1) Show the in-app browser warning if detected, then Hide or disable the sign-in button if an in-app browser is detected (NOT USING THIS) */}
             {/*isInAppBrowser && <InAppBrowserWarning />*/}

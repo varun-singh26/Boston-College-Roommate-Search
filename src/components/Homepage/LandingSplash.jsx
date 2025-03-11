@@ -5,7 +5,8 @@ import css from "../../styles/LandingSplash.module.css"
 import Swal from 'sweetalert2';
 
 const LandingSplash = () => {
-  const isMobile = window.innerWidth < 426;
+  const isMobile = window.innerWidth < 2000;
+  //426
 
   useEffect(() => {
     if (isMobile) {
